@@ -201,9 +201,22 @@ set(legend('$\mathbf{x}(t)$', '$\mathbf{z}(t)$'), 'Interpreter', 'latex');
 
 %% lti representations
 
-%% autoexport figures to (pdf) files
 
-set(F_1_1,'Units','Inches');
-pos = get(F_1_1,'Position');
-set(F_1_1,'PaperPositionMode','Auto','PaperUnits','Inches','PaperSize',[pos(3), pos(4)])
-print(F_1_1,'/figs/test','-dpdf','-r0')
+%% autoexport figures to (pdf) files 
+%  note: uncomment to save again
+
+% savefig(f_1_1, './figs/x_0_1_state_evolution')
+% savefig(f_1_2_a, './figs/x_0_1_state_orbit_axis_equal')
+% savefig(f_1_2_b, './figs/x_0_1_state_orbit')
+% 
+% savefig(f_2_1, './figs/x_0_2_state_evolution')
+% savefig(f_2_2_a, './figs/x_0_2_state_orbit_axis_equal')
+% savefig(f_2_2_b, './figs/x_0_2_state_orbit')
+% 
+% savefig(F_1_1, './figs/X_0_1_state_evolution')
+% savefig(F_1_2_a, './figs/X_0_1_state_orbit_axis_equal')
+% savefig(F_1_2_b, './figs/X_0_1_state_orbit')
+% 
+% savefig(F_2_1, './figs/X_0_2_state_evolution')
+% savefig(F_2_2_a, './figs/X_0_2_state_orbit_axis_equal')
+% savefig(F_2_2_b, './figs/X_0_2_state_orbit')
