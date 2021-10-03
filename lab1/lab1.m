@@ -201,3 +201,9 @@ set(legend('$\mathbf{x}(t)$', '$\mathbf{z}(t)$'), 'Interpreter', 'latex');
 
 %% lti representations
 
+%% autoexport figures to (pdf) files
+
+set(F_1_1,'Units','Inches');
+pos = get(F_1_1,'Position');
+set(F_1_1,'PaperPositionMode','Auto','PaperUnits','Inches','PaperSize',[pos(3), pos(4)])
+print(F_1_1,'/figs/test','-dpdf','-r0')
