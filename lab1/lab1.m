@@ -29,38 +29,38 @@ f_1_2 = figure('Name','State Orbit (starting x_0_1)','NumberTitle','off');
 
 figure(f_1_1);
 subplot(2,1,1);
-plot(t_1, x_1t_1)
-xlabel('Time (seconds)')
-ylabel('$\theta$', 'Interpreter','latex')
+plot(t_1, x_1t_1);
+xlabel('Time (seconds)');
+ylabel('$\theta$', 'Interpreter','latex');
 subplot(212);
-plot(t_1, x_1t_2)
-xlabel('Time (seconds)')
-ylabel('$\dot{\theta}$', 'Interpreter','latex')
+plot(t_1, x_1t_2);
+xlabel('Time (seconds)');
+ylabel('$\dot{\theta}$', 'Interpreter','latex');
 
 figure(f_1_2);
-plot(x_1t_1, x_1t_2)
+plot(x_1t_1, x_1t_2);
 % todo: control aspect ratio of this plot
-xlabel('x_1')
-ylabel('x_2')
+xlabel('x_1');
+ylabel('x_2');
 
 f_2_1 = figure('Name','Individual State Evolution (starting x_0_2)','NumberTitle','off');
 f_2_2 = figure('Name','State Orbit (starting x_0_2)','NumberTitle','off');
 
 figure(f_2_1);
 subplot(2,1,1);
-plot(t_2, x_2t_1)
-xlabel('Time (seconds)')
-ylabel('$\theta$', 'Interpreter','latex')
+plot(t_2, x_2t_1);
+xlabel('Time (seconds)');
+ylabel('$\theta$', 'Interpreter','latex');
 subplot(212);
-plot(t_2, x_2t_2)
-xlabel('Time (seconds)')
-ylabel('$\dot{\theta}$', 'Interpreter','latex')
+plot(t_2, x_2t_2);
+xlabel('Time (seconds)');
+ylabel('$\dot{\theta}$', 'Interpreter','latex');
 
 figure(f_2_2);
-plot(x_2t_1, x_2t_2)
+plot(x_2t_1, x_2t_2);
 % todo: control aspect ratio of this plot
-xlabel('x_1')
-ylabel('x_2')
+xlabel('x_1');
+ylabel('x_2');
 
 %% symbolic linearization
 
@@ -86,4 +86,74 @@ C = subs(symC, {x1, x2, u}, {0, 0, 0});
 D = subs(symD, {x1, x2, u}, {0, 0, 0});
 
 %% symbolic expression to numerical integration
+
+syms z1 z2
+
+z    = [z1; z2];
+zdot = A*(z - xstar) + B*(u - ustar);
+
+Xdot = [xdot; zdot]; % augmented state ODE
+Xdot = subs(Xdot, {M, l, g, u}, {parameters.M, parameters.l, parameters.g, 0}); % u = 0
+
+augmented_pend = matlabFunction(Xdot, 'vars', {t, [x;z]});
+
+% numerical integration: calculating evolution of augmented system states
+[t_1,X_1t] = ode45(augmented_pend, Tspan, [x_0(:,1); x_0(:,1)], options);
+[t_2,X_2t] = ode45(augmented_pend, Tspan, [x_0(:,2); x_0(:,2)], options);
+
+% plotting (todo: fix labels, aspect ratios, export to files)
+x_1t_1 = X_1t(:, 1); x_1t_2 = X_1t(:, 2); z_1t_1 = X_1t(:, 3); z_1t_2 = X_1t(:, 4);
+x_2t_1 = X_2t(:, 1); x_2t_2 = X_2t(:, 2); z_2t_1 = X_2t(:, 3); z_2t_2 = X_2t(:, 4);
+
+F_1_1 = figure('Name','Individual State Evolution (starting X_0_1)','NumberTitle','off');
+F_1_2 = figure('Name','State Orbit (starting X_0_1)','NumberTitle','off');
+
+figure(F_1_1);
+subplot(2,1,1);
+plot(t_1, x_1t_1);
+hold on;
+plot(t_1, z_1t_1);
+xlabel('Time (seconds)');
+ylabel('$\theta$', 'Interpreter','latex');
+subplot(212);
+plot(t_1, x_1t_2);
+hold on;
+plot(t_1, z_1t_2);
+xlabel('Time (seconds)');
+ylabel('$\dot{\theta}$', 'Interpreter','latex');
+
+figure(F_1_2);
+plot(x_1t_1, x_1t_2);
+hold on;
+plot(z_1t_1, z_1t_2);
+% todo: control aspect ratio of this plot
+xlabel('x_1');
+ylabel('x_2');
+
+F_2_1 = figure('Name','Individual State Evolution (starting X_0_2)','NumberTitle','off');
+F_2_2 = figure('Name','State Orbit (starting X_0_2)','NumberTitle','off');
+
+figure(F_2_1);
+subplot(2,1,1);
+plot(t_2, x_2t_1);
+hold on;
+plot(t_2, z_2t_1);
+xlabel('Time (seconds)');
+ylabel('$\theta$', 'Interpreter','latex');
+subplot(212);
+plot(t_2, x_2t_2);
+hold on;
+plot(t_2, z_2t_2);
+xlabel('Time (seconds)');
+ylabel('$\dot{\theta}$', 'Interpreter','latex');
+
+figure(F_2_2);
+plot(x_2t_1, x_2t_2);
+hold on;
+plot(z_2t_1, z_2t_2);
+% todo: control aspect ratio of this plot
+xlabel('x_1');
+ylabel('x_2');
+
+%% lti representations
 
