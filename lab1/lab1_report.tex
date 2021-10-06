@@ -34,19 +34,58 @@
 \section{Introduction}
 We have a system $G(s)$ that is very nice.
 
-\begin{figure}[h]
- \centering
- \includegraphics[clip, scale=0.7, trim=0.5cm 11cm 0.5cm 11cm, width=1.00\textwidth]{X_0_1_state_evolution.pdf}
- \caption{test123}
- \label{figure:test123}
-\end{figure}
 
-Figure out trimming this way:
-\newpage
-\fbox{\includegraphics[scale=0.7, trim=0.5cm 11cm 0.5cm 11cm]{X_0_1_state_evolution.pdf}}
+\subsection{Numerical integration Graphs and Evaluation}
+This section models the system using the differential equations provided in the lab handout, and solves the DE by numerical integration. 
 
-Test123
+Recall, the given non-linear function was:
+\begin{center}
+   \begin{math}
+    \dot{x} = f(x, t) = 
+        \begin{bmatrix}
+        x_2\\
+        -\frac{g sin(x_1)}{l} - \frac{cos(x_1) u(t)}{ml}
+        \end{bmatrix}
+    \end{math} 
+\end{center}
 
+There were two initial conditions of interest:
+\begin{center}
+    1.
+    \begin{math}
+     x^0_1 = 
+     \begin{bmatrix}
+     0\\ \sqrt{g/l}
+     \end{bmatrix}
+    %  ;
+    %  u^0_1 = 0
+    \end{math}
+\end{center}
 
+\begin{center}
+    2. 
+    \begin{math}
+     x^0_2 = 
+     \begin{bmatrix}
+     0\\1.99 \sqrt{g/l}
+     \end{bmatrix}
+    %  ;
+    %  u^0_2 = 0
+    \end{math}
+\end{center}
+
+Note, $x_1 = \theta$, and $x_2 = \dot{\theta}$. 
+$\theta = 0$, but $\dot{\theta}$ is a non-zero value. This is similar to providing the pendulum with an initial velocity from its rest position (equilibrium at $\theta = 0$) at time $t = 0$.
+
+$u(t) = 0$ for this section, implying the system behaves naturally; there is no forced response.
+
+\subsubsection{Graphs for initial condition 1}
+Here are the figures for the initial condition 1:
+    \begin{figure}[h]
+     \centering
+     \includegraphics[scale=0.7]{lab1/figs/section3_x0_1_state_evolution.pdf}
+     \caption{State Evolution to initial condition #1}
+     \label{figure:\theta and theta_dot varying over time}
+    \end{figure}
 
 \end{document}
