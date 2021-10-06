@@ -35,7 +35,7 @@
 We have a system $G(s)$ that is very nice.
 
 
-\subsection{Numerical integration Graphs and Evaluation}
+\section{Numerical integration Graphs and Evaluation (Section 3)}
 This section models the system using the differential equations provided in the lab handout, and solves the DE by numerical integration. 
 
 Recall, the given non-linear function was:
@@ -79,14 +79,74 @@ $\theta = 0$, but $\dot{\theta}$ is a non-zero value. This is similar to providi
 
 $u(t) = 0$ for this section, implying the system behaves naturally; there is no forced response.
 
-\subsubsection{Graphs for initial condition 1}
-Here are the figures for the initial condition 1:
+\subsection{Graphs for initial condition 1}
     
-    \begin{figure}[ht]
-     \centering
+    \begin{figure}[h]
      \includegraphics[scale=0.7]{lab1/figs/section3_x0_1_state_evolution.pdf}
      \caption{State Evolution to initial condition 1}
      \label{figure:x_0_1_state_evolution}
     \end{figure}
+    
+    \begin{figure}[ht]
+     \includegraphics[scale=0.7]{lab1/figs/section3_x0_1_state_orbit.pdf}
+     \caption{State orbit for initial condition 1}
+     \label{figure:x_0_1_state_evolution}
+    \end{figure}
+
+\subsection{Graphs for initial condition 2}
+    \begin{figure}[ht]
+     \includegraphics[scale=0.7]{lab1/figs/section3_x0_2_state_evolution.pdf}
+     \caption{State Evolution to initial condition 2}
+     \label{figure:x_0_2_state_evolution}
+    \end{figure}
+
+    \begin{figure}[ht]
+     \includegraphics[scale=0.7]{lab1/figs/section3_x0_2_state_orbit.pdf}
+     \caption{State orbit for initial condition 2}
+     \label{figure:x_0_1_state_orbit}
+    \end{figure}
+
+\subsection{Comparison/Analysis}
+    For the first initial condition, the system response is clearly sinusoidal. For the second initial condition, however, the response is not sinusoidal. The frequency of the first initial condition is higher than the frequency of the second initial condition, on visual introspection. 
+    
+    To understand the difference in the responses, it is important to identify what distinguishes the initial conditions. The first condition basically injects a lower angular velocity (and hence, a lower linear velocity) than the second initial condition. Since no energy is lost here, the pendulum should sweep a higher angle for a higher initial velocity. This is seen in figures 2 and 4, where the \begin{math}
+     max(\theta)_1 << max(\theta)_2
+    \end{math}.
+    
+    Because initial condition 2 reaches a higher value of $\theta$ ($\sim$ 3 radians), one would expect a higher time period and hence a lower frequency than initial condition 1, that only goes up to $\sim$ 1 radian. 
+    
+    3 radians is $\sim$ $\pi$ which is 180 deg, which means physically speaking, the pendulum almost reaches the top. While the shape of the graph is not 
+    
+
+\section{Symbolic Linearization (Section 4)}
+
+\subsection{Equilibrium 1}
+\begin{center}
+    1.
+    \begin{math}
+     \dot{\Bar{x}} = 
+     \begin{bmatrix}
+     0\\ 0
+     \end{bmatrix}
+     ;
+     \dot{\Bar{u}} = 0
+    \end{math}
+\end{center}
+
+\subsection{Equilibrium 2}
+\begin{center}
+    1.
+    \begin{math}
+     \dot{\Bar{x}} = 
+     \begin{bmatrix}
+     \Bar{\theta} \\ 0
+     \end{bmatrix}
+     ;
+     \dot{\Bar{x}} = -mg tan(\Bar{\theta})
+    \end{math}
+\end{center}
+
+
+\section{Comparing Symbolic Linearization to Numerical Integration (Section 5)}
 
 \end{document}
