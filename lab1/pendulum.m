@@ -1,5 +1,5 @@
 % pendulum state evolution ODE
-function xdot = pendulum(t,x,parameters)
+function xdot = pendulum(t, x, parameters)
 
 % extract parameters
 M = parameters.M;

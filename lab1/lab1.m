@@ -16,7 +16,7 @@ x_0        = [0                               0;
 % note x_0 here is set as: [x_0_1 | x_0_2] where x_0_1, for instance, is the
 % first intial condition
 
-options    = odeset('RelTol',1e-7,'AbsTol',1e-7);
+options    = odeset('RelTol',1e-7, 'AbsTol',1e-7);
 Tspan      = linspace(0,10,1e3);
 
 % numerical integration: calculating evolution of system states
@@ -27,9 +27,9 @@ Tspan      = linspace(0,10,1e3);
 x_1t_1 = x_1t(:, 1); x_1t_2 = x_1t(:, 2);
 x_2t_1 = x_2t(:, 1); x_2t_2 = x_2t(:, 2);
 
-f_1_1   = figure('Name','Individual State Evolution (starting x_0_1)','NumberTitle','off');
-f_1_2_a = figure('Name','State Orbit (starting x_0_1; axis equal)','NumberTitle','off');
-f_1_2_b = figure('Name','State Orbit (starting x_0_1)','NumberTitle','off');
+f_1_1   = figure('Name', 'Individual State Evolution (starting x_0_1)', 'NumberTitle', 'off');
+f_1_2_a = figure('Name', 'State Orbit (starting x_0_1; axis equal)', 'NumberTitle', 'off');
+f_1_2_b = figure('Name', 'State Orbit (starting x_0_1)', 'NumberTitle', 'off');
 
 figure(f_1_1);
 
@@ -57,9 +57,9 @@ plot(x_1t_1, x_1t_2);
 xlabel('$\theta$ [rad]', 'Interpreter', 'latex');
 ylabel('$\dot{\theta}$ [rad/s]', 'Interpreter', 'latex');
 
-f_2_1   = figure('Name','Individual State Evolution (starting x_0_2)','NumberTitle','off');
-f_2_2_a = figure('Name','State Orbit (starting x_0_2; axis equal)','NumberTitle','off');
-f_2_2_b = figure('Name','State Orbit (starting x_0_2)','NumberTitle','off');
+f_2_1   = figure('Name', 'Individual State Evolution (starting x_0_2)', 'NumberTitle', 'off');
+f_2_2_a = figure('Name', 'State Orbit (starting x_0_2; axis equal)', 'NumberTitle', 'off');
+f_2_2_b = figure('Name', 'State Orbit (starting x_0_2)', 'NumberTitle', 'off');
 
 figure(f_2_1);
 
@@ -142,9 +142,9 @@ augmented_pend = matlabFunction(Xdot, 'vars', {t, [x;z]});
 x_1t_1 = X_1t(:, 1); x_1t_2 = X_1t(:, 2); z_1t_1 = X_1t(:, 3); z_1t_2 = X_1t(:, 4);
 x_2t_1 = X_2t(:, 1); x_2t_2 = X_2t(:, 2); z_2t_1 = X_2t(:, 3); z_2t_2 = X_2t(:, 4);
 
-F_1_1   = figure('Name','Individual State Evolution (starting X_0_1)','NumberTitle','off');
-F_1_2_a = figure('Name','State Orbit (starting X_0_1; axis equal)','NumberTitle','off');
-F_1_2_b = figure('Name','State Orbit (starting X_0_1)','NumberTitle','off');
+F_1_1   = figure('Name', 'Individual State Evolution (starting X_0_1)', 'NumberTitle', 'off');
+F_1_2_a = figure('Name', 'State Orbit (starting X_0_1; axis equal)', 'NumberTitle', 'off');
+F_1_2_b = figure('Name', 'State Orbit (starting X_0_1)', 'NumberTitle', 'off');
 
 figure(F_1_1);
 
@@ -181,9 +181,9 @@ xlabel('$\theta$ [rad]', 'Interpreter', 'latex');
 ylabel('$\dot{\theta}$ [rad/s]', 'Interpreter', 'latex');
 set(legend('$\mathbf{x}(t)$', '$\mathbf{z}(t)$'), 'Interpreter', 'latex');
 
-F_2_1 = figure('Name','Individual State Evolution (starting X_0_2)','NumberTitle','off');
-F_2_2_a = figure('Name','State Orbit (starting X_0_2; axis equal)','NumberTitle','off');
-F_2_2_b = figure('Name','State Orbit (starting X_0_2)','NumberTitle','off');
+F_2_1 = figure('Name', 'Individual State Evolution (starting X_0_2)', 'NumberTitle', 'off');
+F_2_2_a = figure('Name', 'State Orbit (starting X_0_2; axis equal)', 'NumberTitle', 'off');
+F_2_2_b = figure('Name', 'State Orbit (starting X_0_2)', 'NumberTitle', 'off');
 
 figure(F_2_1);
 
@@ -222,8 +222,16 @@ set(legend('$\mathbf{x}(t)$', '$\mathbf{z}(t)$'), 'Interpreter', 'latex');
 
 %% lti representations
 
+% converting matrices to double <>
+numA = double(subs(A, {g, l}, {parameters.g, parameters.l}));
+numB = double(subs(B, {M, l}, {parameters.M, parameters.l}));
+numC = double(C);
+numD = double(D);
 
-%% autoexport figures to (pdf) files 
+%% pendulum stabilization
+
+
+%% autoexport figures to (pdf) files
 %  note: uncomment to save again
 
 % savefig(f_1_1, './figs/section3_x0_1_state_evolution')
