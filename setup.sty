@@ -1,0 +1,276 @@
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{bigints}
+\usepackage{lipsum}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{framed,color}
+\definecolor{shadecolor}{rgb}{1, 0.8, 0.3}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\usepackage{hyperref}
+\PassOptionsToPackage{unicode}{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage[parfill]{parskip}
+\usepackage[europeanresistors, american]{circuitikz}
+\usetikzlibrary{arrows,shapes,calc,positioning}
+\usetikzlibrary{shapes}
+\usetikzlibrary{plotmarks}
+\usetikzlibrary{patterns}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{xparse}
+\usepackage{filemod}
+\pgfplotsset{compat=newest}
+\usepgfplotslibrary{units}
+\usepackage[bottom]{footmisc}
+\usepackage[framemethod=TikZ]{mdframed}
+\usepackage{amsthm}
+\providecommand\given{}
+
+\renewcommand{\vec}[1]{\mathbf{#1}}
+\newcommand\blfootnote[1]
+{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+\def\therefore
+{
+    \boldsymbol
+    {
+        \text{ }
+        \leavevmode
+        \lower0.4ex\hbox{$\cdot$}
+        \kern-.5em\raise0.7ex\hbox{$\cdot$}
+        \kern-0.55em\lower0.4ex\hbox{$\cdot$}
+        \thinspace\text{ }
+    }
+}
+\newcommand\mixedcls{
+    \begin{tikzpicture}[auto, node distance=2cm,>=latex']
+
+    \node [input, name=input] {};
+    \node [sum, right of=input] (sum) {};
+    \node [block, right of=sum] (controller) {Controller};
+    \node [block, right of=controller, pin={[pinstyle]above:D},
+            node distance=3cm] (system) {System};
+
+    \draw [->] (controller) -- node[name=u] {$u$} (system);
+    \node [output, right of=system] (output) {};
+    %\node [block, below of=u] (measurements) {Measurements};
+    \coordinate [below of=u] (measurements) {};
+
+    \draw [draw,->] (input) -- node {$r$} (sum);
+    \draw [->] (sum) -- node {$e$} (controller);
+    \draw [->] (system) -- node [name=y] {$y$}(output);
+    %\draw [->] (y) |- (measurements);
+    \draw [-] (y) |- (measurements);
+    %\draw [->] (measurements) -| node[pos=0.99] {$-$} 
+    \draw [->] (measurements) -| %node[pos=1.00] {$-$} 
+        node [near end] {$y_m$} (sum);
+        
+    %\draw [->] 
+    \end{tikzpicture}
+}
+\newcommand\clstimedomain
+{
+  \begin{tikzpicture}[auto, node distance=2cm,>=latex']
+    % We start by placing the blocks
+    \node [input, name=input] {};
+    \node [sum, right of=input] (sum) {};
+    \node [block, right of=sum] (controller) {$c(t)$};
+    \node [sum, right of=controller, pin={[pinstyle]above:$d(t)$},
+            node distance=2cm] (disturbance) {};
+    \node [block, right of=disturbance] (system) {$g(t)$};
+    % We draw an edge between the controller and system block to 
+    % calculate the coordinate u. We need it to place the measurement block. 
+    \draw [->] (disturbance) -- node[name=u] {$u(t)$} (system);
+    \draw [->] (controller) -- node {} (disturbance);
+    \node [output, right of=system] (output) {};
+    \coordinate [below of=u] (tmp);
+
+    % Once the nodes are placed, connecting them is easy. 
+    \draw [draw,->] (input) -- node {$r(t)$} (sum);
+    \draw [->] (sum) -- node {$e(t)$} (controller);
+    \draw [->] (system) -- node [name=y] {$y(t)$}(output);
+    \draw [->] (y) |- (tmp) -| node[pos=0.99] {$-$} 
+        node [near end] {$y_f(t)$} (sum);
+\end{tikzpicture}
+}
+\newcommand\clslaplacedomain
+{
+  \begin{tikzpicture}[auto, node distance=2cm,>=latex']
+    % We start by placing the blocks
+    \node [input, name=input] {};
+    \node [sum, right of=input] (sum) {};
+    \node [block, right of=sum] (controller) {$C(s)$};
+    \node [sum, right of=controller, pin={[pinstyle]above:$D(s)$},
+            node distance=2cm] (disturbance) {};
+    \node [block, right of=disturbance] (system) {$G(s)$};
+    % We draw an edge between the controller and system block to 
+    % calculate the coordinate u. We need it to place the measurement block. 
+    \draw [->] (disturbance) -- node[name=u] {$U(s)$} (system);
+    \draw [->] (controller) -- node {} (disturbance);
+    \node [output, right of=system] (output) {};
+    \coordinate [below of=u] (tmp);
+
+    % Once the nodes are placed, connecting them is easy. 
+    \draw [draw,->] (input) -- node {$R(s)$} (sum);
+    \draw [->] (sum) -- node {$E(s)$} (controller);
+    \draw [->] (system) -- node [name=y] {$Y(s)$}(output);
+    \draw [->] (y) |- (tmp) -| node[pos=0.99] {$-$} 
+        node [near end] {$Y_f(s)$} (sum);
+\end{tikzpicture}
+}
+\newcommand\genclstimedomain
+{
+  \begin{tikzpicture}[auto, node distance=2cm,>=latex']
+    % We start by placing the blocks
+    \node [input, name=input] {};
+    \node [sum, right of=input] (sum) {};
+    \node [block, right of=sum] (controller) {$c(t)$};
+    \node [sum, right of=controller, pin={[pinstyle]above:$d(t)$},
+            node distance=2cm] (disturbance) {};
+    \node [block, right of=disturbance] (system) {$g(t)$};
+    % We draw an edge between the controller and system block to 
+    % calculate the coordinate u. We need it to place the measurement block. 
+    \draw [->] (disturbance) -- node[name=u] {$u(t)$} (system);
+    \draw [->] (controller) -- node {} (disturbance);
+    \node [output, right of=system] (output) {};
+    \node [block, below of=u] (measurements) {$h(t)$};
+
+    % Once the nodes are placed, connecting them is easy. 
+    \draw [draw,->] (input) -- node {$r(t)$} (sum);
+    \draw [->] (sum) -- node {$e(t)$} (controller);
+    \draw [->] (system) -- node [name=y] {$y(t)$}(output);
+    \draw [->] (y) |- (measurements) -| node[pos=0.99] {$-$} 
+        node [near end] {$y_f(t)$} (sum);
+\end{tikzpicture}
+}
+\newcommand\genclslaplacedomain
+{
+  \begin{tikzpicture}[auto, node distance=2cm,>=latex']
+    % We start by placing the blocks
+    \node [input, name=input] {};
+    \node [sum, right of=input] (sum) {};
+    \node [block, right of=sum] (controller) {$C(s)$};
+    \node [sum, right of=controller, pin={[pinstyle]above:$D(s)$},
+            node distance=2cm] (disturbance) {};
+    \node [block, right of=disturbance] (system) {$G(s)$};
+    % We draw an edge between the controller and system block to 
+    % calculate the coordinate u. We need it to place the measurement block. 
+    \draw [->] (disturbance) -- node[name=u] {$U(s)$} (system);
+    \draw [->] (controller) -- node {} (disturbance);
+    \node [output, right of=system] (output) {};
+    \node [block, below of=u] (measurements) {$H(s)$};
+
+    % Once the nodes are placed, connecting them is easy. 
+    \draw [draw,->] (input) -- node {$R(s)$} (sum);
+    \draw [->] (sum) -- node {$E(s)$} (controller);
+    \draw [->] (system) -- node [name=y] {$Y(s)$}(output);
+    \draw [->] (y) |- (measurements) -| node[pos=0.99] {$-$} 
+        node [near end] {$Y_f(s)$} (sum);
+  \end{tikzpicture}
+}
+\definecolor{light-gray}{gray}{0.9}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Theorem
+\newcounter{theo}[section] \setcounter{theo}{0}
+\renewcommand{\thetheo}{\arabic{section}.\arabic{theo}}
+\newenvironment{theo}[2][]{%
+\refstepcounter{theo}%
+\ifstrempty{#1}%
+{\mdfsetup{%
+frametitle={%
+\tikz[baseline=(current bounding box.east),outer sep=0pt]
+\node[anchor=east,rectangle,fill=light-gray]
+{\strut Theorem~\thetheo};}}
+}%
+{\mdfsetup{%
+frametitle={%
+\tikz[baseline=(current bounding box.east),outer sep=0pt]
+\node[anchor=east,rectangle,light-gray]
+{\strut Theorem~\thetheo:~#1};}}%
+}%
+\mdfsetup{innertopmargin=10pt,linecolor=light-gray,%
+linewidth=2pt,topline=true,%
+frametitleaboveskip=\dimexpr-\ht\strutbox\relax
+}
+\begin{mdframed}[]\relax%
+\label{#2}}{\end{mdframed}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Lemma
+\newcounter{lem}[section] \setcounter{lem}{0}
+\renewcommand{\thelem}{\arabic{section}.\arabic{lem}}
+\newenvironment{lem}[2][]{%
+\refstepcounter{lem}%
+\ifstrempty{#1}%
+{\mdfsetup{%
+frametitle={%
+\tikz[baseline=(current bounding box.east),outer sep=0pt]
+\node[anchor=east,rectangle,fill=light-gray]
+{\strut Lemma~\thelem};}}
+}%
+{\mdfsetup{%
+frametitle={%
+\tikz[baseline=(current bounding box.east),outer sep=0pt]
+\node[anchor=east,rectangle,fill=light-gray]
+{\strut Lemma~\thelem:~#1};}}%
+}%
+\mdfsetup{innertopmargin=10pt,linecolor=light-gray,%
+linewidth=2pt,topline=true,%
+frametitleaboveskip=\dimexpr-\ht\strutbox\relax
+}
+\begin{mdframed}[]\relax%
+\label{#2}}{\end{mdframed}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Definition
+\newcounter{defn}[section]\setcounter{defn}{0}
+\renewcommand{\thedefn}{\arabic{section}.\arabic{defn}}
+\newenvironment{defn}[2][]{%
+\refstepcounter{defn}%
+\ifstrempty{#1}%
+{\mdfsetup{%
+frametitle={%
+\tikz[baseline=(current bounding box.east),outer sep=0pt]
+\node[anchor=east,rectangle,fill=light-gray]
+{\strut Definition~\thedefn};}}
+}%
+{\mdfsetup{%
+frametitle={%
+\tikz[baseline=(current bounding box.east),outer sep=0pt]
+\node[anchor=east,rectangle,fill=light-gray]
+{\strut Definition~\thedefn:~#1};}}%
+}%
+\mdfsetup{innertopmargin=10pt,linecolor=light-gray,%
+linewidth=2pt,topline=true,%
+frametitleaboveskip=\dimexpr-\ht\strutbox\relax
+}
+\begin{mdframed}[]\relax%
+\label{#2}}{\end{mdframed}}
+
+\tikzstyle{block} = [draw, rectangle, 
+    minimum height=3em, minimum width=6em]
+\tikzstyle{sum} = [draw, circle, node distance=1cm]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+\newcommand\onedofrobot
+{
+  
+}
+\newcommand\rlccircuit
+{
+  \draw  (0,1.5) to [R, l=$R$] (2, 1.5)
+  to [L, l=$L$,  i>^=$i_L(t)$] (4.5, 1.5)
+  to [C, l=$C$, v=$v_C(t)$] (4.5, 0);
+  \draw (0, 1.5) to [V, l_=$u(t)$] (0,0);
+  \draw (4.5,0) -- (0, 0);
+  \draw (0, 0) to [short, *-*] node[ground]{} (0,0);
+}
