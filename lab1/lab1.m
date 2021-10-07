@@ -222,11 +222,16 @@ set(legend('$\mathbf{x}(t)$', '$\mathbf{z}(t)$'), 'Interpreter', 'latex');
 
 %% lti representations
 
-% converting matrices to double <>
+% converting state-space representation matrices into numeric form
 numA = double(subs(A, {g, l}, {parameters.g, parameters.l}));
 numB = double(subs(B, {M, l}, {parameters.M, parameters.l}));
 numC = double(C);
 numD = double(D);
+
+sys         = ss(numA, numB, numC, numD); % state-space model of the system
+pendsys_tf  = tf(sys);   % transfer function of the system
+pendsys_zpk = zpk(sys);  % zero-pole-gain form of the sys tf
+[V,lambda]  = eig(numA); % eigen- vectors and values of the system matrix A
 
 %% pendulum stabilization
 
