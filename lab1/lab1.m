@@ -229,11 +229,49 @@ numC = double(C);
 numD = double(D);
 
 sys         = ss(numA, numB, numC, numD); % state-space model of the system
-pendsys_tf  = tf(sys);   % transfer function of the system
-pendsys_zpk = zpk(sys);  % zero-pole-gain form of the sys tf
+Gs          = tf(sys);   % transfer function of the system
 [V,lambda]  = eig(numA); % eigen- vectors and values of the system matrix A
 
+% pole-zero plot of the system
+figure;
+f2 = pzplot(sys);
+xlabel('Re$(s)$')
+f2.AxesGrid.XUnits = ''; 
+ylabel('Im$(s)$')
+f2.AxesGrid.YUnits = '';
+title('')
+h = findobj(gca, 'type', 'line');
+set(h, 'markersize', 15)
+f2.AxesGrid.BackgroundAxes.XLabel.Interpreter = 'Latex'; 
+f2.AxesGrid.BackgroundAxes.YLabel.Interpreter = 'Latex';
+grid on;
+axis equal;
+
 %% pendulum stabilization
+
+% controller tf
+Cs = -tf([30 -300], [1 1000]);
+Ls = zpk(1+Cs*Gs); % check stability using <>
+
+figure;
+f2 = pzplot(Ls);
+% xlabel('Re$(s)$')
+% f2.AxesGrid.XUnits = ''; 
+% ylabel('Im$(s)$')
+% f2.AxesGrid.YUnits = '';
+% title('')
+% h = findobj(gca, 'type', 'line');
+% set(h, 'markersize', 15)
+% f2.AxesGrid.BackgroundAxes.XLabel.Interpreter = 'Latex'; 
+% f2.AxesGrid.BackgroundAxes.YLabel.Interpreter = 'Latex';
+% grid on;
+% axis equal;
+
+% get controller in ss form
+[F, G, H, L] = ssdata(Cs);
+
+% integrate to see how states evolve (change this comment)
+[tc,Xc_t] = ode45(@controlled_pendulum, Tspan, [x_0(:,1); 0; 0], options, {parameters, [F G H L]});
 
 
 %% autoexport figures to (pdf) files

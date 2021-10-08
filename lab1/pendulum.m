@@ -14,4 +14,3 @@ u = 0;
 
 % set output: state evolution DE
 xdot = [x2; -g/l*sin(x1) - 1/(M*l)*cos(x1)*u];
-
