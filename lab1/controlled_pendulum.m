@@ -1,10 +1,16 @@
 % pendulum state evolution ODE
-function Xdot = controlled_pendulum(t, X, {parameters, [F G H L]})
+function Xdot = controlled_pendulum(t, X, parameters, controller_matrices)
 
 % extract parameters
 M = parameters.M;
 g = parameters.g;
 l = parameters.l;
+
+% controller matrices
+F = controller_matrices.F;
+G = controller_matrices.G;
+H = controller_matrices.H;
+L = controller_matrices.L;
 
 % extract system states
 x1 = X(1); x2=X(2);

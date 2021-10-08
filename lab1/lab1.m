@@ -7,7 +7,7 @@ clc;
 close all;
 clear all;
 
-%% numerical simulation
+%% parameters setup
 
 % set up initial values and DE parameters
 parameters = struct('M', 0.2, 'g', 9.81, 'l', 0.15);
@@ -18,6 +18,8 @@ x_0        = [0                               0;
 
 options    = odeset('RelTol',1e-7, 'AbsTol',1e-7);
 Tspan      = linspace(0,10,1e3);
+
+%% numerical integration
 
 % numerical integration: calculating evolution of system states
 [t_1,x_1t] = ode45(@pendulum, Tspan, x_0(:,1), options, parameters);
@@ -232,48 +234,105 @@ sys         = ss(numA, numB, numC, numD); % state-space model of the system
 Gs          = tf(sys);   % transfer function of the system
 [V,lambda]  = eig(numA); % eigen- vectors and values of the system matrix A
 
-% pole-zero plot of the system
-figure;
-f2 = pzplot(sys);
-xlabel('Re$(s)$')
-f2.AxesGrid.XUnits = ''; 
-ylabel('Im$(s)$')
-f2.AxesGrid.YUnits = '';
-title('')
-h = findobj(gca, 'type', 'line');
-set(h, 'markersize', 15)
-f2.AxesGrid.BackgroundAxes.XLabel.Interpreter = 'Latex'; 
-f2.AxesGrid.BackgroundAxes.YLabel.Interpreter = 'Latex';
-grid on;
-axis equal;
-
+pole_zero_plot(sys)
 %% pendulum stabilization
 
 % controller tf
-Cs = -tf([30 -300], [1 1000]);
-Ls = zpk(1+Cs*Gs); % check stability using <>
+Cs = -tf([30 -300], [1 1000]); 
+% gain of -30, pole at -1000 and zero at 10
 
-figure;
-f2 = pzplot(Ls);
-% xlabel('Re$(s)$')
-% f2.AxesGrid.XUnits = ''; 
-% ylabel('Im$(s)$')
-% f2.AxesGrid.YUnits = '';
-% title('')
-% h = findobj(gca, 'type', 'line');
-% set(h, 'markersize', 15)
-% f2.AxesGrid.BackgroundAxes.XLabel.Interpreter = 'Latex'; 
-% f2.AxesGrid.BackgroundAxes.YLabel.Interpreter = 'Latex';
-% grid on;
-% axis equal;
+Ls = zpk(1+Cs*Gs); 
+% check stability using <>
+
+pole_zero_plot(Ls)
 
 % get controller in ss form
 [F, G, H, L] = ssdata(Cs);
 
+controller_matrices = struct('F', F, 'G', G, 'H', H, 'L', L);
 % integrate to see how states evolve (change this comment)
-[tc,Xc_t] = ode45(@controlled_pendulum, Tspan, [x_0(:,1); 0; 0], options, {parameters, [F G H L]});
+[tc,Xc_t] = ode45(@controlled_pendulum, Tspan, [x_0(:,1); 0; 0], options, parameters, controller_matrices);
+[tc_1, Xc_t1] = ode45(@controlled_pendulum, Tspan, [x_0(:,2); 0; 0], options, parameters, controller_matrices);
+%% Plot figures for this section
+% the four states are:
+% 1. x1 = theta
+% 2. x2 = theta_dot (angular velocity of the pendulum)
+% 3. z
+% 4. u = output of the controller (input of the plant)
 
+F_7   = figure('Name', 'State Evolution', 'NumberTitle', 'off');
 
+figure(F_7);
+
+subplot(221)
+plot(tc, Xc_t(:,1), tc, Xc_t1(:,1))
+xlabel('Time [s]', 'Interpreter', 'latex');
+ylabel('$\theta$ [rad]', 'Interpreter', 'latex');
+legend('X0_1', 'X0_2');
+title('$\theta$ [rad] vs time', 'Interpreter', 'latex');
+
+subplot(222)
+plot(tc, Xc_t(:,2), tc, Xc_t1(:,2))
+title('$\dot{\theta}$ [rad] vs time', 'Interpreter', 'latex');
+xlabel('Time [s]', 'Interpreter', 'latex');
+ylabel('$\dot{\theta}$ [rad/s]', 'Interpreter', 'latex');
+legend('X0_1', 'X0_2');
+% set(legend('$\dot{\theta_x}$', '$\dot{\theta_z}$'), 'Interpreter', 'latex');
+
+subplot(223)
+plot(tc, Xc_t(:,3), tc, Xc_t1(:,3))
+xlabel('Time [s]', 'Interpreter', 'latex');
+title('z over time', 'Interpreter', 'latex')
+legend('X0_1', 'X0_2');
+
+subplot(224)
+plot(tc, Xc_t(:,4), tc, Xc_t1(:,4))
+xlabel('Time [s]', 'Interpreter', 'latex');
+title('Controller output (u) over time', 'Interpreter', 'latex')
+legend('X0_1', 'X0_2');
+
+%% Bode plots
+figure
+bode(Gs/(1+Cs*Gs))
+
+%% Pick an initlal condition away from the equilibrium
+x_0_away_from_0        = [pi/6                               pi/4           pi/3; 
+              sqrt(parameters.g/parameters.l) sqrt(parameters.g/parameters.l) sqrt(parameters.g/parameters.l)];
+
+[tc,Xc_t] = ode45(@controlled_pendulum, Tspan, [x_0_away_from_0(:,1); 0; 0], options, parameters, controller_matrices);
+[tc_1, Xc_t1] = ode45(@controlled_pendulum, Tspan, [x_0_away_from_0(:,2); 0; 0], options, parameters, controller_matrices);
+[tc_2, Xc_t2] = ode45(@controlled_pendulum, Tspan, [x_0_away_from_0(:,3); 0; 0], options, parameters, controller_matrices);
+
+F_7   = figure('Name', 'State Evolution (away from equilibrium)', 'NumberTitle', 'off');
+
+figure(F_7);
+
+subplot(221)
+plot(tc, Xc_t(:,1), tc, Xc_t1(:,1), tc, Xc_t2(:,1))
+xlabel('Time [s]', 'Interpreter', 'latex');
+ylabel('$\theta$ [rad]', 'Interpreter', 'latex');
+% legend('X0_1', 'X0_2');
+title('$\theta$ [rad] vs time', 'Interpreter', 'latex');
+
+subplot(222)
+plot(tc, Xc_t(:,2), tc, Xc_t1(:,2), tc, Xc_t2(:,2))
+title('$\dot{\theta}$ [rad] vs time', 'Interpreter', 'latex');
+xlabel('Time [s]', 'Interpreter', 'latex');
+ylabel('$\dot{\theta}$ [rad/s]', 'Interpreter', 'latex');
+% legend('X0_1', 'X0_2');
+% set(legend('$\dot{\theta_x}$', '$\dot{\theta_z}$'), 'Interpreter', 'latex');
+
+subplot(223)
+plot(tc, Xc_t(:,3), tc, Xc_t1(:,3), tc, Xc_t2(:,3))
+xlabel('Time [s]', 'Interpreter', 'latex');
+title('z over time', 'Interpreter', 'latex')
+% legend('X0_1', 'X0_2');
+
+subplot(224)
+plot(tc, Xc_t(:,4), tc, Xc_t1(:,4), tc, Xc_t2(:,4))
+xlabel('Time [s]', 'Interpreter', 'latex');
+title('Controller output (u) over time', 'Interpreter', 'latex')
+% legend('X0_1', 'X0_2');
 %% autoexport figures to (pdf) files
 %  note: uncomment to save again
 
