@@ -1,20 +1,17 @@
-function pole_zero_plot(sys)
+% creates a pole zero plot of the system
+function fig = pole_zero_plot(sys, figname)
 
-figure;
-f2 = pzplot(sys);
-
+fig = figure('Name', figname, 'NumberTitle', 'off');
+figure(fig);
+fig = pzplot(sys);
 xlabel('Re$(s)$')
-f2.AxesGrid.XUnits = ''; 
+fig.AxesGrid.XUnits = ''; 
 ylabel('Im$(s)$')
-f2.AxesGrid.YUnits = '';
+fig.AxesGrid.YUnits = '';
 title('')
-
 h = findobj(gca, 'type', 'line');
-set(h, 'markersize', 15)
-f2.AxesGrid.BackgroundAxes.XLabel.Interpreter = 'Latex'; 
-f2.AxesGrid.BackgroundAxes.YLabel.Interpreter = 'Latex';
-
-grid on;
-axis equal;
+set(h, 'markersize', 12) % larger markers for easier visibility
+fig.AxesGrid.BackgroundAxes.XLabel.Interpreter = 'Latex'; 
+fig.AxesGrid.BackgroundAxes.YLabel.Interpreter = 'Latex';
 
 end

@@ -42,7 +42,7 @@ xlabel('Time [s]', 'Interpreter', 'latex');
 ylabel('$\theta$ [rad]', 'Interpreter', 'latex');
 
 % plotting evolution of x2 over time with sys starting from i.c. x_0_1
-subplot(212);
+subplot(2,1,2);
 plot(t_1, x_1t_2);
 xlabel('Time [s]', 'Interpreter', 'latex');
 ylabel('$\dot{\theta}$ [rad/s]', 'Interpreter', 'latex');
@@ -72,7 +72,7 @@ xlabel('Time [s]', 'Interpreter', 'latex');
 ylabel('$\theta$ [rad]', 'Interpreter', 'latex');
 
 % plotting evolution of x2 over time with sys starting from i.c. x_0_2
-subplot(212);
+subplot(2,1,2);
 plot(t_2, x_2t_2);
 xlabel('Time [s]', 'Interpreter', 'latex');
 ylabel('$\dot{\theta}$ [rad/s]', 'Interpreter', 'latex');
@@ -123,14 +123,13 @@ C_thetastar = subs(symC, {x1, x2, u}, {xstar_theta(1), xstar_theta(2), ustar_the
 D_thetastar = subs(symD, {x1, x2, u}, {xstar_theta(1), xstar_theta(2), ustar_theta});
 
 %% symbolic expression to numerical integration
-% todo: add comments later on (e.g. plotting commands)
 
 syms z1 z2
 
 z    = [z1; z2];
 zdot = A*(z - xstar) + B*(u - ustar);
 
-Xdot = [xdot; zdot]; % Xdot = f(X, u); the augmented state ODE
+Xdot = [xdot; zdot]; % Xdot = f(X, u), the augmented state ODE
 Xdot = subs(Xdot, {M, l, g, u}, {parameters.M, parameters.l, parameters.g, 0}); % u = 0
 
 augmented_pend = matlabFunction(Xdot, 'vars', {t, [x;z]});
@@ -150,6 +149,7 @@ F_1_2_b = figure('Name', 'State Orbit (starting X_0_1)', 'NumberTitle', 'off');
 
 figure(F_1_1);
 
+% plotting evolution of theta over time with sys starting from i.c. X_0_1
 subplot(2,1,1);
 plot(t_1, x_1t_1);
 hold on;
@@ -158,7 +158,8 @@ xlabel('Time [s]', 'Interpreter', 'latex');
 ylabel('$\theta$ [rad]', 'Interpreter', 'latex');
 set(legend('$\theta_x$', '$\theta_z$'), 'Interpreter', 'latex');
 
-subplot(212);
+% plotting evolution of theta dot over time with sys starting from i.c. X_0_1
+subplot(2,1,2);
 plot(t_1, x_1t_2);
 hold on;
 plot(t_1, z_1t_2);
@@ -166,6 +167,7 @@ xlabel('Time [s]', 'Interpreter', 'latex');
 ylabel('$\dot{\theta}$ [rad/s]', 'Interpreter', 'latex');
 set(legend('$\dot{\theta_x}$', '$\dot{\theta_z}$'), 'Interpreter', 'latex');
 
+% plotting state orbit, i.e. theta vs theta dot over time, with sys starting from i.c. X_0_1
 figure(F_1_2_a);
 plot(x_1t_2, x_1t_1);
 hold on;
@@ -189,6 +191,7 @@ F_2_2_b = figure('Name', 'State Orbit (starting X_0_2)', 'NumberTitle', 'off');
 
 figure(F_2_1);
 
+% plotting evolution of theta over time with sys starting from i.c. X_0_2
 subplot(2,1,1);
 plot(t_2, x_2t_1);
 hold on;
@@ -197,7 +200,8 @@ xlabel('Time [s]', 'Interpreter', 'latex');
 ylabel('$\theta$ [rad]', 'Interpreter', 'latex');
 set(legend('$\theta_x$', '$\theta_z$'), 'Interpreter', 'latex');
 
-subplot(212);
+% plotting evolution of theta dot over time with sys starting from i.c. X_0_1
+subplot(2,1,2);
 plot(t_2, x_2t_2);
 hold on;
 plot(t_2, z_2t_2);
@@ -205,6 +209,7 @@ xlabel('Time [s]', 'Interpreter', 'latex');
 ylabel('$\dot{\theta}$ [rad/s]', 'Interpreter', 'latex');
 set(legend('$\dot{\theta_x}$', '$\dot{\theta_z}$'), 'Interpreter', 'latex');
 
+% plotting state orbit, i.e. theta vs theta dot over time, with sys starting from i.c. X_0_2
 figure(F_2_2_a);
 plot(x_2t_2, x_2t_1);
 hold on;
@@ -231,108 +236,143 @@ numC = double(C);
 numD = double(D);
 
 sys         = ss(numA, numB, numC, numD); % state-space model of the system
-Gs          = tf(sys);   % transfer function of the system
-[V,lambda]  = eig(numA); % eigen- vectors and values of the system matrix A
+Gs          = tf(sys);     % transfer function of the system
+[V,lambda]  = eig(numA);   % eigen- vectors and values of the system matrix A
+[Gz,Gp,Gk]  = zpkdata(Gs); % zero-pole data of the plant (pendcart) 
 
-pole_zero_plot(sys)
+% pole-zero plot of the pendcart system (plant)
+f_Gs = pole_zero_plot(sys, 'G(s) pzplot');
+
 %% pendulum stabilization
 
-% controller tf
-Cs = -tf([30 -300], [1 1000]); 
-% gain of -30, pole at -1000 and zero at 10
+% controller tf: lead controller with break frequencies at 10 and 1000 and
+% gain of -30
+Cs   = tf([-3 -30], [1e-5 1]);
+f_cs = pole_zero_plot(Cs, 'C(s) pzplot');
 
-Ls = zpk(1+Cs*Gs); 
-% check stability using <>
+% testing stabililty of the closed-loop system using nyquist stability thm.
+Ls     = Cs * Gs;
+cls_tf = zpk(1 + Ls);
 
-pole_zero_plot(Ls)
+% pole-zero plot of 1 + L(s) for nyquist stability test
+f_cls = pole_zero_plot(cls_tf, 'CLS pzplot');
 
-% get controller in ss form
+% get controller in ss form for realizing it as (sugmented) system state DE
 [F, G, H, L] = ssdata(Cs);
 
-controller_matrices = struct('F', F, 'G', G, 'H', H, 'L', L);
-% integrate to see how states evolve (change this comment)
-[tc,Xc_t] = ode45(@controlled_pendulum, Tspan, [x_0(:,1); 0; 0], options, parameters, controller_matrices);
-[tc_1, Xc_t1] = ode45(@controlled_pendulum, Tspan, [x_0(:,2); 0; 0], options, parameters, controller_matrices);
-%% Plot figures for this section
-% the four states are:
-% 1. x1 = theta
-% 2. x2 = theta_dot (angular velocity of the pendulum)
-% 3. z
-% 4. u = output of the controller (input of the plant)
+% simulate state evolution of the controlled pendulum (closed loop control)
+Tc_span      = linspace(0,2,1e3);
+[tc_1,Xc_t1] = ode45(@controlled_pendulum, Tc_span, [x_0(:,1); 0; 0], options, parameters, {F, G, H, L});
+[tc_2,Xc_t2] = ode45(@controlled_pendulum, Tc_span, [x_0(:,2); 0; 0], options, parameters, {F, G, H, L});
 
-F_7   = figure('Name', 'State Evolution', 'NumberTitle', 'off');
+% plot state evolution diagrams for both initial conditions with z=0 and u=0
+F_Xc_1_1 = figure('Name', 'Controlled State Evolution (starting x_0_1)', 'NumberTitle', 'off');
+F_Xc_1_2 = figure('Name', 'Controlled State Orbit (starting x_0_1)', 'NumberTitle', 'off');
+F_Xc_2_1 = figure('Name', 'Controlled State Evolution (starting x_0_2)', 'NumberTitle', 'off');
+F_Xc_2_2 = figure('Name', 'Controlled State Orbit (starting x_0_2)', 'NumberTitle', 'off');
 
-figure(F_7);
+figure(F_Xc_1_1);
 
-subplot(221)
-plot(tc, Xc_t(:,1), tc, Xc_t1(:,1))
+% plotting evolution of theta over time with sys starting from i.c. x_0_1; z=0; u=0
+subplot(2,1,1);
+plot(tc_1, Xc_t1(:,1));
 xlabel('Time [s]', 'Interpreter', 'latex');
 ylabel('$\theta$ [rad]', 'Interpreter', 'latex');
-legend('X0_1', 'X0_2');
-title('$\theta$ [rad] vs time', 'Interpreter', 'latex');
 
-subplot(222)
-plot(tc, Xc_t(:,2), tc, Xc_t1(:,2))
-title('$\dot{\theta}$ [rad] vs time', 'Interpreter', 'latex');
+% plotting evolution of theta dot over time with sys starting from i.c. x_0_1; z=0; u=0
+subplot(2,1,2);
+plot(tc_1, Xc_t1(:,2));
 xlabel('Time [s]', 'Interpreter', 'latex');
 ylabel('$\dot{\theta}$ [rad/s]', 'Interpreter', 'latex');
-legend('X0_1', 'X0_2');
-% set(legend('$\dot{\theta_x}$', '$\dot{\theta_z}$'), 'Interpreter', 'latex');
 
-subplot(223)
-plot(tc, Xc_t(:,3), tc, Xc_t1(:,3))
-xlabel('Time [s]', 'Interpreter', 'latex');
-title('z over time', 'Interpreter', 'latex')
-legend('X0_1', 'X0_2');
+% plotting state orbit, i.e. theta vs theta dot over time, with sys starting from i.c. x_0_1; z=0; u=0
+figure(F_Xc_1_2);
+plot(Xc_t1(:,1), Xc_t1(:,2));
+xlabel('$\theta$ [rad]', 'Interpreter', 'latex');
+ylabel('$\dot{\theta}$ [rad/s]', 'Interpreter', 'latex');
 
-subplot(224)
-plot(tc, Xc_t(:,4), tc, Xc_t1(:,4))
-xlabel('Time [s]', 'Interpreter', 'latex');
-title('Controller output (u) over time', 'Interpreter', 'latex')
-legend('X0_1', 'X0_2');
+figure(F_Xc_2_1);
 
-%% Bode plots
-figure
-bode(Gs/(1+Cs*Gs))
-
-%% Pick an initlal condition away from the equilibrium
-x_0_away_from_0        = [pi/6                               pi/4           pi/3; 
-              sqrt(parameters.g/parameters.l) sqrt(parameters.g/parameters.l) sqrt(parameters.g/parameters.l)];
-
-[tc,Xc_t] = ode45(@controlled_pendulum, Tspan, [x_0_away_from_0(:,1); 0; 0], options, parameters, controller_matrices);
-[tc_1, Xc_t1] = ode45(@controlled_pendulum, Tspan, [x_0_away_from_0(:,2); 0; 0], options, parameters, controller_matrices);
-[tc_2, Xc_t2] = ode45(@controlled_pendulum, Tspan, [x_0_away_from_0(:,3); 0; 0], options, parameters, controller_matrices);
-
-F_7   = figure('Name', 'State Evolution (away from equilibrium)', 'NumberTitle', 'off');
-
-figure(F_7);
-
-subplot(221)
-plot(tc, Xc_t(:,1), tc, Xc_t1(:,1), tc, Xc_t2(:,1))
+% plotting evolution of theta over time with sys starting from i.c. x_0_2; z=0; u=0
+subplot(2,1,1);
+plot(tc_2, Xc_t2(:,1));
 xlabel('Time [s]', 'Interpreter', 'latex');
 ylabel('$\theta$ [rad]', 'Interpreter', 'latex');
-% legend('X0_1', 'X0_2');
-title('$\theta$ [rad] vs time', 'Interpreter', 'latex');
 
-subplot(222)
-plot(tc, Xc_t(:,2), tc, Xc_t1(:,2), tc, Xc_t2(:,2))
-title('$\dot{\theta}$ [rad] vs time', 'Interpreter', 'latex');
+% plotting evolution of theta dot over time with sys starting from i.c. x_0_2; z=0; u=0
+subplot(2,1,2);
+plot(tc_2, Xc_t2(:,2));
 xlabel('Time [s]', 'Interpreter', 'latex');
 ylabel('$\dot{\theta}$ [rad/s]', 'Interpreter', 'latex');
-% legend('X0_1', 'X0_2');
-% set(legend('$\dot{\theta_x}$', '$\dot{\theta_z}$'), 'Interpreter', 'latex');
 
-subplot(223)
-plot(tc, Xc_t(:,3), tc, Xc_t1(:,3), tc, Xc_t2(:,3))
-xlabel('Time [s]', 'Interpreter', 'latex');
-title('z over time', 'Interpreter', 'latex')
-% legend('X0_1', 'X0_2');
+% plotting state orbit, i.e. theta vs theta dot over time, with sys starting from i.c. x_0_2; z=0; u=0
+figure(F_Xc_2_2);
+plot(Xc_t2(:,1), Xc_t2(:,2));
+xlabel('$\theta$ [rad]', 'Interpreter', 'latex');
+ylabel('$\dot{\theta}$ [rad/s]', 'Interpreter', 'latex');
 
-subplot(224)
-plot(tc, Xc_t(:,4), tc, Xc_t1(:,4), tc, Xc_t2(:,4))
+% simulations for initial conditions away from the linearization equilibrium
+x_0_tilde = [pi/4 pi/2 pi; 
+             0    0    0];
+x_0       = [x_0 x_0_tilde]; % append the new initial conditions to the old matrix
+
+[tc_3,Xc_t3] = ode45(@controlled_pendulum, Tc_span, [x_0(:,3); 0; 0], options, parameters, {F, G, H, L});
+[tc_4,Xc_t4] = ode45(@controlled_pendulum, Tc_span, [x_0(:,4); 0; 0], options, parameters, {F, G, H, L});
+[tc_5,Xc_t5] = ode45(@controlled_pendulum, Tc_span, [x_0(:,5); 0; 0], options, parameters, {F, G, H, L});
+
+% plot solutions
+F_Xc_3_1 = figure('Name', 'Controlled State Evolution (starting x_0_3)', 'NumberTitle', 'off');
+F_Xc_3_2 = figure('Name', 'Controlled State Orbit (starting x_0_3)', 'NumberTitle', 'off');
+F_Xc_4_1 = figure('Name', 'Controlled State Evolution (starting x_0_4)', 'NumberTitle', 'off');
+F_Xc_4_2 = figure('Name', 'Controlled State Orbit (starting x_0_4)', 'NumberTitle', 'off');
+F_Xc_5_1 = figure('Name', 'Controlled State Evolution (starting x_0_5)', 'NumberTitle', 'off');
+F_Xc_5_2 = figure('Name', 'Controlled State Orbit (starting x_0_5)', 'NumberTitle', 'off');
+
+figure(F_Xc_3_1);
+subplot(2,1,1);
+plot(tc_3, Xc_t3(:,1));
 xlabel('Time [s]', 'Interpreter', 'latex');
-title('Controller output (u) over time', 'Interpreter', 'latex')
-% legend('X0_1', 'X0_2');
+ylabel('$\theta$ [rad]', 'Interpreter', 'latex');
+subplot(2,1,2);
+plot(tc_3, Xc_t3(:,2));
+xlabel('Time [s]', 'Interpreter', 'latex');
+ylabel('$\dot{\theta}$ [rad/s]', 'Interpreter', 'latex');
+
+figure(F_Xc_1_2);
+plot(Xc_t3(:,1), Xc_t3(:,2));
+xlabel('$\theta$ [rad]', 'Interpreter', 'latex');
+ylabel('$\dot{\theta}$ [rad/s]', 'Interpreter', 'latex');
+
+figure(F_Xc_4_1);
+subplot(2,1,1);
+plot(tc_4, Xc_t4(:,1));
+xlabel('Time [s]', 'Interpreter', 'latex');
+ylabel('$\theta$ [rad]', 'Interpreter', 'latex');
+subplot(2,1,2);
+plot(tc_4, Xc_t4(:,2));
+xlabel('Time [s]', 'Interpreter', 'latex');
+ylabel('$\dot{\theta}$ [rad/s]', 'Interpreter', 'latex');
+
+figure(F_Xc_4_2);
+plot(Xc_t4(:,1), Xc_t4(:,2));
+xlabel('$\theta$ [rad]', 'Interpreter', 'latex');
+ylabel('$\dot{\theta}$ [rad/s]', 'Interpreter', 'latex');
+
+figure(F_Xc_5_1);
+subplot(2,1,1);
+plot(tc_5, Xc_t5(:,1));
+xlabel('Time [s]', 'Interpreter', 'latex');
+ylabel('$\theta$ [rad]', 'Interpreter', 'latex');
+subplot(2,1,2);
+plot(tc_5, Xc_t5(:,2));
+xlabel('Time [s]', 'Interpreter', 'latex');
+ylabel('$\dot{\theta}$ [rad/s]', 'Interpreter', 'latex');
+
+figure(F_Xc_5_2);
+plot(Xc_t5(:,1), Xc_t5(:,2));
+xlabel('$\theta$ [rad]', 'Interpreter', 'latex');
+ylabel('$\dot{\theta}$ [rad/s]', 'Interpreter', 'latex');
+
 %% autoexport figures to (pdf) files
 %  note: uncomment to save again
 
@@ -351,3 +391,18 @@ title('Controller output (u) over time', 'Interpreter', 'latex')
 % savefig(F_2_1, './figs/section5_X0_2_state_evolution')
 % savefig(F_2_2_a, './figs/section5_X0_2_state_orbit_axis_equal')
 % savefig(F_2_2_b, './figs/section5_X0_2_state_orbit')
+
+% savefig(f_Gs, './figs/section6_pole_zero_gs')
+% savefig(f_cs, './figs/section7_pole_zero_cs')
+% savefig(f_cls, './figs/section7_pole_zero_cls')
+
+savefig(F_Xc_1_1, './figs/section7_controlled_state_evolution_x_0_1')
+savefig(F_Xc_1_2, './figs/section7_controlled_state_orbit_x_0_1')
+savefig(F_Xc_2_1, './figs/section7_controlled_state_evolution_x_0_2')
+savefig(F_Xc_2_2, './figs/section7_controlled_state_orbit_x_0_2')
+savefig(F_Xc_3_1, './figs/section7_controlled_state_evolution_x_0_3')
+savefig(F_Xc_3_2, './figs/section7_controlled_state_orbit_x_0_3')
+savefig(F_Xc_4_1, './figs/section7_controlled_state_evolution_x_0_4')
+savefig(F_Xc_4_2, './figs/section7_controlled_state_orbit_x_0_4')
+savefig(F_Xc_5_1, './figs/section7_controlled_state_evolution_x_0_5')
+savefig(F_Xc_5_2, './figs/section7_controlled_state_orbit_x_0_5')

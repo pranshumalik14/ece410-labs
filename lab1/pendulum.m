@@ -7,7 +7,8 @@ g = parameters.g;
 l = parameters.l;
 
 % extract states
-x1 = x(1); x2=x(2);
+x1 = x(1);
+x2 = x(2);
 
 % set input
 u = 0;
