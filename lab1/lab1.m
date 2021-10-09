@@ -338,7 +338,7 @@ plot(tc_3, Xc_t3(:,2));
 xlabel('Time [s]', 'Interpreter', 'latex');
 ylabel('$\dot{\theta}$ [rad/s]', 'Interpreter', 'latex');
 
-figure(F_Xc_1_2);
+figure(F_Xc_3_2);
 plot(Xc_t3(:,1), Xc_t3(:,2));
 xlabel('$\theta$ [rad]', 'Interpreter', 'latex');
 ylabel('$\dot{\theta}$ [rad/s]', 'Interpreter', 'latex');
