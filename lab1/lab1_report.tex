@@ -14,55 +14,34 @@
 \maketitle
 
 \section{Introduction}
-In this lab, we consider a pendulum-cart system with the control input, $u$, being the force imparted at the point of pivot, being the cart base, which is free to move along a frictionless rod. We consider the state of the system to be $\vec{x} = \rcvec{\theta & \dot{\theta}}$, where $\theta$ is this and has the following dynamics:
+In this lab, we consider a pendulum-cart system with the control input, $u$, being the force imparted at the point of pivot, being the cart base, which is free to move along a frictionless rod. We consider the state of the system to be $\vec{x} = \rcvec{x_1 & x_2}^\intercal = \rcvec{\theta & \dot{\theta}}^\intercal$, where $\theta$ is the angle subtended by the pendulum rod against the vertically downwards axis. The pendulum has a mass, $M$, and is subject to gravity, $g$. The system, as a whole, has the following nonlinear dynamics:
 
-$x y$
+\begin{figure}[!h]
+\centering
 \pendcartsimple
+\caption{Pendulum-Cart system}
+\end{figure}
 
-\section{Numerical integration Graphs and Evaluation (Section 3)}
-This section models the system using the differential equations provided in the lab handout, and solves the DE by numerical integration. 
+\begin{equation}
+    \dot{\vec{x}} = f(\vec{x}, t) = \rcvec{ x_2 \\ \frac{-g \sin(x_1)}{l} \frac{-\cos(x_1) u(t)}{Ml}}
+\end{equation}
 
-Recall, the given non-linear function was:
-\begin{center}
-   \begin{math}
-    \dot{x} = f(x, t) = \rcvec{ x_2 \\ -\frac{g \sin x_1}{l} - \frac{\cos x_1 u(t)}{ml}}
-    \end{math} 
-\end{center}
-
-There were two initial conditions of interest:
-\[
-\]
-\begin{center}
-    1.
-    \begin{math}
-     \vec{x}_{0,1} = \rcvec{ 0\\ \sqrt{g/l} }
-    %  ;
-    %  u^0_1 = 0
-    \end{math}
-\end{center}
-
-\begin{center}
-    2. 
-    \begin{math}
-     \vec{x}_{0,2} =  \rcvec{0\\1.99 \sqrt{g/l}}
-    %  ;
-    %  u^0_2 = 0
-    \end{math}
-\end{center}
+\section{Numerical Integration}
+The system state evolution was determined numerically using \texttt{ode45} function in MATLAB. There were two initial conditions of interest:
+\begin{equation}
+    \vec{x}_{0,1} = \rcvec{ 0\\ \sqrt{g/l} }\quad \text{and} \quad \vec{x}_{0,2} =  \rcvec{0\\1.99 \sqrt{g/l}}
+\end{equation}
 
 Note, $x_1 = \theta$, and $x_2 = \dot{\theta}$. 
 $\theta = 0$, but $\dot{\theta}$ is a non-zero value. In words, this is providing the pendulum with an initial velocity from its rest position (equilibrium at $\theta = 0$) at time $t = 0$.
 
-$u(t) = 0$ for this section, implying the system behaves naturally; there is no forced response.
-
 \subsection{Graphs for initial condition 1}
-
 \begin{figure}[ht]
     \centering
     \begin{minipage}[b]{0.45\textwidth}
         \centering
         \includegraphics[width=1\linewidth]{lab1/figs/section3_x0_1_state_evolution.pdf}
-        \captionof{figure}{State Evolution to initial condition 1}    
+        \captionof{figure}{state evolution for initial condition 1}    
     \end{minipage}
     \begin{minipage}[b]{0.45\textwidth}
         \centering
@@ -79,7 +58,7 @@ $u(t) = 0$ for this section, implying the system behaves naturally; there is no 
     \begin{minipage}[b]{0.45\textwidth}
         \centering
         \includegraphics[width=1\linewidth]{lab1/figs/section3_x0_2_state_evolution.pdf}
-        \captionof{figure}{State Evolution to initial condition 2}    
+        \captionof{figure}{state evolution for initial condition 2}    
     \end{minipage}
     \begin{minipage}[b]{0.45\textwidth}
         \centering
@@ -91,83 +70,94 @@ $u(t) = 0$ for this section, implying the system behaves naturally; there is no 
 \end{figure}
 
 \subsection{Comparison/Analysis}
-    For the first initial condition, the system response is clearly sinusoidal. For the second initial condition, however, the response is not sinusoidal. The frequency of the first initial condition is higher than the frequency of the second initial condition, on visual introspection. 
+    The system response is clearly sinusoidal for the first initial condition and not the second. The frequency of the first initial condition is higher than the frequency of the second initial condition, on visual introspection. The state orbit for the first initial condition is a circle but for the second, it is more like an eye. 
     
-    To understand the difference in the responses, it is important to identify what distinguishes the initial conditions. The first condition basically injects a lower angular velocity (and hence, a lower linear velocity) than the second initial condition. Since no energy is lost here, the pendulum should sweep a higher angle for a higher initial velocity. This is seen in figures 2 and 4, where the \begin{math}
+    To understand the difference in the responses, it is important to identify what differentiates the initial conditions. The first condition basically injects a lower angular velocity (and hence, a lower linear velocity) than the second initial condition. Since no energy is lost here, the pendulum should sweep a higher angle for a higher initial velocity. This is seen in figures 3 and 5, where the \begin{math}
      max(\theta)_1 << max(\theta)_2
-    \end{math}. Because initial condition 2 reaches a higher value of $\theta$ ($\sim$ 3 radians), one would expect a higher time period, which justifies a lower frequency than initial condition 1, that only goes up to $\sim$ 1 radian. 
+    \end{math}. Because initial condition 2 reaches a higher value of $\theta$ ($\approx$ 3 radians), one would expect a higher time period, which justifies a lower frequency than initial condition 1, that only goes up to $\approx$ 1 radian. 
     
-    3 radians is $\sim$ $\pi$ which is 180 deg, which means physically speaking, the pendulum almost reaches the top. Looking at the state orbit graphs for initial condition 2, it is almost making a complete revolution; $\theta$ covered is $\sim$ -3 rad to 3 rad. A higher initial velocity would lead to the pendulum making revolutions where the same value of $\theta$ would never repeat. 
+    3 radians is $\approx$ $\pi$ which is 180 deg, which means physically speaking, the pendulum almost reaches the top. Looking at the state orbit graph for initial condition 2, it is almost making a complete revolution; $\theta$ covered is $\approx$ -3 rad to 3 rad. A higher initial velocity would lead to the pendulum making revolutions where the same value of $\theta$ would never repeat (ever increasing $\theta$!). 
     
-    Recognize that the state evolution and state orbit responses/graphs are not unique to the initial conditions for this system. For example, the first initial condition could start with $\theta$ $\sim$ 1 radian and 0 initial velocity and we would get the same system response. 
+    Recognize that the state evolution and state orbit responses/graphs are not unique to the initial conditions for this system. For example, the first initial condition could start with $\theta$ $\approx$ 1 radian and 0 initial velocity and the same system response would be obtained. 
     
 
-\section{Symbolic Linearization (Section 4)}
+\section{Symbolic Linearization}
 
 \subsection{Equilibrium 1}
-\begin{center}
-    1.
-    \begin{math}
-     \vec{\dot{x}} = \rcvec{0\\0}
-     ;
-     u = 0
-    \end{math}
-\end{center}
+    \begin{equation}
+         \vec{x}^* = \rcvec{0\\0}
+         \quad
+         \text{and}
+         \quad
+         \vec{u}^* = 0
+    \end{equation}
 
 The resulting A, B matrices for this equilibrium point are:
-\begin{center}
-    \begin{math}
+\begin{equation}
         \vec{A} = 
         \begin{bmatrix}
         0 &1 \\ \frac{-g}{l} & 0
         \end{bmatrix}
-    \end{math}
-    \begin{math}
+        \quad
+        \text{and}
+        \quad
         \vec{B} = 
         \begin{bmatrix}
-        0\\ \frac{-1}{ml}
+        0\\ \frac{-1}{Ml}
         \end{bmatrix}
-    \end{math}
-\end{center}
+\end{equation}
 
+The C, D values for this equilibrium point are:
+\begin{equation}
+    \vec{C} = 
+        \begin{bmatrix}
+        1 & 0
+        \end{bmatrix}
+        \quad
+        \text{and}
+        \quad
+        \vec{D} = 
+        \begin{bmatrix}
+        0
+        \end{bmatrix}
+\end{equation}
 
+This matches the equations provided in the lab handout.
 \subsection{Equilibrium 2}
-\begin{center}
-    1.
-    \begin{math}
-     {\dot{\vec{x}}} =
+\begin{equation}
+        \vec{x}^* =
      \rcvec{\theta^* \\ 0}
-     ;
-     \vec{u} = -mg\tan(\theta^*)
-    \end{math}
-\end{center}
+     \quad
+     \text{and}
+     \quad
+     \vec{u}^* = -Mg\tan(\theta^*) 
+\end{equation}
 
 The resulting A, B matrices for this equilibrium point are:
-\begin{center}
-    \begin{math}
+\begin{equation*}
         \vec{A} = 
         \begin{bmatrix}
         0 &1 \\ \frac{-g\cos(\theta^*)}{l} - g \frac{\sin(\theta^*) \tan(\theta^*)}{l} & 0
         \end{bmatrix}
-        =
+\end{equation*}
+Using $\tan(\theta) = \frac{\sin(\theta)}{\cos(\theta)}$, $\vec{A}$ can be simplified as:
+\begin{equation}
+        \vec{A} =
         \begin{bmatrix}
         0 &1 \\ \frac{-g}{l\cos(\theta^*)} & 0
         \end{bmatrix}
-        \end{math}
-        
-        (using $\tan(\theta) = \frac{\sin(\theta)}{\cos(\theta)}$)
-        
-        \begin{math}
+        \quad
+        \text{and}
+        \quad
         \vec{B} = 
         \begin{bmatrix}
-        0\\ \frac{-\cos(\theta^*)}{ml}
+            0\\ \frac{-\cos(\theta^*)}{Ml}
         \end{bmatrix}
-    \end{math}
-\end{center}
+\end{equation}
 
-The A matrix computed here matches that of the textbook. The B matrix however, contains the m (mass) term whereas the textbook has no mention of mass. If m = 1 is plugged into the equations derived above, the same equations as the textbook will be obtained. Also note, setting $\theta = 0$ here results in the same matrices derived in 3.1 ($\tan(0)$ is 0, resulting in no effect caused by the input force $\vec{u}$). 
+$\vec{A}$ matches that of the textbook. $\vec{B}$ however, contains the m (mass) term whereas the textbook has no mention of mass. If m = 1 is plugged into the equations derived above, the same equations as the textbook will be obtained. Also note, setting $\theta = 0$ here results in the same matrices derived in 3.1 ($\tan(0)$ is 0, resulting in no effect caused by the input force $u$).
 
-\section{Comparing Symbolic Linearization to Numerical Integration}
+\section{Symbolic Expression to Numerical Integration}
 Linearization was done about Equilibrium 1 defined in the previous section (3.1).
 
 \subsection{Graphs for initial condition 1}
@@ -177,23 +167,22 @@ Linearization was done about Equilibrium 1 defined in the previous section (3.1)
     \begin{minipage}[b]{0.45\textwidth}
         \centering
         \includegraphics[width=1\linewidth]{lab1/figs/section5_X0_1_state_evolution.pdf}
-        \captionof{figure}{State Evolution to initial condition 1}    
+        \captionof{figure}{state evolution for initial condition 1}    
     \end{minipage}
     \begin{minipage}[b]{0.45\textwidth}
         \centering
         \includegraphics[width=1\linewidth]{lab1/figs/section5_X0_1_state_orbit.pdf}
         \captionof{figure}{State orbit for initial condition 1}
+        \label{fig:test2}
     \end{minipage}
     
     \label{figure:x_0_1_state_evolution}
 \end{figure}
-    In figure 6, it can be seen that the state space coverage is somewhat similar for the linear and non-linear models. The range for $\dot{\theta}$ is the same for the both models, but the range for $\theta$ is slightly different. The non-linear model covers an additional range at around 1 radian, which is when the linear model is not effective anymore.
+    In figure 7, it can be seen that the state space coverage is somewhat similar for the linear and non-linear models. The range for $\dot{\theta}$ is the same for both the models, but the range for $\theta$ is slightly different. The non-linear model covers an additional range, which is when the linear model is not effective anymore.
     
-    This additional coverage for $\theta$ is what introduces a phase shift-like  effect seen in figure 5. Both the non-linear and linear model simulations have the same initial condition, so as long as they cover the same angle, the linear model is able to follow the actual system. However, once outside of the operating region, the linear model reaches a maximum and starts heading back to the equilibrium position. In this time, the non-linear part covers an addition $\theta$ and hence starts deviating from the linear system. 
+    This additional coverage for $\theta$ is what introduces a phase shift-like  effect seen in time response of the system. Both the non-linear and linear model simulations have the same initial condition, so as long as they cover the same angle, the linear model is able to follow the actual system. However, once outside of the operating region, the linear model reaches a maximum and starts heading back to the equilibrium position. In this time, the non-linear part covers an addition $\theta$ and hence starts deviating from the linear system. 
     
-    % Consider $\Delta_{error} = \theta(non-linear) - \theta(linear)$, which can be obtained from the state orbit graph. While $\Delta$ is 0, the linear model will follow the actual system. 
-    
-    Basically, since the range for $\theta$ in the non-linear system is higher (but ever so slightly!), the frequency is ever so slightly lower than the linear model, leading to the discrepancies. A mathematical perspective that can help understand this drawback is the relationship between $f(x) = \sin(x)$ and $f(x) = x$. The linear model assumes $\sin(x) \sim x$, but this assumption is only valid at a certain range near $x \sim 0$, which explains the deviation seen in figures 5 \& 6. 
+    Basically, since the range for $\theta$ in the non-linear system is higher (but ever so slightly!), the frequency is ever so slightly lower than the linear model, leading to the discrepancies. A mathematical perspective that can help understand this drawback is the relationship between $f(x) = \sin(x)$ and $f(x) = x$. The linear model assumes $\sin(x) \approx x$, but this assumption is only valid at a certain range near $x \approx 0$, which explains the deviation observed in the figures above. 
     
 \subsection{Graphs for initial condition 2}
 \begin{figure}[ht]
@@ -201,7 +190,7 @@ Linearization was done about Equilibrium 1 defined in the previous section (3.1)
     \begin{minipage}[b]{0.45\textwidth}
         \centering
         \includegraphics[width=1\linewidth]{lab1/figs/section5_X0_2_state_evolution.pdf}
-        \captionof{figure}{State Evolution to initial condition 2}    
+        \captionof{figure}{State Evolution for initial condition 2}    
     \end{minipage}
     \begin{minipage}[b]{0.45\textwidth}
         \centering
@@ -211,56 +200,174 @@ Linearization was done about Equilibrium 1 defined in the previous section (3.1)
     
     \label{figure:x_0_2_state_evolution}
 \end{figure}
-Here, the deviation talked about before is introduced earlier in the system than before. Recall that the law of conservation of energy must hold in the non-linear system, implying that every point on the state orbit has the same energy (KE + PE = constant). The linear model however, does not obey the law of conservation of energy, which explains the difference in the state orbits as well as the differences in the frequencies and amplitude. While this conflict existed in the first initial condition as well, in this condition, the differences got amplified and exposed the pitfall of the linear model.  
+
+Here, the deviation talked about before is introduced earlier in the system. Recall that the law of conservation of energy must hold in the non-linear system, implying that every point on the state orbit has the same energy (KE + PE = constant). The linear model however, does not obey the law of conservation of energy, which explains the difference in the state orbits as well as the differences in the frequencies and amplitude. While this conflict existed in the first initial condition as well, in this condition, the differences are amplified and expose the pitfall of the linear model. However, looking at the scales of the axes for the state orbits, it can be seen that the tracking error is actually small. 
 
 \subsection{Summary}
-Initial condition 2 injects a higher kinetic energy than initial condition 1. This disparity led to the linear model working more accurately for initial condition 1 and observed a clear incapability to follow the system for initial condition number 2. In summary, a simple reason to explain this is that initial condition 2 reaches a higher $\theta$.
+Initial condition 2 injects a higher kinetic energy than initial condition 1. This disparity led to the linear model working more accurately for initial condition 1 and observed a clear incapability to follow the system for initial condition number 2. In summary, the further the pendulum goes away from the equilibrium point, the worse the linear model gets at predicting the true motion of the system.
 
-\section{Section 6: LTI Reps}
+\section{LTI Representations}
 % plot eigenvalues and poles of the system!!!! Do it using pgf plots, matlab not nice for that.
 Eigenvalues of A:
-\begin{math}
-\sigma(A) = \{8.0870i, -8.0870i\}
-\end{math}
+\begin{equation*}
+    \sigma(A) = \{8.0870i, -8.0870i\}
+\end{equation*}
 
-These are the eigenvectors corresponding to the given eigenvalues:
-\begin{math}
+Eigenvectors obtained for the corresponding eigenvalues
+\begin{equation*}
     \vec{V} = \begin{bmatrix}
     -0.1227i & 0.1227i\\ 0.9924 & 0.9924 
     \end{bmatrix}
-\end{math}
+\end{equation*}
 
-Transfer function of the linearized pendulum
-\begin{math}
+The transfer function obtained for the linearized pendulum system
+\begin{equation*}
 G(s) = \frac{-33.33}{s^2+65.4} = \frac{-33.33}{(s-8.0870i)(s+8.0870i)} 
-\end{math}
+\end{equation*}
 
 \subsection{Analysis}
-The poles of the transfer functions are the same as eigenvalues of A. This implies that there are no pole-zero cancellations taking place. Additionally, the poles are purely imaginary, implying that the system response is purely sinusoidal (no decay). This also makes sense since the differential equations that governs the system does not have any damping factor. Physcially speaking, there are no energy losses in the system, so the kinetic energy that is injected in the system infinitely oscillates between Kinetic Energy and Potential Energy. 
-
+The poles of the transfer functions are the same as eigenvalues of A. This implies that there are no pole-zero cancellations taking place. Additionally, the poles are purely imaginary, implying that the system response is purely sinusoidal (no decay). Looking at the system from a mathematical perspective, this makes sense since the differential equations that govern the system do not have any damping factor. Physically, there are no energy losses in the system, so the energy that is injected in the system infinitely oscillates between kinetic energy and potential energy. 
 
 \subsubsection{Internal Stability}
-Because the poles are purely imaginary, the system cannot be asymptotically stable. Consider $\theta = \pi/4$, then the pendulum would infinitely oscillate. However, for any starting internal state ($x_0$), the system will always produce a bounded sinusoidal output, implying that the system is stable. 
+Because the poles are purely imaginary, the system cannot be asymptotically stable. Consider $\theta_0 = \pi/4$, then the pendulum would infinitely oscillate. However, for any starting internal state ($x_0$), the linear system will always produce a bounded sinusoidal output, implying that the system is stable. This is mathematically backed by equal algebraic and geometric multiplicities of the eigenvalues.
 
+\begin{figure}[ht]
+    \centering
+        \includegraphics[clip, trim=4.3cm 8.3cm 4.5cm 9.3cm,width=0.45\linewidth]{lab1/figs/section6_pole_zero_gs.pdf}
+        \caption{The pole-zero plot for $G(s)$}
+\end{figure}
 
 \subsubsection{Input-Output stability}
-The system is also not BIBO stable as for an input force $u$ that is a sinusoidal of frequency $\sim$8.0870 rad/s (the resonance frequency), the transfer function will explode, causing to an unbounded output. This also implies that the system is not I20 stable.   
-\section{Stabilization: Controller design}
-\begin{math}
+The system is not BIBO stable as for an input force $u$ that is a sinusoidal with frequency $\approx$ 8.0870 rad/s (the resonance frequency), the transfer function will explode, causing to an unbounded output. This also implies that the system is not I20 stable.  
+
+\subsection{Relationship between eigenvalues and frequency of oscillation}
+Basically, whenever there is a complex conjugate pair in the eigenvalues of A, the imaginary component results in sinusoidal responses. The imaginary component is what determines the frequency of oscillation, regardless of the value of the real component. This can be verified by graphical inspection, by looking at figures 6 and 8. In 10 seconds, there are 12.5 revolutions, implying that $f = \frac{12.5 \text{ revolutions}}{10 \text{ seconds}}$ but $\omega = 2\pi f \approx 7.85$ rad/s $\approx 8.08$ rad/s, which is the imaginary part of the eigenvalue of A.
+
+\section{Pendulum Stabilization and Controller Design}
+To now control the pendulum such that for a given initial condition it can converge back to its linearization equilibrium state, which in our case is equilibrium 1, we can design a controller, $C(s)$, with (unity-feedback) closed-loop to achieve the objective. For the purpose of the simulation, we can treat the feedback measurement $y_m = y$, the true plant state output.
+
+\begin{figure}[!h]
+    \centering
+    \mixedcls
+    \caption{Closed-loop controlled system}
+\end{figure}
+
+\subsection{Controller Design}
+For this system, we were advised to use a lead controller which is of the form, 
+\[ C(s) = k\cdot\left(\frac{Ts + 1}{\alpha Ts + 1}\right), \quad \alpha \in (0,1) \text{ and } T,k > 0\]
+where $k$ is the dc gain and $1/T$, $1/\alpha T$ are the break frequencies. This is the realizable continuous-time form of a proportional-derivative (PD) controller, particularly between the left and right break frequencies, because of its proper rational transfer function. A PD controller is fit for such a problem since we can make it act as an active damper to make the system take its stable equilibrium of hanging down and being stationary (or moving with a constant velocity).
+
+\begin{equation*}
     C(s) = -3\frac{s+10}{10^-5s+1}
-\end{math}
+\end{equation*}
 
-\begin{math}
+\begin{equation*}
 L(s) = C(s)G(s) = \frac{100s + 1000}{10^-5s^3+s^2+0.000654s+65.4}
-\end{math}
+\end{equation*}
 
-\begin{math}
-1+L(s) = 1 + C(s)G(s) = \frac{(s + 9.99 \times 10^4)(s+87.97)(s+12.12)}{(s+10^5)(s^2+65.4)}
-\end{math}
+\begin{equation*}
+    1+L(s) = 1 + C(s)G(s) = \frac{(s + 9.99 \times 10^4)(s+87.97)(s+12.12)}{(s+10^5)(s^2+65.4)}
+\end{equation*}
+
+The zeros of $1+L(s)$ are:
+\begin{equation*}
+    x
+\end{equation*}
+
+\begin{figure}[ht]
+    \centering
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[clip, trim=4.3cm 8.3cm 4.5cm 9.3cm,width=1\linewidth]{lab1/figs/section7_pole_zero_cs.pdf}
+        \captionof{figure}{Pole-zero plot for $C(s)$}    
+    \end{minipage}
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[clip, trim=4.3cm 8.3cm 4.5cm 9.3cm,width=1\linewidth]{lab1/figs/section7_pole_zero_cls.pdf}
+        \captionof{figure}{Pole-zero plot for $1+L(s)$}
+    \end{minipage}
+\end{figure}
+
+TODO: report the zeros of 1+L(s).
+
+\subsection{Pendulum Stabilization}
+
+We will now analyse the output of the system (with the controller) for the two initial conditions considered throughout the report. 
+
+The system output for the first initial condition is:
+\begin{figure}[ht]
+    \centering
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[clip,width=1\linewidth]{lab1/figs/section7_controlled_state_evolution_x_0_1.pdf}
+        \captionof{figure}{Controlled State Evolution for $x_{0,1}$}    
+    \end{minipage}
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[clip,width=1\linewidth]{lab1/figs/section7_controlled_state_orbit_x_0_1.pdf}
+        \captionof{figure}{Controlled State Orbit for $x_{0,1}$}
+    \end{minipage}
+\end{figure}
 
 
+The system output for the second initial condition is:
+\begin{figure}[ht]
+    \centering
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[clip,width=1\linewidth]{lab1/figs/section7_controlled_state_evolution_x_0_2.pdf}
+        \captionof{figure}{Controlled State Evolution for $x_{0,2}$}    
+    \end{minipage}
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[clip,width=1\linewidth]{lab1/figs/section7_controlled_state_orbit_x_0_2.pdf}
+        \captionof{figure}{Controlled State Orbit for $x_{0,2}$}
+    \end{minipage}
+\end{figure}
 
-$\therefore$ we have something.
-\mixedcls
+
+Three different initial pendulum angles were picked in the following order $\pi/4, \pi/2, \pi$ to test the controlled system's output. Note, the velocity is set to 0 for the following system responses:
+
+\begin{figure}[ht]
+    \centering
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[clip,width=1\linewidth]{lab1/figs/section7_controlled_state_evolution_x_0_3.pdf}
+        \captionof{figure}{Controlled State Evolution for $\theta = \pi/4$}    
+    \end{minipage}
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[clip,width=1\linewidth]{lab1/figs/section7_controlled_state_orbit_x_0_3.pdf}
+        \captionof{figure}{Controlled State Orbit for $\theta = \pi/4$}
+    \end{minipage}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[clip,width=1\linewidth]{lab1/figs/section7_controlled_state_evolution_x_0_4.pdf}
+        \captionof{figure}{Controlled State Evolution for $\theta = \pi/2$}    
+    \end{minipage}
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[clip,width=1\linewidth]{lab1/figs/section7_controlled_state_orbit_x_0_4.pdf}
+        \captionof{figure}{Controlled State Orbit for $\theta = \pi/2$}
+    \end{minipage}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[clip,width=1\linewidth]{lab1/figs/section7_controlled_state_evolution_x_0_5.pdf}
+        \captionof{figure}{Controlled State Evolution for $\theta = \pi$}    
+    \end{minipage}
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[clip,width=1\linewidth]{lab1/figs/section7_controlled_state_orbit_x_0_5.pdf}
+        \captionof{figure}{Controlled State Orbit for $\theta = \pi$}
+    \end{minipage}
+\end{figure}
 
 \end{document}

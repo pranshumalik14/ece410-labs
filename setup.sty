@@ -7,6 +7,7 @@
 \usepackage{mathtools}
 \usepackage{amsfonts}
 \usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{framed,color}
 \definecolor{shadecolor}{rgb}{1, 0.8, 0.3}
 \DeclareMathOperator*{\argmin}{arg\,min}
@@ -61,11 +62,9 @@
 
     % draw axes
     \fill[black] (origo) circle (0.05);
-    \draw[thick,gray,->] (origo) -- ++(4,0) node[black,right] {$x$};
-    \draw[thick,gray,->] (origo) -- ++(0,-4) node (mary) [black,below] {$y$};
+    \draw[thick,gray,->] (origo) -- ++(2,0) node[black,right] {$u$};
+    \draw[thick,gray,->] (origo) -- ++(0,-2) node (mary) [black,below] {$g$};
 
-    % draw roof
-    \fill[pattern = north east lines] ($ (origo) + (-1,0) $) rectangle ($ (origo) + (1,0.5) $);
     \draw[thick] ($ (origo) + (-1,0) $) -- ($ (origo) + (1,0) $);
 
     \draw[thick] (origo) -- ++(300:3) coordinate (bob);
@@ -79,9 +78,8 @@
 
     \node [input, name=input] {};
     \node [sum, right of=input] (sum) {};
-    \node [block, right of=sum] (controller) {Controller};
-    \node [block, right of=controller, pin={[pinstyle]above:D},
-            node distance=3cm] (system) {System};
+    \node [block, right of=sum] (controller) {$C(s)$};
+    \node [block, right of=controller, node distance=3cm] (system) {$G(s)$};
 
     \draw [->] (controller) -- node[name=u] {$u$} (system);
     \node [output, right of=system] (output) {};
