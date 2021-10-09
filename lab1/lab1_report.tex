@@ -226,7 +226,7 @@ G(s) = \frac{-33.33}{s^2+65.4} = \frac{-33.33}{(s-8.0870i)(s+8.0870i)}
 \end{equation*}
 
 \subsection{Analysis}
-The poles of the transfer functions are the same as eigenvalues of A. This implies that there are no pole-zero cancellations taking place. Additionally, the poles are purely imaginary, implying that the system response is purely sinusoidal (no decay). Looking at the system from a mathematical perspective, this makes sense since the differential equations that govern the system do not have any damping factor. Physically, there are no energy losses in the system, so the energy that is injected in the system infinitely oscillates between kinetic energy and potential energy. 
+The poles of the transfer function are equal to the eigenvalues of A. This implies that there are no pole-zero cancellations taking place. Additionally, the poles are purely imaginary, implying that the system response is purely sinusoidal (no decay). Looking at the system from a mathematical perspective, this makes sense since the differential equations that govern the system do not have any damping factor. Physically, there are no energy losses in the system, so the energy that is injected in the system infinitely oscillates between kinetic energy and potential energy. 
 
 \subsubsection{Internal Stability}
 Because the poles are purely imaginary, the system cannot be asymptotically stable. Consider $\theta_0 = \pi/4$, then the pendulum would infinitely oscillate. However, for any starting internal state ($x_0$), the linear system will always produce a bounded sinusoidal output, implying that the system is stable. This is mathematically backed by equal algebraic and geometric multiplicities of the eigenvalues.
@@ -238,10 +238,10 @@ Because the poles are purely imaginary, the system cannot be asymptotically stab
 \end{figure}
 
 \subsubsection{Input-Output stability}
-The system is not BIBO stable as for an input force $u$ that is a sinusoidal with frequency $\approx$ 8.0870 rad/s (the resonance frequency), the transfer function will explode, causing to an unbounded output. This also implies that the system is not I20 stable.  
+The system is not BIBO stable as for an input force $u$ that is a sinusoidal with frequency $\approx$ 8.0870 rad/s (the resonance frequency), the transfer function will explode, causing to an unbounded output. This also implies that the system is not I20 stable.
 
 \subsection{Relationship between eigenvalues and frequency of oscillation}
-Basically, whenever there is a complex conjugate pair in the eigenvalues of A, the imaginary component results in sinusoidal responses. The imaginary component is what determines the frequency of oscillation, regardless of the value of the real component. This can be verified by graphical inspection, by looking at figures 6 and 8. In 10 seconds, there are 12.5 revolutions, implying that $f = \frac{12.5 \text{ revolutions}}{10 \text{ seconds}}$ but $\omega = 2\pi f \approx 7.85$ rad/s $\approx 8.08$ rad/s, which is the imaginary part of the eigenvalue of A.
+Basically, whenever there is a complex conjugate pair in the eigenvalues of A, the imaginary component results in sinusoidal responses. The imaginary component is what determines the frequency of oscillation, regardless of the value of the real component. This can be verified by graphical inspection, by looking at figures 6 and 8. In 10 seconds, there are 12.5 revolutions, implying that $f = \frac{12.5 \text{ revolutions}}{10 \text{ seconds}}$ but $\omega_n = 2\pi f \approx 7.85$ rad/s $\approx 8.087$ rad/s, which is the imaginary part of the eigenvalue of A.
 
 \section{Pendulum Stabilization and Controller Design}
 To now control the pendulum such that for a given initial condition it can converge back to its linearization equilibrium state, which in our case is equilibrium 1, we can design a controller, $C(s)$, with (unity-feedback) closed-loop to achieve the objective. For the purpose of the simulation, we can treat the feedback measurement $y_m = y$, the true plant state output.
@@ -257,22 +257,35 @@ For this system, we were advised to use a lead controller which is of the form,
 \[ C(s) = k\cdot\left(\frac{Ts + 1}{\alpha Ts + 1}\right), \quad \alpha \in (0,1) \text{ and } T,k > 0\]
 where $k$ is the dc gain and $1/T$, $1/\alpha T$ are the break frequencies. This is the realizable continuous-time form of a proportional-derivative (PD) controller, particularly between the left and right break frequencies, because of its proper rational transfer function. A PD controller is fit for such a problem since we can make it act as an active damper to make the system take its stable equilibrium of hanging down and being stationary (or moving with a constant velocity).
 
+Now, to extend the approximation of a PD controller over a wide range of frequencies, we need the pole frequency, $1/\alpha T$, much to the right from the zero frequency, $1/T$. This will require that $\alpha \ll 1$. We can then increase the loop gain, $k$, to get better tracking performance by strengthening the proportional term. Since we most need the PD behavior near the natural frequency of the plant, $\omega_n = 8.087$ rad/s, we have set $1/T = 10$ and accordingly chose $\alpha=10^{-5}$ for effective performance over a wide band of frequencies. We considered $k = -30$, as suggested in the lab document, which was sufficient for all test cases. The resulting controller is,
+
 \begin{equation*}
-    C(s) = -3\frac{s+10}{10^-5s+1}
+    C(s) = -30\cdot\frac{0.1s+1}{10^{-5}s+1}.
+\end{equation*}
+
+Now, considering the stability of the controller, it is important that it abides by the following criteria:
+
+\begin{enumerate}
+    \item $1 + L(s)$ has all its zeros in $\mathbb{C}^-$, where $L(s) = C(s)G(s)$. This is the Nyquist stability criterion.
+    \item There are no unstable zero-pole cancellations in $L(s)$.
+\end{enumerate}
+
+Based on the structure of $C(s)$, we can conclude that criterion 2 is met. We can then write out $L(s)$ to verify criterion 1.
+
+\begin{equation*}
+L(s) = \frac{100s + 1000}{10^-5s^3+s^2+0.000654s+65.4}
 \end{equation*}
 
 \begin{equation*}
-L(s) = C(s)G(s) = \frac{100s + 1000}{10^-5s^3+s^2+0.000654s+65.4}
+    1+L(s) = \frac{(s + 9.99 \times 10^4)(s+87.97)(s+12.12)}{(s+10^5)(s^2+65.4)}
 \end{equation*}
 
+As can be seen above, the zeros of $1+L(s)$ are:
 \begin{equation*}
-    1+L(s) = 1 + C(s)G(s) = \frac{(s + 9.99 \times 10^4)(s+87.97)(s+12.12)}{(s+10^5)(s^2+65.4)}
+    -9.99\cdot 10^4, \quad -0.0088\cdot 10^4, \text{ and } -0.0012\cdot 10^4
 \end{equation*}
 
-The zeros of $1+L(s)$ are:
-\begin{equation*}
-    x
-\end{equation*}
+which are all in $\mathbb{C}^-$. The zero-pole plots of $C(s)$ and $1 + L(s)$ can be found below.
 
 \begin{figure}[ht]
     \centering
@@ -288,45 +301,43 @@ The zeros of $1+L(s)$ are:
     \end{minipage}
 \end{figure}
 
-TODO: report the zeros of 1+L(s).
-
 \subsection{Pendulum Stabilization}
 
+\subsubsection{Controlled System Response for different initial conditions}
 We will now analyse the output of the system (with the controller) for the two initial conditions considered throughout the report. 
 
-The system output for the first initial condition is:
 \begin{figure}[ht]
     \centering
     \begin{minipage}[b]{0.45\textwidth}
         \centering
         \includegraphics[clip,width=1\linewidth]{lab1/figs/section7_controlled_state_evolution_x_0_1.pdf}
-        \captionof{figure}{Controlled State Evolution for $x_{0,1}$}    
+        \captionof{figure}{Controlled State Evolution for $\vec{x}_{0,1}$}    
     \end{minipage}
     \begin{minipage}[b]{0.45\textwidth}
         \centering
         \includegraphics[clip,width=1\linewidth]{lab1/figs/section7_controlled_state_orbit_x_0_1.pdf}
-        \captionof{figure}{Controlled State Orbit for $x_{0,1}$}
+        \captionof{figure}{Controlled State Orbit for $\vec{x}_{0,1}$}
     \end{minipage}
 \end{figure}
 
-
-The system output for the second initial condition is:
 \begin{figure}[ht]
     \centering
     \begin{minipage}[b]{0.45\textwidth}
         \centering
         \includegraphics[clip,width=1\linewidth]{lab1/figs/section7_controlled_state_evolution_x_0_2.pdf}
-        \captionof{figure}{Controlled State Evolution for $x_{0,2}$}    
+        \captionof{figure}{Controlled State Evolution for $\vec{x}_{0,2}$}    
     \end{minipage}
     \begin{minipage}[b]{0.45\textwidth}
         \centering
         \includegraphics[clip,width=1\linewidth]{lab1/figs/section7_controlled_state_orbit_x_0_2.pdf}
-        \captionof{figure}{Controlled State Orbit for $x_{0,2}$}
+        \captionof{figure}{Controlled State Orbit for $\vec{x}_{0,2}$}
     \end{minipage}
 \end{figure}
 
+The system responds to both the initial conditions in a similar manner; i.e., the shape of the state evolution as well as the state orbit is the same for both initial conditions, the only difference being in the range of $\theta$ and $\dot{\theta}$. The controller does a good job of ensuring that the pendulum reaches the equilibrium point without any oscillatory output. Note that both conditions take the same amount of time to reach equilibrium, but the angle swept (and its angular velocity) is greater for initial condition 2 because of the higher energy injected in the system. 
 
-Three different initial pendulum angles were picked in the following order $\pi/4, \pi/2, \pi$ to test the controlled system's output. Note, the velocity is set to 0 for the following system responses:
+\subsubsection{Controlled System Response for different initial angles}
+Three different initial pendulum angles were picked in the following order $\pi/4, \pi/2, \pi$ to test the controlled system's output. Note, the angular velocity ($\dot{\theta}$) is set to 0 for the following system responses.
 
 \begin{figure}[ht]
     \centering
@@ -341,6 +352,7 @@ Three different initial pendulum angles were picked in the following order $\pi/
         \captionof{figure}{Controlled State Orbit for $\theta = \pi/4$}
     \end{minipage}
 \end{figure}
+
 
 \begin{figure}[ht]
     \centering
@@ -369,5 +381,7 @@ Three different initial pendulum angles were picked in the following order $\pi/
         \captionof{figure}{Controlled State Orbit for $\theta = \pi$}
     \end{minipage}
 \end{figure}
+
+Here, despite increasing $\theta_0$, the controller is able to realize the equilibrium. However, the performance of the controller falls as $\theta$ is increased. At smaller angles, the controller is able to reach steady state quickly and without any oscillations. At $\pi$, the performance of the controller is not ideal, as the range for the angles swept are from -10 rad to 30 rad, whereas the controller is only supposed to induce a difference of $\pi$ rad (from $\pi$ to 0 rad). Regardless, the controller design is promising, as it works on the entire spectrum of $\theta$ values. 
 
 \end{document}
