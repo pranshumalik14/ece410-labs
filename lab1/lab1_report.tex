@@ -22,48 +22,48 @@ In this lab, we consider a pendulum-cart system with the control input, $u$, bei
 \caption{Pendulum-Cart system}
 \end{figure}
 
-\begin{equation}
-    \dot{\vec{x}} = f(\vec{x}, t) = \rcvec{ x_2 \\ \frac{-g \sin(x_1)}{l} \frac{-\cos(x_1) u(t)}{Ml}}
-\end{equation}
+\begin{equation*}
+    \dot{\vec{x}} = f(\vec{x}, u) = \rcvec{ x_2 \\ \frac{-g \sin(x_1)}{l} \frac{-\cos(x_1)}{Ml}}
+\end{equation*}
 
 \section{Numerical Integration}
 The system state evolution was determined numerically using \texttt{ode45} function in MATLAB. There were two initial conditions of interest:
-\begin{equation}
+\begin{equation*}
     \vec{x}_{0,1} = \rcvec{ 0\\ \sqrt{g/l} }\quad \text{and} \quad \vec{x}_{0,2} =  \rcvec{0\\1.99 \sqrt{g/l}}
-\end{equation}
+\end{equation*}
 
 Note, $x_1 = \theta$, and $x_2 = \dot{\theta}$. 
 $\theta = 0$, but $\dot{\theta}$ is a non-zero value. In words, this is providing the pendulum with an initial velocity from its rest position (equilibrium at $\theta = 0$) at time $t = 0$.
 
-\subsection{Graphs for initial condition 1}
+\subsection{Graphs for initial condition $\vec{x}_{0,1}$}
 \begin{figure}[ht]
     \centering
     \begin{minipage}[b]{0.45\textwidth}
         \centering
         \includegraphics[width=1\linewidth]{lab1/figs/section3_x0_1_state_evolution.pdf}
-        \captionof{figure}{state evolution for initial condition 1}    
+        \captionof{figure}{state evolution for initial condition $\vec{x}_{0,1}$}    
     \end{minipage}
     \begin{minipage}[b]{0.45\textwidth}
         \centering
         \includegraphics[width=1\linewidth]{lab1/figs/section3_x0_1_state_orbit.pdf}
-        \captionof{figure}{State orbit for initial condition 1}
+        \captionof{figure}{State orbit for initial condition $\vec{x}_{0,1}$}
     \end{minipage}
     
     \label{figure:x_0_1_state_evolution}
 \end{figure}
     
-\subsection{Graphs for initial condition 2}
+\subsection{Graphs for initial condition $\vec{x}_{0,2}$}
 \begin{figure}[ht]
     \centering
     \begin{minipage}[b]{0.45\textwidth}
         \centering
         \includegraphics[width=1\linewidth]{lab1/figs/section3_x0_2_state_evolution.pdf}
-        \captionof{figure}{state evolution for initial condition 2}    
+        \captionof{figure}{state evolution for initial condition $\vec{x}_{0,2}$}    
     \end{minipage}
     \begin{minipage}[b]{0.45\textwidth}
         \centering
         \includegraphics[width=1\linewidth]{lab1/figs/section3_x0_2_state_orbit.pdf}
-        \captionof{figure}{State orbit for initial condition 2}
+        \captionof{figure}{State orbit for initial condition $\vec{x}_{0,2}$}
     \end{minipage}
     
     \label{figure:x_0_2_state_evolution}
@@ -74,105 +74,105 @@ $\theta = 0$, but $\dot{\theta}$ is a non-zero value. In words, this is providin
     
     To understand the difference in the responses, it is important to identify what differentiates the initial conditions. The first condition basically injects a lower angular velocity (and hence, a lower linear velocity) than the second initial condition. Since no energy is lost here, the pendulum should sweep a higher angle for a higher initial velocity. This is seen in figures 3 and 5, where the \begin{math}
      max(\theta)_1 << max(\theta)_2
-    \end{math}. Because initial condition 2 reaches a higher value of $\theta$ ($\approx$ 3 radians), one would expect a higher time period, which justifies a lower frequency than initial condition 1, that only goes up to $\approx$ 1 radian. 
+    \end{math}. Because initial condition 2 reaches a higher value of $\theta$ ($\approx$ 3 rad), one would expect a higher time period, which justifies a lower frequency than initial condition 1, that only goes up to $\approx$ 1 rad. 
     
-    3 radians is $\approx$ $\pi$ which is 180 deg, which means physically speaking, the pendulum almost reaches the top. Looking at the state orbit graph for initial condition 2, it is almost making a complete revolution; $\theta$ covered is $\approx$ -3 rad to 3 rad. A higher initial velocity would lead to the pendulum making revolutions where the same value of $\theta$ would never repeat (ever increasing $\theta$!). 
+    3 rad is $\approx$ $\pi$ which is 180 deg, which means physically speaking, the pendulum almost reaches the top. Looking at the state orbit graph for initial condition 2, it is almost making a complete revolution; $\theta$ covered is $\approx$ -3 rad to 3 rad. A higher initial velocity would lead to the pendulum making revolutions where the same value of $\theta$ would never repeat (ever increasing $\theta$!). 
     
-    Recognize that the state evolution and state orbit responses/graphs are not unique to the initial conditions for this system. For example, the first initial condition could start with $\theta$ $\approx$ 1 radian and 0 initial velocity and the same system response would be obtained. 
+    Recognize that the state evolution and state orbit responses/graphs are not unique to the initial conditions for this system. For example, the first initial condition could start with $\theta$ $\approx$ 1 rad and 0 initial velocity and the same system response would be obtained. 
     
 
 \section{Symbolic Linearization}
 
-\subsection{Equilibrium 1}
-    \begin{equation}
+\subsection{Equilibrium 1 $\vec{x}_1^*$}
+    \begin{equation*}
          \vec{x}^* = \rcvec{0\\0}
          \quad
          \text{and}
          \quad
          \vec{u}^* = 0
-    \end{equation}
+    \end{equation*}
 
 The resulting A, B matrices for this equilibrium point are:
-\begin{equation}
-        \vec{A} = 
+\begin{equation*}
+        A = 
         \begin{bmatrix}
         0 &1 \\ \frac{-g}{l} & 0
         \end{bmatrix}
         \quad
         \text{and}
         \quad
-        \vec{B} = 
+        B = 
         \begin{bmatrix}
         0\\ \frac{-1}{Ml}
         \end{bmatrix}
-\end{equation}
+\end{equation*}
 
 The C, D values for this equilibrium point are:
-\begin{equation}
-    \vec{C} = 
+\begin{equation*}
+    C = 
         \begin{bmatrix}
         1 & 0
         \end{bmatrix}
         \quad
         \text{and}
         \quad
-        \vec{D} = 
+        D = 
         \begin{bmatrix}
         0
         \end{bmatrix}
-\end{equation}
+\end{equation*}
 
 This matches the equations provided in the lab handout.
-\subsection{Equilibrium 2}
-\begin{equation}
+\subsection{Equilibrium 2 $\vec{x}_2^*$}
+\begin{equation*}
         \vec{x}^* =
      \rcvec{\theta^* \\ 0}
      \quad
      \text{and}
      \quad
      \vec{u}^* = -Mg\tan(\theta^*) 
-\end{equation}
+\end{equation*}
 
 The resulting A, B matrices for this equilibrium point are:
 \begin{equation*}
-        \vec{A} = 
+        A = 
         \begin{bmatrix}
         0 &1 \\ \frac{-g\cos(\theta^*)}{l} - g \frac{\sin(\theta^*) \tan(\theta^*)}{l} & 0
         \end{bmatrix}
 \end{equation*}
-Using $\tan(\theta) = \frac{\sin(\theta)}{\cos(\theta)}$, $\vec{A}$ can be simplified as:
-\begin{equation}
-        \vec{A} =
+Using $\tan(\theta) = \frac{\sin(\theta)}{\cos(\theta)}$, $A$ can be simplified as:
+\begin{equation*}
+        A =
         \begin{bmatrix}
         0 &1 \\ \frac{-g}{l\cos(\theta^*)} & 0
         \end{bmatrix}
         \quad
         \text{and}
         \quad
-        \vec{B} = 
+        B = 
         \begin{bmatrix}
             0\\ \frac{-\cos(\theta^*)}{Ml}
         \end{bmatrix}
-\end{equation}
+\end{equation*}
 
-$\vec{A}$ matches that of the textbook. $\vec{B}$ however, contains the m (mass) term whereas the textbook has no mention of mass. If m = 1 is plugged into the equations derived above, the same equations as the textbook will be obtained. Also note, setting $\theta = 0$ here results in the same matrices derived in 3.1 ($\tan(0)$ is 0, resulting in no effect caused by the input force $u$).
+$A$ matches that of the textbook. $B$ however, contains the m (mass) term whereas the textbook has no mention of mass. If m = 1 is plugged into the equations derived above, the same equations as the textbook will be obtained. Also note, setting $\theta = 0$ here results in the same matrices derived in 3.1 ($\tan(0)$ is 0, resulting in no effect caused by the input force $u$).
 
 \section{Symbolic Expression to Numerical Integration}
-Linearization was done about Equilibrium 1 defined in the previous section (3.1).
+Linearization was done about $\vec{x}_1^*$ defined in section 3.1.
 
-\subsection{Graphs for initial condition 1}
+\subsection{Graphs for initial condition $\vec{x}_{0,1}$}
 
 \begin{figure}[ht]
     \centering
     \begin{minipage}[b]{0.45\textwidth}
         \centering
         \includegraphics[width=1\linewidth]{lab1/figs/section5_X0_1_state_evolution.pdf}
-        \captionof{figure}{state evolution for initial condition 1}    
+        \captionof{figure}{state evolution for initial condition $\vec{x}_{0,1}$}    
     \end{minipage}
     \begin{minipage}[b]{0.45\textwidth}
         \centering
         \includegraphics[width=1\linewidth]{lab1/figs/section5_X0_1_state_orbit.pdf}
-        \captionof{figure}{State orbit for initial condition 1}
+        \captionof{figure}{State orbit for initial condition $\vec{x}_{0,1}$}
         \label{fig:test2}
     \end{minipage}
     
@@ -184,18 +184,18 @@ Linearization was done about Equilibrium 1 defined in the previous section (3.1)
     
     Basically, since the range for $\theta$ in the non-linear system is higher (but ever so slightly!), the frequency is ever so slightly lower than the linear model, leading to the discrepancies. A mathematical perspective that can help understand this drawback is the relationship between $f(x) = \sin(x)$ and $f(x) = x$. The linear model assumes $\sin(x) \approx x$, but this assumption is only valid at a certain range near $x \approx 0$, which explains the deviation observed in the figures above. 
     
-\subsection{Graphs for initial condition 2}
+\subsection{Graphs for initial condition $\vec{x}_{0,2}$}
 \begin{figure}[ht]
     \centering
     \begin{minipage}[b]{0.45\textwidth}
         \centering
         \includegraphics[width=1\linewidth]{lab1/figs/section5_X0_2_state_evolution.pdf}
-        \captionof{figure}{State Evolution for initial condition 2}    
+        \captionof{figure}{State Evolution for initial condition $\vec{x}_{0,2}$}    
     \end{minipage}
     \begin{minipage}[b]{0.45\textwidth}
         \centering
         \includegraphics[width=1\linewidth]{lab1/figs/section5_X0_2_state_orbit.pdf}
-        \captionof{figure}{State orbit for initial condition 2}
+        \captionof{figure}{State orbit for initial condition $\vec{x}_{0,2}$}
     \end{minipage}
     
     \label{figure:x_0_2_state_evolution}
@@ -204,7 +204,7 @@ Linearization was done about Equilibrium 1 defined in the previous section (3.1)
 Here, the deviation talked about before is introduced earlier in the system. Recall that the law of conservation of energy must hold in the non-linear system, implying that every point on the state orbit has the same energy (KE + PE = constant). The linear model however, does not obey the law of conservation of energy, which explains the difference in the state orbits as well as the differences in the frequencies and amplitude. While this conflict existed in the first initial condition as well, in this condition, the differences are amplified and expose the pitfall of the linear model. However, looking at the scales of the axes for the state orbits, it can be seen that the tracking error is actually small. 
 
 \subsection{Summary}
-Initial condition 2 injects a higher kinetic energy than initial condition 1. This disparity led to the linear model working more accurately for initial condition 1 and observed a clear incapability to follow the system for initial condition number 2. In summary, the further the pendulum goes away from the equilibrium point, the worse the linear model gets at predicting the true motion of the system.
+Initial condition $\vec{x}_{0,2}$ injects a higher kinetic energy than initial condition $\vec{x}_{0,1}$. This disparity led to the linear model working more accurately for $\vec{x}_{0,1}$ and observed a clear incapability to follow the system for $\vec{x}_{0,2}$. In summary, the further the pendulum goes away from the equilibrium point, the worse the linear model gets at predicting the true motion of the system.
 
 \section{LTI Representations}
 % plot eigenvalues and poles of the system!!!! Do it using pgf plots, matlab not nice for that.
@@ -215,7 +215,7 @@ Eigenvalues of A:
 
 Eigenvectors obtained for the corresponding eigenvalues
 \begin{equation*}
-    \vec{V} = \begin{bmatrix}
+    V = [\vec{v}|\vec{v}^*] = \begin{bmatrix}
     -0.1227i & 0.1227i\\ 0.9924 & 0.9924 
     \end{bmatrix}
 \end{equation*}
@@ -243,13 +243,13 @@ The system is not BIBO stable as for an input force $u$ that is a sinusoidal wit
 \subsection{Relationship between eigenvalues and frequency of oscillation}
 Basically, whenever there is a complex conjugate pair in the eigenvalues of A, the imaginary component results in sinusoidal responses. The imaginary component is what determines the frequency of oscillation, regardless of the value of the real component. This can be verified by graphical inspection, by looking at figures 6 and 8. In 10 seconds, there are 12.5 revolutions, implying that $f = \frac{12.5 \text{ revolutions}}{10 \text{ seconds}}$ but $\omega_n = 2\pi f \approx 7.85$ rad/s $\approx 8.087$ rad/s, which is the imaginary part of the eigenvalue of A.
 
-\section{Pendulum Stabilization and Controller Design}
-To now control the pendulum such that for a given initial condition it can converge back to its linearization equilibrium state, which in our case is equilibrium 1, we can design a controller, $C(s)$, with (unity-feedback) closed-loop to achieve the objective. For the purpose of the simulation, we can treat the feedback measurement $y_m = y$, the true plant state output.
+\section{Controller Design for Pendulum Stabilization}
+To now control the pendulum such that for a given initial condition it can converge back to its linearization equilibrium state, which in our case is $\vec{x}_1^*$, we can design a controller, $C(s)$, with (unity-feedback) closed-loop to achieve the objective. For the purpose of the simulation, we can treat the feedback measurement $y_m = y$, the true plant state output.
 
 \begin{figure}[!h]
     \centering
     \mixedcls
-    \caption{Closed-loop controlled system}
+    \caption{Closed-loop control system}
 \end{figure}
 
 \subsection{Controller Design}
@@ -266,7 +266,7 @@ Now, to extend the approximation of a PD controller over a wide range of frequen
 Now, considering the stability of the controller, it is important that it abides by the following criteria:
 
 \begin{enumerate}
-    \item $1 + L(s)$ has all its zeros in $\mathbb{C}^-$, where $L(s) = C(s)G(s)$. This is the Nyquist stability criterion.
+    \item $1 + L(s)$ has all its zeros in $\mathbb{C}^-$, where $L(s) = C(s)G(s)$. These correspond to the poles in the closed-loop system.
     \item There are no unstable zero-pole cancellations in $L(s)$.
 \end{enumerate}
 
@@ -280,12 +280,7 @@ L(s) = \frac{100s + 1000}{10^-5s^3+s^2+0.000654s+65.4}
     1+L(s) = \frac{(s + 9.99 \times 10^4)(s+87.97)(s+12.12)}{(s+10^5)(s^2+65.4)}
 \end{equation*}
 
-As can be seen above, the zeros of $1+L(s)$ are:
-\begin{equation*}
-    -9.99\cdot 10^4, \quad -0.0088\cdot 10^4, \text{ and } -0.0012\cdot 10^4
-\end{equation*}
-
-which are all in $\mathbb{C}^-$. The zero-pole plots of $C(s)$ and $1 + L(s)$ can be found below.
+As can be seen above, the zeros of $1+L(s)$ are: $-9.99\cdot 10^4, \quad -0.0088\cdot 10^4, \text{ and } -0.0012\cdot 10^4$ which are all in $\mathbb{C}^-$. The zero-pole plots of $C(s)$ and $1 + L(s)$ can be found below.
 
 \begin{figure}[ht]
     \centering
@@ -336,7 +331,7 @@ We will now analyse the output of the system (with the controller) for the two i
 
 The system responds to both the initial conditions in a similar manner; i.e., the shape of the state evolution as well as the state orbit is the same for both initial conditions, the only difference being in the range of $\theta$ and $\dot{\theta}$. The controller does a good job of ensuring that the pendulum reaches the equilibrium point without any oscillatory output. Note that both conditions take the same amount of time to reach equilibrium, but the angle swept (and its angular velocity) is greater for initial condition 2 because of the higher energy injected in the system. 
 
-\subsubsection{Controlled System Response for different initial angles}
+\subsubsection{Control system response for different initial angles $\theta_0$}
 Three different initial pendulum angles were picked in the following order $\pi/4, \pi/2, \pi$ to test the controlled system's output. Note, the angular velocity ($\dot{\theta}$) is set to 0 for the following system responses.
 
 \begin{figure}[ht]
@@ -344,12 +339,12 @@ Three different initial pendulum angles were picked in the following order $\pi/
     \begin{minipage}[b]{0.45\textwidth}
         \centering
         \includegraphics[clip,width=1\linewidth]{lab1/figs/section7_controlled_state_evolution_x_0_3.pdf}
-        \captionof{figure}{Controlled State Evolution for $\theta = \pi/4$}    
+        \captionof{figure}{Controlled State Evolution for $\theta_0 = \frac{\pi}{4}$}    
     \end{minipage}
     \begin{minipage}[b]{0.45\textwidth}
         \centering
         \includegraphics[clip,width=1\linewidth]{lab1/figs/section7_controlled_state_orbit_x_0_3.pdf}
-        \captionof{figure}{Controlled State Orbit for $\theta = \pi/4$}
+        \captionof{figure}{Controlled State Orbit for $\theta_0 = \frac{\pi}{4}$}
     \end{minipage}
 \end{figure}
 
@@ -359,12 +354,12 @@ Three different initial pendulum angles were picked in the following order $\pi/
     \begin{minipage}[b]{0.45\textwidth}
         \centering
         \includegraphics[clip,width=1\linewidth]{lab1/figs/section7_controlled_state_evolution_x_0_4.pdf}
-        \captionof{figure}{Controlled State Evolution for $\theta = \pi/2$}    
+        \captionof{figure}{Controlled State Evolution for $\theta_0 = \frac{\pi}{2}$}
     \end{minipage}
     \begin{minipage}[b]{0.45\textwidth}
         \centering
         \includegraphics[clip,width=1\linewidth]{lab1/figs/section7_controlled_state_orbit_x_0_4.pdf}
-        \captionof{figure}{Controlled State Orbit for $\theta = \pi/2$}
+        \captionof{figure}{Controlled State Orbit for $\theta_0 = \frac{\pi}{2}$}
     \end{minipage}
 \end{figure}
 
@@ -373,12 +368,12 @@ Three different initial pendulum angles were picked in the following order $\pi/
     \begin{minipage}[b]{0.45\textwidth}
         \centering
         \includegraphics[clip,width=1\linewidth]{lab1/figs/section7_controlled_state_evolution_x_0_5.pdf}
-        \captionof{figure}{Controlled State Evolution for $\theta = \pi$}    
+        \captionof{figure}{Controlled State Evolution for $\theta_0 = \pi$}    
     \end{minipage}
     \begin{minipage}[b]{0.45\textwidth}
         \centering
         \includegraphics[clip,width=1\linewidth]{lab1/figs/section7_controlled_state_orbit_x_0_5.pdf}
-        \captionof{figure}{Controlled State Orbit for $\theta = \pi$}
+        \captionof{figure}{Controlled State Orbit for $\theta_0 = \pi$}
     \end{minipage}
 \end{figure}
 
