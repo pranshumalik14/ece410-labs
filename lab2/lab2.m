@@ -57,8 +57,33 @@ numeric_x = x1*z1 + x2*z2
 fprintf('######################### OUTPUT 4 #########################\n')
 A = [1 2 0 -1; 0 1 -1 -2; 1 0 3 4; 0 -1 2 3; 0 0 2 2];
 
+P = [1 1 1 1; 0 1 0 0; 0 0 1 0; 0 0 0 1];
+Q = [1 1 0 0 1; 1 -1 0 0 0; 0 0 1 1 0; 0 0 1 -1 0; 0 0 0 0 1];
 
+% Each column of AP represents the transformed P
+% Basically, we have Q = A_hat * (A*xj), where xj is the jth column of P
+% We can compute it all at once by computing all columns of A_hat at once
+% by first transforming all of P into AP (A * P)
+% Then each A*xj should be mapped to the first 
 
+AP = A*P 
+%this returns the all A*xj where xj is the jth column of P and j goes from 1 to n
+
+A_hat = Q\AP;
+
+% To test A_hat, can perform the conceptual procedure provided above for
+% one column of P and verify that it matches the corresponding column in
+% A_hat computed above
+p1 = P(:, 1)
+
+Ap1 = A*p1 % This is the first column of P transformed by A
+
+A_hat1 = Q\Ap1
+% This is the jth column of A_hat 
+% == this is expressing the Ap1 in the coordinate basis of Q (hence
+% A_hat1)
+
+% This matches the first column of A_hat computed above
 
 %%  Output 3.5 
 fprintf('######################### OUTPUT 5 #########################\n')
@@ -179,6 +204,3 @@ z2_dot = controllable_system(2)
 % The last row corresponds to the uncontrollable subsystem
 fprintf('\nThe following are differential equations for the uncontrollable system (z3_dot)\n')
 z3_dot = A_hat(k+1:n, 1:k)* [z1; z2] + A_hat(k+1:n, k+1:n)*z3
-
-
-
