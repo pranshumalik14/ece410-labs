@@ -61,10 +61,12 @@ P = [1 1 1 1; 0 1 0 0; 0 0 1 0; 0 0 0 1];
 Q = [1 1 0 0 1; 1 -1 0 0 0; 0 0 1 1 0; 0 0 1 -1 0; 0 0 0 0 1];
 
 % Each column of AP represents the transformed P
-% Basically, we have Q = A_hat * (A*xj), where xj is the jth column of P
-% We can compute it all at once by computing all columns of A_hat at once
+% Basically, we have Qj = A_hat * (A*xj), 
+%   where xj is the jth column of P
+%   and Qj is the jth column of Q
+% We can compute all columns of A_hat at once
 % by first transforming all of P into AP (A * P)
-% Then each A*xj should be mapped to the first 
+% Then solve Q = A_hat * AP (Q and AP are known)
 
 AP = A*P 
 %this returns the all A*xj where xj is the jth column of P and j goes from 1 to n
