@@ -1,5 +1,4 @@
 %%  Section 1 (Basic operations on subspaces)
-clear all
 %% Output 1
 fprintf('######################### OUTPUT 1 #########################\n')
 V = [1 1 3; -1 1 1; 0 0 0; 1 0 1];
@@ -53,7 +52,7 @@ z2 = z(2);
 fprintf('Further multiplying z1*x1 + z2*x2 should transform z back into x (in the original coordinates),\nwhere x1 and x2 are the basis vectors established at the start of the question.\n')
 
 numeric_x = x1*z1 + x2*z2
-%%  Output 3.4 
+%%  Output 4 
 fprintf('######################### OUTPUT 4 #########################\n')
 A = [1 2 0 -1; 0 1 -1 -2; 1 0 3 4; 0 -1 2 3; 0 0 2 2];
 
@@ -177,20 +176,16 @@ fprintf('######################### OUTPUT 8 #########################')
 A = [5 -11 5; 0 -6 0; -5 5 -1];
 B = [1 -2; 0 0; 1 2];
 
-Qc = ctrb(A, B);
 % To check for controllability, must determine if rank(Qc) = n (3 in this
 % case)
 n = size(A, 2);
-k = rank(Qc);
+k = rank(ctrb(A, B));
 % Rank here is 2 (which means system is not controllable!)  
 
-V = orth(Qc);
-W = null(V');
-P = [V W];
-
-A_hat = P\(A*P);
+% Check kalman_decomposition.m for more calculations and comments
+[A_hat, B_hat] = kalman_decomposition(A, B);
+% Rounding off values in A_hat, B_hat
 A_hat = round(A_hat, 4)
-B_hat = P\B;
 B_hat = round(B_hat, 4)
 
 % correspond to the controllable subsystem
