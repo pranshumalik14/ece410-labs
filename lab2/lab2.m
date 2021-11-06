@@ -1,6 +1,6 @@
-%%  Output 1 (Basic operations on subspaces)
-
-%% Output 1.1
+%%  Section 1 (Basic operations on subspaces)
+clear all
+%% Output 1
 fprintf('######################### OUTPUT 1 #########################\n')
 V = [1 1 3; -1 1 1; 0 0 0; 1 0 1];
 W = [1 1; 0 0; 2 -2; 1 0];
@@ -12,10 +12,10 @@ basis_W = orth(W)
 % W was already lin independent since dim(W) = rank(W) = 2
 % V was not lin independent since dim(V) = 3 but rank(V) = 2 
 
-fprintf('\nThe column space in V was not linearly independent; the rank of V was 2 < the dimension of V. This led to the orth basis of V containing only 2 vectors instead of 3.\n')
+fprintf('\nThe column space in V was not linearly independent; the rank of V was 2 < the columns of V. This led to the orth basis of V containing only 2 vectors instead of 3.\n')
 fprintf(['\nThe column space in W was linearly independent; the orth basis contained the same number of column vectors as itself.' ...
-    '\nOne interesting point to note is that W contained [1 0 -2 0]T but in the orth basis, the last 0 did not show up. This is because orth returns vectors that are not only linearly independent but also orthogonal.\n'])
-%%  Output 1.2
+    '\nOne interesting point to note is that W contained [1 0 -2 0]T but in the orth basis, the last 0 did not show up. This is because orth returns vectors that are not only linearly independent but also orthogonal and normalized.\n'])
+%%  Output 2
 fprintf('######################### OUTPUT 2 #########################\n')
 fprintf('V + W spans:\n')
 span_sum = sub_sum(V, W)
@@ -28,9 +28,9 @@ rank_sum = rank(span_sum)
 rank_intersect_sum = rank([span_sum span_intersect])
 
 
-%%  Output 3 (Linear transformations and linear equations)
+%%  Section 3 (Linear transformations and linear equations)
 
-%%  Output 3.3 
+%%  Output 3 
 fprintf('######################### OUTPUT 3 #########################\n')
 x1 = [1;1];
 x2 = [2;1];
@@ -53,7 +53,7 @@ z2 = z(2);
 fprintf('Further multiplying z1*x1 + z2*x2 should transform z back into x (in the original coordinates),\nwhere x1 and x2 are the basis vectors established at the start of the question.\n')
 
 numeric_x = x1*z1 + x2*z2
-%%  Output 3.4 <Pranshu>
+%%  Output 3.4 
 fprintf('######################### OUTPUT 4 #########################\n')
 A = [1 2 0 -1; 0 1 -1 -2; 1 0 3 4; 0 -1 2 3; 0 0 2 2];
 
@@ -71,7 +71,7 @@ Q = [1 1 0 0 1; 1 -1 0 0 0; 0 0 1 1 0; 0 0 1 -1 0; 0 0 0 0 1];
 AP = A*P 
 %this returns the all A*xj where xj is the jth column of P and j goes from 1 to n
 
-A_hat = Q\AP;
+A_hat = Q\AP
 
 % To test A_hat, can perform the conceptual procedure provided above for
 % one column of P and verify that it matches the corresponding column in
@@ -87,7 +87,7 @@ A_hat1 = Q\Ap1
 
 % This matches the first column of A_hat computed above
 
-%%  Output 3.5 
+%%  Output 5 
 fprintf('######################### OUTPUT 5 #########################\n')
 % The linear transformation by A maps R_4 to R_5
 % dim(A) will be the number of points needed to describe any point in A
@@ -100,14 +100,14 @@ dim_img_A = rank(A)
 % rank-nullity theorem states dimA = rank(A) + null(A)
 % hence using the theorem
 % recall nullility(A) = dim(nullspace(A)) or dim(kernel(A))
-dim_null_A = dim_img_A - dim_A
+dim_null_A = dim_A - dim_img_A
 
 % This can be verified by directly computing the nullity (dim of nullspace/kernel)
 null_space_dim = size(null(A),2) % need columns
 
 fprintf('\nThe transformation is not surjective because the output value is in R_5\nbut the rank is 3 => A cannot span all of R_5 with just 3 LI column vectors\n')
-fprintf('\nSimilarly, the transformation is not injective as the rank(A) is 3.\n The row space of A cannot span all of R_4 as there are only 3 LI row vectors')
-%%  Output 3.6  
+fprintf('\nSimilarly the transformation is not injective as the rank(A) is 3.\n The row space of A cannot span all of R_4 as there are only 3 LI row vectors\n')
+%%  Output 6  
 fprintf('######################### OUTPUT 6 #########################\n')
 rank_A = rank(A)
 fprintf('To determine whether a vector b has a solution, multiple solutions or no solutions to Ax = b,\n we must determine the rank of [A|b].\nIf the rank is unaffected then b is in the image of A, hence rank([A|b]) = rank(A)\n')
@@ -141,7 +141,7 @@ x1 = x + null(A)
 A*x1
 % This is equal to b2. Hence, x1 is also a valid solution
 
-%%  Output 4.7 (A-invariance and Representation Theorem)
+%%  Output 7 (A-invariance and Representation Theorem)
 fprintf('######################### OUTPUT 7 #########################')
 A = [1 2 2; 1 -3 -5; -1 2 4]
 V = [0 1; 1 -2; -1 1]
@@ -172,7 +172,7 @@ fprintf('\nA_hat = inv(P) * A * P =\n')
 A_hat = P\(A*P)
 % Both yield the same result, the second option is computationally faster
 % A_hat is block upper triangular.
-%%  Output 5.8 (Controllability and Kalman decomposition)
+%%  Output 8 (Controllability and Kalman decomposition)
 fprintf('######################### OUTPUT 8 #########################')
 A = [5 -11 5; 0 -6 0; -5 5 -1];
 B = [1 -2; 0 0; 1 2];
