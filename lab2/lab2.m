@@ -29,12 +29,12 @@ fprintf('######################### OUTPUT 2 #########################\n');
 fprintf('V + W spans:\n')
 span_sum = sub_sum(V, W)
 
-fprintf('V \cap W spans:\n')
+fprintf('V ∩ W spans:\n')
 span_intersect = sub_intersect(V, W)
 
 fprintf(['To ensure the given calculations are right, we could check whether', ...
     'span_intersect is in span_sum, which should be true for any subspaces,', ...
-    'i.e., V \cap W must be in the image of V+W.\n']);
+    'i.e., V ∩ W must be in the image of V+W.\n']);
 rank_sum = rank(span_sum)
 rank_intersect_sum = rank([span_sum span_intersect])
 
