@@ -12,8 +12,6 @@
 
 \maketitle
 
-\section{Introduction}
-
 \section{Numerical Linear Algebra}
 \subsection{Basic operations on subspaces}
 \subsubsection{Output 1}
@@ -93,20 +91,20 @@ The addition of $\mathcal{V} \cap \mathcal{W}$ does not affect the $\text{Im}$ o
 
 \subsection{Linear transformations and linear equations}
 \subsubsection{Output 3}
-Consider the basis $\{\vec{x_1}, \vec{x_2}\}$ of $\mathbb{R}^2$, where:
+Consider the basis $\{\vec{x}_1, \vec{x}_2\}$ of $\mathbb{R}^2$, where:
 \begin{equation*}
-    \vec{x_1} = \rcvec{1\\1}
+    \vec{x}_1 = \rcvec{1\\1}
     \quad
     \text{and}
     \quad
-    \vec{x_2} = \rcvec{2\\1}
+    \vec{x}_2 = \rcvec{2\\1}
 \end{equation*}
 
-The change of basis matrix $\vec{P}$ will be defined as the concatenation of $\vec{x_1}$ and $\vec{x_2}$:
+The change of basis matrix $\vec{P}$ will be defined as the concatenation of $\vec{x}_1$ and $\vec{x}_2$:
 \begin{equation*}
     \vec{P} =
         \begin{bmatrix}
-            \vec{x_1} & \vec{x_2}
+            \vec{x}_1 & \vec{x}_2
         \end{bmatrix} = 
         \begin{bmatrix}
             1 & 2\\1 & 1
@@ -118,7 +116,7 @@ Recall, the change of basis relationship ($\vec{x} \mapsto \vec{z} $)  is define
     \vec{z} = \vec{P}^{-1} \cdot \vec{x}
 \end{equation}
 
-Applying this formula for the given $\vec{x} = \rcvec{2&1}^\intercal$ gives us $\vec{z} = \rcvec{z_1 & z_2} = \rcvec{0 & 1}^\intercal$
+Applying this formula for the given $\vec{x} = \rcvec{2 & 1}^\intercal$ gives us $\vec{z} = \rcvec{z_1 & z_2} = \rcvec{0 & 1}^\intercal$
 
 To verify this answer, (\ref{change_basis}) can be rearrange to return to the original basis, i.e., $\vec{z} \mapsto \vec{x} $:
 \begin{equation*}
@@ -126,7 +124,9 @@ To verify this answer, (\ref{change_basis}) can be rearrange to return to the or
 \end{equation*}
 
 Hence, we numerically reconstructed $\vec{x}$ and verified that the change of basis computed the correct $\vec{z}$.
+
 \subsubsection{Output 4}
+
 \subsubsection{Output 5}
 \subsubsection{Output 6}
 
@@ -135,7 +135,12 @@ Hence, we numerically reconstructed $\vec{x}$ and verified that the change of ba
 \subsubsection{Output 7}
 
 \section{Controllability and Kalman Decomposition}
-\subsection{Test}
+\subsection{Controllability}
+For a linear state-space system with matrices $(\vec{A},\vec{B})$
+\[
+    Q_c \coloneqq \rcvec{\vec{B} & \vec{A}\vec{B} & \cdots & \vec{A}^{n-1}\vec{B}}
+\]
+\subsection{Kalman Decomposition for Controllability}
 \subsubsection{Output 8}
 
 \end{document}
