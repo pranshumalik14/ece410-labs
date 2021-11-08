@@ -6,7 +6,7 @@ function [injective, surjective] = characterize_matrix_mapping(A)
 rankA  = rank(A);
 
 % if the A does not have full rank then it is neither injective nor surjective
-if rankA < min(m, n)
+if rankA < min(m, n)            % test for full rank
     injective  = false;
     surjective = false;
 elseif (m > n) && (n == rankA)  % note that in this case dim(ker(A)) = 0
