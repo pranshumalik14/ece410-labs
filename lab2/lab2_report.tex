@@ -80,11 +80,11 @@ To ensure these computations are correct, we could test if ${\mathcal{V} \cap \m
 
 Essentially, we want to test if all vectors spanned by ${\mathcal{V} \cap \mathcal{W}}$ can be expressed as a linear combination of $\mathcal{V} + \mathcal{W}$:
 \begin{equation*}
-    \mathbf{rank}(\mathcal{V} + \mathcal{W}) = 3
+    \text{rank}(\mathcal{V} + \mathcal{W}) = 3
     \quad
     \text{and}
     \quad
-    \mathbf{rank}\left(\rcvec{\mathcal{V} + \mathcal{W} & \mathcal{V} \cap \mathcal{W}}\right) = 3
+    \text{rank}\left(\rcvec{\mathcal{V} + \mathcal{W} & \mathcal{V} \cap \mathcal{W}}\right) = 3
 \end{equation*}
 
 The addition of $\mathcal{V} \cap \mathcal{W}$ does not affect the $\text{Im}$ of $\mathcal{V} + \mathcal{W}$. Therefore, we can conclude that these computations are correct.
@@ -100,9 +100,9 @@ Consider the basis $\{\vec{x}_1, \vec{x}_2\}$ of $\mathbb{R}^2$, where:
     \vec{x}_2 = \rcvec{2\\1}
 \end{equation*}
 
-The change of basis matrix $\vec{P}$ will be defined as the concatenation of $\vec{x}_1$ and $\vec{x}_2$:
+The change of basis (hence invertible) matrix $P$ will be defined as the concatenation of $\vec{x}_1$ and $\vec{x}_2$:
 \begin{equation*}
-    \vec{P} =
+    P =
         \begin{bmatrix}
             \vec{x}_1 & \vec{x}_2
         \end{bmatrix} = 
@@ -113,12 +113,12 @@ The change of basis matrix $\vec{P}$ will be defined as the concatenation of $\v
 Recall, the change of basis relationship ($\vec{x} \mapsto \vec{z} $)  is defined as the following mathematical relationship:
 
 \begin{equation} \label{change_basis}
-    \vec{z} = \vec{P}^{-1} \cdot \vec{x}
+    \vec{z} = P^{-1} \cdot \vec{x}
 \end{equation}
 
 Applying this formula for the given $\vec{x} = \rcvec{2 & 1}^\intercal$ gives us $\vec{z} = \rcvec{z_1 & z_2} = \rcvec{0 & 1}^\intercal$
 
-To verify this answer, (\ref{change_basis}) can be rearrange to return to the original basis, i.e., $\vec{z} \mapsto \vec{x} $:
+To verify this answer, (\ref{change_basis}) can be rearranged to return to the original basis, i.e., $\vec{z} \mapsto \vec{x} $:
 \begin{equation*}
     \vec{x} = z_1\rcvec{1\\1} + z_2\rcvec{2\\1} = 0\rcvec{1\\1} + 1\rcvec{2\\1} = \rcvec{2\\1}
 \end{equation*}
@@ -126,21 +126,47 @@ To verify this answer, (\ref{change_basis}) can be rearrange to return to the or
 Hence, we numerically reconstructed $\vec{x}$ and verified that the change of basis computed the correct $\vec{z}$.
 
 \subsubsection{Output 4}
+A linear transformation $\vec{A} : \mathbb{R}^n \rightarrow \mathbb{R}^m$ given by $\vec{y} = \vec{A}(\vec{x}) = A\vec{x}$ can be expressed in the general coordinate frames, different from the standard bases, $P = \rcvec{\vec{x}_1 & \cdots & \vec{x}_n} \in \mathbb{R}^{n\times n}$ and $Q = \rcvec{\vec{y}_1 & \cdots & \vec{y}_m} \in \mathbb{R}^{m\times m}$, whose columns constitute bases for $\mathbb{R}^n$ and $\mathbb{R}^m$ respectively. Let this transformation between the two non-standard bases be given by,
+\[
+    \vec{w}=\hat{A}\vec{z},
+\]
+where, $\vec{x}=P\vec{z}$ and $\vec{y} = Q\vec{w}$. Then, we can write:
+\begin{align*}
+    \vec{w} = Q^{-1}\vec{y} &= \hat{A}P^{-1}\vec{x} = \hat{A}\vec{z}\\
+    \implies \quad \vec{y} &= Q\hat{A}P^{-1}\vec{x} = A\vec{x}
+\end{align*}
+
+Therefore, we have that $\hat{A} = Q^{-1}AP=\texttt{Q\textbackslash (AP)}$ in \textsc{MATLAB} code, which means that vector ${\hat{A}}[:, j]$ is the coordinate of vector $AP[:, j]$ in basis $Q$ where $AP[:, j]$ is the mapping of the $j^{\text{th}}$ basis vector in $P$ into $\mathbb{R}^m$, i.e. $AP$ maps $P$-coordinates into $\mathbb{R}^m$ in the standard basis and $Q^{-1}$ further maps these standard coordinates into the non-standard basis.
 
 \subsubsection{Output 5}
-\subsubsection{Output 6}
+Given a matrix $A$, to test for its injectivity, we simply need to see if the $\text{dim}(\text{Ker}A) = 0$. If it is nonzero, then the zero vector and at least one non-zero vector (in the nullspace) have outputs equal $\vec{0}$, implying that the linear transformation $A\vec{x}$ is not injective. This is only true if $A$ has full column rank. Similarly, as a test for surjectivity, we need the $\text{rank}(A)$ to equal the dimension of the co-domain, i.e., have full row rank. If $A$ is not a full rank matrix, then it would neither be injective nor surjective, and on the other hand, if $A$ is a full-rank square matrix, then it is a bijective map.
 
+\textcolor{red}{Add MATLAB results}
+
+\subsubsection{Output 6}
+\textcolor{red}{Add some intro theory and add MATLAB results}
 \section{A-invariance and Representation Theorem}
-\subsection{Calculating A-invariance}
+A subspace $\mathcal{V}$ is $A$-invariant if and only if
+\[
+    A\mathcal{V} \subset \mathcal{V},
+\]
+i.e., for any vector $\vec{v} \in \mathcal{V}$ we have that $A\vec{v} \in \mathcal{V}$.
+\subsection{Testing for A-invariance}
+We can test this by...
+\textcolor{red}{Add some intro theory and add MATLAB results}
 \subsubsection{Output 7}
+\textcolor{red}{Add some intro theory and add MATLAB results}
 
 \section{Controllability and Kalman Decomposition}
+What is controllability and Kalman: 2 sentences each with all terms needed.
+\textcolor{red}{Add some intro theory and add MATLAB results}
 \subsection{Controllability}
 For a linear state-space system with matrices $(\vec{A},\vec{B})$
 \[
-    Q_c \coloneqq \rcvec{\vec{B} & \vec{A}\vec{B} & \cdots & \vec{A}^{n-1}\vec{B}}
+    Q_c \coloneqq \rcvec{B & AB & \cdots & A^{n-1}B}
 \]
+\textcolor{red}{Add some intro theory and add MATLAB results}
 \subsection{Kalman Decomposition for Controllability}
 \subsubsection{Output 8}
-
+\textcolor{red}{Add some intro theory and add MATLAB results}
 \end{document}
