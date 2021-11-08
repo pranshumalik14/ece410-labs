@@ -125,6 +125,21 @@ null_space_dim = size(null(A),2) % need columns
 % Similarly the transformation is not injective as the rank(A) is 3. The row 
 % space of A cannot span all of R_4 as there are only 3 LI row vectors.
 
+% use the generic matrix mapping characterization function
+[injective, surjective] = characterize_matrix_mapping(A);
+
+% print result
+fprintf('A is ');
+if (injective && surjective)
+    fprintf('a bijective map\n');
+elseif (injective && ~surjective)
+    fprintf('an injective but not a surjective map\n');
+elseif (~injective && surjective)
+    fprintf('not an injective but a surjective map\n');
+else
+    fprintf('neither an injective nor a surjective map\n');
+end
+
 %%  Output 6  
 
 fprintf('######################### OUTPUT 6 #########################\n')
