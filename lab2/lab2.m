@@ -176,10 +176,11 @@ x = A\b2 % get a solution to the underdetermined system (in the least squared se
 
 % Consider x' = x + null(A)
 fprintf('\nSecond solution to Ax = b2 by adding a vector in nullspace(A) to x:');
-x1 = x + null(A)
+x1 = x + null(A) % dimensions match since nullity(A) = 1
 
-% Can verify Ax1 = b2, hence, both x and x1 are valid solutions to Ax = b2
-b2approx = A*x1
+% Can verify Ax = Ax1 = b2, hence, both x and x1 are valid solutions to Ax = b2
+b2approx1 = A*x
+b2approx2 = A*x1
 
 %% Section 4 (A-invariance and Representation Theorem)
 
