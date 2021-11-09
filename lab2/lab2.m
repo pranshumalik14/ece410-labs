@@ -162,8 +162,8 @@ rank_A_b1 = rank([A b1]) % rank increases, so no solution
 fprintf('\nSince rank([A | b1]) > rank(A), Ax = b1 has no solution');
 
 b2 = [1; 1; -2; -2; -2];
-rank_A_b2 = rank([A b2]) % rank unaffected: there exists a solution for Ax = b2
-nullityA  = rank(null(A))
+rank_A_b2 = rank([A b2])     % rank unaffected: there exists a solution for Ax = b2
+nullityA  = size(null(A), 2) % equals 1
 fprintf('\nSince rank([A | b2]) = rank(A), and nullity(A) > 0, Ax = b2 has infinite solutions');
 
 fprintf('\nFirst solution to Ax = b2 using A\\b2:');
