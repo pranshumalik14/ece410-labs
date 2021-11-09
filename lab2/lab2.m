@@ -29,12 +29,12 @@ fprintf('######################### OUTPUT 2 #########################\n');
 fprintf('V + W spans:\n')
 span_sum = sub_sum(V, W)
 
-fprintf('V ∩ W spans:\n')
+fprintf('V ? W spans:\n')
 span_intersect = sub_intersect(V, W)
 
 fprintf(['To ensure the given calculations are right, we could check whether', ...
     'span_intersect is in span_sum, which should be true for any subspaces,', ...
-    'i.e., V ∩ W must be in the image of V+W.\n']);
+    'i.e., V ? W must be in the image of V+W.\n']);
 rank_sum = rank(span_sum)
 rank_intersect_sum = rank([span_sum span_intersect])
 
@@ -143,40 +143,43 @@ end
 %%  Output 6  
 
 fprintf('######################### OUTPUT 6 #########################\n')
+fprintf(['To determine whether a vector b has a solution, multiple solutions', ...
+    ' or no solutions to Ax = b,\nwe must determine the rank of A and [A|b] first.\n', ...
+    'If the rank (after augmenting matrix A with b) is unaffected then b is in the image of A.\n', ...
+    'If the rank of the augmented matrix remains the same, then we check the nullity of A to determine\n', ...
+    'whether Ax=b has one or infinite solutions. If nullity(A) = 0, then we will have a unique solution,\n', ...
+    'else, for non-zero nullity, we will have infinite solutions.\n']);
+
 rank_A = rank(A)
 
-fprintf(['To determine whether a vector b has a solution, multiple solutions', ...
-    'or no solutions to Ax = b,\n we must determine the rank of [A|b].\n', ...
-    'If the rank is unaffected then b is in the image of A, hence rank([A|b]) = rank(A)\n']);
 % Must check rank of [A | b] 
 % If rank(A) = rank([A | b]) => b will is in the image of the column space of A
 % Essentially, an unaffected rank will imply b is in the column space
 % But if the rank increases, then Ax = b does not have a solution
 
 b1 = [1; 0; 0; 0; 0];
-rank_A_b1 = rank([A b1])
-% ASK PRANSHU: how can we determine whether there's one or multiple
-% solutions?
-% if rank_A_b1 == rank_A:
-%     fprintf('\nRank [A | b] == rank(A). This implies there is at least one solution')
-% rank increases, so no solution
+rank_A_b1 = rank([A b1]) % rank increases, so no solution
+fprintf('\nSince rank([A | b1]) > rank(A), Ax = b1 has no solution');
 
 b2 = [1; 1; -2; -2; -2];
-rank_A_b2 = rank([A b2])
-% rank unaffected here -> there exists a solution for A x = b2
+rank_A_b2 = rank([A b2]) % rank unaffected: there exists a solution for Ax = b2
+nullityA  = rank(null(A))
+fprintf('\nSince rank([A | b2]) = rank(A), and nullity(A) > 0, Ax = b2 has infinite solutions');
 
-x = A\b2
+fprintf('\nFirst solution to Ax = b2 using A\\b2:');
+x = A\b2 % get a solution to the underdetermined system (in the least squared sense)
+
 % Now, the nullity(A) is not 0 so to any solution for A*x = b2
 % x1 can be defined as x1 = x + k*y, where y is a vector in the nullspace
 % and k is any real number
-% null(A) indicates there is 1 vector in the nullspace of A (nullity = 1)
+% null(A) indicates there is 1 vector in the nullspace of A (nullity = 1 in our case)
 
 % Consider x' = x + null(A)
+fprintf('\nSecond solution to Ax = b2 by adding a vector in nullspace(A) to x:');
 x1 = x + null(A)
 
-% Can check if Ax1 = b2
-A*x1
-% This is equal to b2. Hence, x1 is also a valid solution
+% Can verify Ax1 = b2, hence, both x and x1 are valid solutions to Ax = b2
+b2approx = A*x1
 
 %% Section 4 (A-invariance and Representation Theorem)
 
