@@ -15,7 +15,7 @@
 \section{Numerical Linear Algebra}
 \subsection{Basic operations on subspaces}
 \subsubsection{Output 1}
-Recall $ \mathcal{V} $ and $ \mathcal{W} $ were subspaces defined as:
+Recall $ \mathcal{V} $ and $ \mathcal{W} $ are subspaces defined as:
 
 \begin{equation*}
     \mathcal{V} = \text{span}
@@ -52,7 +52,7 @@ For these subspaces, \texttt{orth} returned:
 \end{equation*}
 
 
-The column space in $\mathcal{V}$ is not linearly independent. The rank$(\mathcal{V})$ is 2 < the dim($\mathcal{V}) = 3$. Note that the dim($\mathcal{V}$) would be the number of vectors in $\mathcal{V}$. This leads to the orthonormal basis of $\mathcal{V}$ containing only 2 vectors instead of 3. The column space in $\mathcal{W}$ was linearly independent. The orthonormal basis contains the same number of column vectors as $\mathcal{W}$ itself. One interesting point to note is that $\mathcal{W}$ contained $\rcvec{1 & 0 & -2 & 0}^\intercal$, but in its orthonormal basis, the 0 in the last row did not show up. This is because the \textsc{MATLAB} function \texttt{orth} returns vectors that are mutually orthogonal (hence linearly independent) and normalized. In $\mathscr{Basis}_{\mathcal{W}}$, one vector has a component along $\vec{e}_4$ and since it is not entirely orthogonal to the other vector, upon orthonormalization, we see that both vectors help span a hyperplane, each with support over $\vec{e}_4$.
+The column space in $\mathcal{V}$ is not linearly independent. The rank$(\mathcal{V})$ is 2 < the dim($\mathcal{V}) = 3$. Note that the dim($\mathcal{V}$) would be the number of vectors in $\mathcal{V}$. This leads to the orthonormal basis of $\mathcal{V}$ containing only 2 vectors instead of 3. The column space in $\mathcal{W}$ was linearly independent. The orthonormal basis contains the same number of column vectors as $\mathcal{W}$ itself. One interesting point to note is that $\mathcal{W}$ contains $\rcvec{1 & 0 & -2 & 0}^\intercal$, but in its orthonormal basis, the 0 in the last row did not show up. This is because the \textsc{MATLAB} function \texttt{orth} returns vectors that are mutually orthogonal (hence linearly independent) and normalized. In $\mathscr{Basis}_{\mathcal{W}}$, one vector has a component along $\vec{e}_4$ and since it is not entirely orthogonal to the other vector, upon orthonormalization, we see that both vectors help span a hyperplane, each with support over $\vec{e}_4$.
 
 \subsubsection{Output 2}
 For the same $\mathcal{V}$ and $\mathcal{W}$ defined in section 1:
@@ -150,26 +150,19 @@ This can be verified by directly computing the dimension of the nullspace of $\v
 And by the programmatic implementation of the matrix map characterization criteria detailed above, it was determined that $A$ is neither an injective nor a surjective map.
 
 \subsubsection{Output 6}
-\textcolor{red}{Add some intro theory and add MATLAB results –please format the table!}
+To test for solutions to $A\vec{x} = \vec{b}$, we can compare $\text{rank}(A) = 3$ with $\text{rank}(\rcvec{A & \vec{b}})$, where $\vec{b} \in \mathbb{R}^n$. Here, we are essentially checking if $\vec{b}$ is a linear combination of the column space of $A$. This logic was utilized in output 2 (section 1.1.2).
 
-The rank($\vec{A}$) = 3. 
-
-By checking rank($[\vec{A} | \vec{b}]$), where $\vec{b} \in \mathbb{R}^n$, we are essentially checking if $\vec{b}$ is a linear combination of the column space of $\vec{A}$. This logic was exploited in \texttt{Output 2 (1.1.2)}. 
-
-Note, if the rank is affected (i.e., if it increases), then there does not exist an $\vec{x}$ that solves $\vec{A}\vec{x} = \vec{b_i}$. If the rank is unaffected, then there is at least one solution. If the nullity($\vec{A}$) is 0, then the solution will be unique. If not, there will be an infinite number of solutions to the system.  
-
-\textcolor{red}{Add some injectivity and surjectity knowledge.}
-
-The following table shows the rank($[\vec{A} | \vec{b_i}]$), for each of the input $\vec{b}$ vectors provided:
+Note that if $\text{rank}(\rcvec{A & \vec{b}})$ is affected, i.e., if it increases from $\text{rank}(A)$, then there does not exist any $\vec{x}\in \mathbb{R}^n$ that solves the system of equations $\vec{A}\vec{x} = \vec{b}$. If the rank of the augmented matrix is unaffected, then there is at least one solution. If the nullity($\vec{A}$) is $0$, then the solution will be unique. If not, there will be an infinite number of solutions to the system. The following table summarizes output 6 for provided $\vec{b}$.
 
 \begin{table}[h]
     \centering
-    \begin{tabular}{c|c|c|c|c}
-        $b_i$ & rank($[A|b_i]$) & Number of solutions & Solution & comments \\ 
-        $\rcvec{1&0&0&0&0}^T$ & 4 & 0 & N/A & The rank increases, implying no solution\\
-        $\rcvec{1&1&-2&-2&-2}$ & 3 & $\infty$ & $\rcvec{2 & -1 & 0 & -1}^T$ & The nullity(A) is 1, so there are an infinite number of solutions. It is easy to generate another solution to the system by taking $x' = x + ky$, where x is the solution determined by using $\texttt{A\textbackslash b2}$, y is any vector in the nullspace and $k \in \mathbb{R}$
+    \begin{tabular}{|p{0.1\linewidth}|p{0.13\linewidth}|p{0.1\linewidth}|p{0.15\linewidth}|p{0.4\linewidth}|}
+        \hline
+        $\vec{b}$ & $\text{rank}(\rcvec{A & \vec{b}})$ & \#Solutions & Solution(s) & Comments \\ \hline & & & & \\
+        $\rcvec{1\\0\\0\\0\\0}$ & 4 & 0 & N/A & The rank increases, implying no solution\\ & & & & \\ \hline & & & & \\
+        $\rcvec{1\\1\\-2\\-2\\-2}$ & 3 & $\infty$ & $\rcvec{2\\-1\\0\\-1}, \rcvec{2.5\\-1.5\\0.5\\-1.5}$ & \vspace{-1cm}The nullity(A) is 1, so there are an infinite number of solutions. It is easy to generate another solution to the system by taking $x' = x + ky$, where x is the solution determined by using $\texttt{A\textbackslash b2}$, y is any vector in the nullspace, and $k \in \mathbb{R}$ \vspace{0.4cm} \\ \hline
     \end{tabular}
-    \caption{Caption}
+    \caption{Summary of output 6}
     \label{tab:my_label}
 \end{table}
 
@@ -179,24 +172,17 @@ A subspace $\mathcal{V}$ is $A$-invariant if and only if
     A\mathcal{V} \subset \mathcal{V},
 \]
 i.e., for any vector $\vec{v} \in \mathcal{V}$ we have that $A\vec{v} \in \mathcal{V}$.
+
 \subsection{Testing for A-invariance}
-We can test this by...
-\textcolor{red}{Add some intro theory and add MATLAB results}
-
-
-
-% #################################### Output 7 ####################################
 \subsubsection{Output 7}
-\textcolor{red}{Add some intro theory and add MATLAB results}
+For a given basis $V$ of the subspace $\mathcal{V}$, to numerically test for $A$-invariance, it is sufficient to check if $\text{rank}(V) = \text{rank}(\rcvec{AV & V})$. For the given basis, we have $\text{rank}(V) = 2 = \text{rank}(\rcvec{AV & V})$, and hence we can conclude that $\mathcal{V}$ is $A$-invariant.
 
-It is sufficient to check $\texttt{rank}(V) == \texttt{rank}([AV | V])$ to check numerically if $\mathcal{V}$ is $A$-invariant in $\vec{A}$. rank($V$) = 2 = rank($[AV | V]$) and hence $\mathcal{V}$ is $A$-invariant.
-
-To find $P = [V | W]$, the next steps only include computing $W$, which is the independent complement of $V$, it is sufficient enough to find a basis for the kernel of $V^T$:
+To find the matrix $P = \rcvec{V & W}$ of Representation theorem, we need to compute $W$, which is the independent complement of $V$. For this, it is sufficient enough to find a basis for the kernel of $V^\intercal$:
 \begin{equation*}
-    W = \mathscr{Basis}_{Ker(\mathcal{V^T})} = \texttt{null(V')} = \rcvec{0.5774 & 0.5774 & 0.5774}^T
+    W = \mathscr{Basis}_{\text{Ker}(\mathcal{V^\intercal})} = \texttt{null(V')} = \rcvec{0.5774 & 0.5774 & 0.5774}^\intercal
 \end{equation*}
 
-With $V$ and $W$, $P = [V | W]$ can be constructed, allowing us to compute $P^{-1}AP$:
+Now the matrix $P$ can be constructed, allowing us to compute $P^{-1}AP$:
 \begin{equation*}
     P^{-1}AP = \texttt{P\textbackslash(A*P)} = \begin{bmatrix}
         2 & 0 & 0 \\
@@ -207,17 +193,14 @@ With $V$ and $W$, $P = [V | W]$ can be constructed, allowing us to compute $P^{-
 
 It can be visually verified that $P^{-1}AP$ is block upper-triangular.
 
-% ################################## Output 8 ######################################
 \section{Controllability and Kalman Decomposition}
-What is controllability and Kalman: 2 sentences each with all terms needed.
-\textcolor{red}{Add some intro theory and add MATLAB results}
 \subsection{Controllability}
-For a linear state-space system with matrices $(\vec{A},\vec{B})$
+For a linear state-space system with matrices $(A,B)$, the controllability matrix is given by:
 \[
     Q_c \coloneqq \rcvec{B & AB & \cdots & A^{n-1}B}
 \]
 
-For the given $\vec{A}$ and $\vec{B}$, the controllability matrix $Q_c$ was computed by using the \texttt{ctrb} function in \texttt{MATLAB}:
+For the given $A$ and $B$, the matrix $Q_c$ was computed by using the \texttt{ctrb} function in \textsc{MATLAB}:
 \begin{equation*}
     \begin{bmatrix}
         1 & -2 & 10 & 0 & 20 & 40 \\
@@ -228,26 +211,26 @@ For the given $\vec{A}$ and $\vec{B}$, the controllability matrix $Q_c$ was comp
 
 \subsection{Kalman Decomposition for Controllability}
 \subsubsection{Output 8}
-To determine $\hat{A}$ and $\hat{B}$, $\mathcal{V}$ must be determined and then the same steps used in \texttt{Output 7} can be utilized. $\mathcal{V}$ is defined as basis(Im($Q_c$)) and hence an $A$-invariant subspace. Using the \texttt{orth} function can applied to compute $\mathcal{V}$, which results in:
+To determine $\hat{A}$ and $\hat{B}$, an $A$-invariant subspace $\mathcal{V}$ must be determined and then the same steps used in output 7 (section 2.1.1) can be utilized. We let $\mathcal{V}$ be the $\text{Im}(Q_c)$ which is an $A$-invariant subspace. By applying \texttt{orth} function to $Q_c$ to compute a basis for $\mathcal{V}$, we get the following:
 \begin{equation*}
-    \mathcal{V} = \begin{bmatrix}
+    V = \begin{bmatrix}
         -0.7071 & -0.7071 \\
         0 & 0 \\ 
         0.7071 & -0.7071
     \end{bmatrix}
 \end{equation*}
 
-$\mathcal{W}$ can be computed similar to how it was in \texttt{section 2}, i.e., $\mathcal{W} = \text{null}(\mathcal{V}^T)$. $\mathcal{W}$ was computed to be:
+The independent complement subspace $\mathcal{W}$ can be computed similar to how it was done in section 2, i.e., $\mathcal{W} = \text{null}(\mathcal{V}^\intercal)$, which gives us the basis:
 \begin{equation*}
-    \mathcal{W} = 
+    W = 
         \begin{bmatrix}
             0\\1\\0
         \end{bmatrix}
 \end{equation*}
 
-Finally, $P = [\mathcal{V} \text{ | } \mathcal{W}]$, which is concatenating the computed $\mathcal{V}$ and $\mathcal{W}$. With that $P$, the Kalman decomposition for this system ($\hat{A}$ and $\hat{B}$) can be determined:
+Finally, we can set $P = \rcvec{V & W}$ to determine the Kalman decomposition, ($\hat{A}$, $\hat{B}$), for this system. $\hat{A}$ is computed as:
 \begin{equation*}
-    \hat{A} = P^{-1}\vec{A}P = \texttt{P\textbackslash(A*P)} = 
+    \hat{A} = P^{-1}AP = \texttt{P\textbackslash(A*P)} = 
     \begin{bmatrix}
         2 & 8 & 11.3137 \\
         -2 & 2 & 4.2426 \\ 
@@ -255,7 +238,7 @@ Finally, $P = [\mathcal{V} \text{ | } \mathcal{W}]$, which is concatenating the 
     \end{bmatrix}
 \end{equation*}
 
-Similarly, $\hat{B}$ can be computed as:
+Similarly, $\hat{B}$ is computed as:
 \begin{equation*}
     \hat{B} = P^{-1}B = \texttt{P\textbackslash B} = 
     \begin{bmatrix}
@@ -265,18 +248,18 @@ Similarly, $\hat{B}$ can be computed as:
     \end{bmatrix}
 \end{equation*}
 
-Our system can be expressed as:
+The system can then be expressed as:
 \begin{equation*}
     \begin{bmatrix}
         \dot{z_1} \\
         \dot{z_2} \\
         \dot{z_3}
     \end{bmatrix}
-    = 
-    \hat{A} \cdot \begin{bmatrix}
+    =
+    \hat{A} \begin{bmatrix}
         z_1\\z_2\\z_3
     \end{bmatrix} +
-    \hat{B} \cdot \begin{bmatrix}
+    \hat{B} \begin{bmatrix}
         u_1 \\ u_2
     \end{bmatrix}
 \end{equation*}
@@ -287,11 +270,11 @@ To split the system into its controllable and uncontrollable subsystems, we can 
     \begin{bmatrix}
         A_{11} & A_{12}\\
         0 & A_{22}
-    \end{bmatrix}
+    \end{bmatrix},
 \end{equation*}
-Where $A_{11} \in \mathbb{R}^{k\times k}$, $A_{12} \in \mathbb{R}^{k \times n-k}$, $\vec{0} \in \mathbb{R}^{n-k \times k}$, $A_{22} \in \mathbb{R}^{n-k \times n-k}$, $k$ is the rank($Q_c$) (or the number of column vectors in $\mathcal{V}$) and n is the number of rows in $Q_c$.
+where $A_{11} \in \mathbb{R}^{k\times k}$, $A_{12} \in \mathbb{R}^{k \times n-k}$, $0 \in \mathbb{R}^{n-k \times k}$, $A_{22} \in \mathbb{R}^{n-k \times n-k}$, $k = \text{rank}(Q_c)$, i.e., the number of vectors in basis $V$, and $n$ is the number of rows in $Q_c$.
 
-Using $k = 2$ and $n = 3$, the controlloable system can be defined as:
+Since we have $k = 2$ and $n = 3$, the controllable subsystem is found to be:
 \begin{equation*}
     \dot{z_1} = 2z_1 + 8z_2 + 11.3137z_3 + 2.8284u_2
 \end{equation*}
@@ -299,11 +282,11 @@ Using $k = 2$ and $n = 3$, the controlloable system can be defined as:
     \dot{z_2} = - 2z_1 + 2z_2 + 4.2426z_3 - 1.4142u_1
 \end{equation*}
 
-And the uncontrollable system:
+And the uncontrollable subsystem is found to be:
 \begin{equation*}
     \dot{z_3} = -6z_3
 \end{equation*}
 
-Note, while $z_3$ cannot be controlled directly or indirectly, it doesn't blow up. 
+Note, that while $z_3$ cannot be controlled directly or indirectly, it will asymptotically converge to $0$ and not blow up. 
 
 \end{document}
