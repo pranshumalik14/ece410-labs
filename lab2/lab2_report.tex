@@ -74,9 +74,7 @@ For the same $\mathcal{V}$ and $\mathcal{W}$ defined in section 1:
     \end{Bmatrix}
 \end{equation*}
 
-To ensure these computations are correct, we could test if ${\mathcal{V} \cap \mathcal{W}} \in \text{Im}({\mathcal{V} + \mathcal{W}})$. This is because any vector that is contained in both the vector spaces should also be contained in the vector space defined as the sum of the two vector spaces.
-
-Essentially, we want to test if all vectors spanned by ${\mathcal{V} \cap \mathcal{W}}$ can be expressed as a linear combination of $\mathcal{V} + \mathcal{W}$:
+To ensure these computations are correct, we could test if ${\mathcal{V} \cap \mathcal{W}} \in \text{Im}({\mathcal{V} + \mathcal{W}})$. This is because any vector that is contained in both the vector spaces should also be contained in the vector space defined as the sum of the two vector spaces. Essentially, we want to test if all vectors spanned by ${\mathcal{V} \cap \mathcal{W}}$ can be expressed as a linear combination of $\mathcal{V} + \mathcal{W}$:
 \begin{equation*}
     \text{rank}(\mathcal{V} + \mathcal{W}) = 3
     \quad
@@ -137,7 +135,7 @@ where, $\vec{x}=P\vec{z}$ and $\vec{y} = Q\vec{w}$. Then, we can write:
 Therefore, we have that $\hat{A} = Q^{-1}AP=\texttt{Q\textbackslash (AP)}$ in \textsc{MATLAB} code, which means that vector ${\hat{A}}[:, j]$ is the coordinate of vector $AP[:, j]$ in basis $Q$ where $AP[:, j]$ is the mapping of the $j^{\text{th}}$ basis vector in $P$ into $\mathbb{R}^m$, i.e. $AP$ maps $P$-coordinates into $\mathbb{R}^m$ in the standard basis and $Q^{-1}$ further maps these standard coordinates into the non-standard basis.
 
 \subsubsection{Output 5}
-Given a matrix $A$, to test for its injectivity, we simply need to see if the $\text{dim}(\text{Ker}A) = 0$. If it is nonzero, then the zero vector and at least one non-zero vector (in the nullspace) have outputs equal $\vec{0}$, implying that the linear transformation $A\vec{x}$ is not injective. This is only true if $A$ has full column rank. Similarly, as a test for surjectivity, we need the $\text{rank}(A)$ to equal the dimension of the co-domain, i.e., have full row rank. If $A$ is not a full rank matrix, then it would neither be injective nor surjective, and on the other hand, if $A$ is a full-rank square matrix, then it is a bijective map.
+Given a matrix $A$, to test for its injectivity, we simply need to see if the $\text{dim}(\text{Ker}A) = 0$. If it is nonzero, then the zero vector, $\vec{0}$, and at least one non-zero vector (in the nullspace) will have outputs equal to $\vec{0}$, implying that the linear transformation $A\vec{x}$ is not injective. This is only true if $A$ has full column rank. Similarly, as a test for surjectivity, we need the $\text{rank}(A)$ to equal the dimension of the co-domain, i.e., have full row rank. If $A$ is not a full rank matrix, then it would neither be injective nor surjective, and on the other hand, if $A$ is a full-rank square matrix, then it is a bijective map.
 
 The rank($\vec{A}$) was obtained using the \texttt{rank} function, and it was determined to be $3$. With the number of columns in $\vec{A}$ being $4$,the rank-nullity theorem can be applied to determine the nullity($\vec{A}$):
 \begin{equation*}
@@ -148,6 +146,8 @@ This can be verified by directly computing the dimension of the nullspace of $\v
 \begin{equation*}
     \text{nullity}(\vec{A}) = \text{dim(nullspace}(\vec{A})) = \texttt{size(null(A),2)} = 1
 \end{equation*}
+
+And by the programmatic implementation of the matrix map characterization criteria detailed above, it was determined that $A$ is neither an injective nor a surjective map.
 
 \subsubsection{Output 6}
 \textcolor{red}{Add some intro theory and add MATLAB results –please format the table!}
