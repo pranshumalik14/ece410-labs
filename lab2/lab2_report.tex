@@ -51,39 +51,35 @@ For these subspaces, \texttt{orth} returned:
     \end{Bmatrix}
 \end{equation*}
 
-
-The column space in $\mathcal{V}$ is not linearly independent. The rank$(\mathcal{V})$ is 2 < the dim($\mathcal{V}) = 3$. Note that the dim($\mathcal{V}$) would be the number of vectors in $\mathcal{V}$. This leads to the orthonormal basis of $\mathcal{V}$ containing only 2 vectors instead of 3. The column space in $\mathcal{W}$ was linearly independent. The orthonormal basis contains the same number of column vectors as $\mathcal{W}$ itself. One interesting point to note is that $\mathcal{W}$ contains $\rcvec{1 & 0 & -2 & 0}^\intercal$, but in its orthonormal basis, the 0 in the last row did not show up. This is because the \textsc{MATLAB} function \texttt{orth} returns vectors that are mutually orthogonal (hence linearly independent) and normalized. In $\mathscr{Basis}_{\mathcal{W}}$, one vector has a component along $\vec{e}_4$ and since it is not entirely orthogonal to the other vector, upon orthonormalization, we see that both vectors help span a hyperplane, each with support over $\vec{e}_4$.
+Taking the subspace spanning vectors as columns in matrices $V$ and $W$ for subspaces $\mathcal{V}$ and $\mathcal{W}$ respectively, we make the following observations. The column vectors in $V$ are not linearly independent as $\text{rank}(V) = 2$ which is one less than the number of columns in $V$. Note that the $\text{rank}(V)$ would be the number of basis vectors in $\mathcal{V}$. This leads to the orthonormal basis of $\mathcal{V}$ containing only 2 vectors instead of 3. On the other hand, the column vectors in $W$ was linearly independent. The orthonormal basis contains the same number of column vectors as $W$ itself. One interesting point to note is that $W$ contains $\rcvec{1 & 0 & -2 & 0}^\intercal$, but in its orthonormal basis, the $0$ in the last row did not show up. This is because the \textsc{MATLAB} function \texttt{orth} returns vectors that are mutually orthogonal (hence linearly independent) and normalized. In $\mathscr{Basis}_{\mathcal{W}}$, one vector has a component along $\vec{e}_4$ and since it is not entirely orthogonal to the other vector, upon orthonormalization, we see that both vectors help span a hyperplane, each with support over $\vec{e}_4$.
 
 \subsubsection{Output 2}
 For the same $\mathcal{V}$ and $\mathcal{W}$ defined in section 1:
 \begin{equation*}
-    \text{Im}({\mathcal{V} + \mathcal{W}}) = \text{span}
+    {\mathcal{V} + \mathcal{W}} = \text{span}
     \begin{Bmatrix}
         \rcvec{-0.9004\\-0.2119\\-0.0950\\-0.3680},
         \rcvec{0.1634\\0.0904\\-0.9611\\-0.2038},
         \rcvec{0.0513\\-0.8871\\-0.1654\\0.4279}
     \end{Bmatrix}
 \end{equation*}
-\begin{center}
-    and
-\end{center}
 \begin{equation*}
-    \text{Im}({\mathcal{V} \cap \mathcal{W}}) = \text{span}
+    {\mathcal{V} \cap \mathcal{W}} = \text{span}
     \begin{Bmatrix}
         \rcvec{-0.8944\\0\\0\\-0.4472}
     \end{Bmatrix}
 \end{equation*}
 
-To ensure these computations are correct, we could test if ${\mathcal{V} \cap \mathcal{W}} \in \text{Im}({\mathcal{V} + \mathcal{W}})$. This is because any vector that is contained in both the vector spaces should also be contained in the vector space defined as the sum of the two vector spaces. Essentially, we want to test if all vectors spanned by ${\mathcal{V} \cap \mathcal{W}}$ can be expressed as a linear combination of $\mathcal{V} + \mathcal{W}$:
+To ensure these computations are correct, we could test if ${\mathcal{V} \cap \mathcal{W}} \subset \mathcal{V} + \mathcal{W}$. This is because any vector that is contained in the intersection should also be contained in the sum of the two vector spaces. Essentially, we want to test if all vectors spanning ${\mathcal{V} \cap \mathcal{W}}$ can be expressed as a linear combination of vectors in $\mathcal{V} + \mathcal{W}$:
 \begin{equation*}
-    \text{rank}(\mathcal{V} + \mathcal{W}) = 3
+    \text{dim}(\mathcal{V} + \mathcal{W}) = 3
     \quad
     \text{and}
     \quad
-    \text{rank}\left(\rcvec{\mathcal{V} + \mathcal{W} & \mathcal{V} \cap \mathcal{W}}\right) = 3
+    \text{dim}\left((\mathcal{V} + \mathcal{W}) + (\mathcal{V} \cap \mathcal{W})\right) = 3
 \end{equation*}
 
-The addition of $\mathcal{V} \cap \mathcal{W}$ does not affect the $\text{Im}$ of $\mathcal{V} + \mathcal{W}$. Therefore, we can conclude that these computations are correct.
+The addition of $\mathcal{V} \cap \mathcal{W}$ does not affect the dimension of $\mathcal{V} + \mathcal{W}$. Therefore, we have increased the confidence towards correctness of our computations.
 
 \subsection{Linear transformations and linear equations}
 \subsubsection{Output 3}
@@ -109,7 +105,7 @@ The change of basis (hence invertible) matrix $P$ will be defined as the concate
 Recall, the change of basis relationship ($\vec{x} \mapsto \vec{z} $)  is defined as the following mathematical relationship:
 
 \begin{equation} \label{change_basis}
-    \vec{z} = P^{-1} \cdot \vec{x}
+    \vec{z} = P^{-1} \vec{x}
 \end{equation}
 
 Applying this formula for the given $\vec{x} = \rcvec{2 & 1}^\intercal$ gives us $\vec{z} = \rcvec{z_1 & z_2} = \rcvec{0 & 1}^\intercal$
@@ -122,7 +118,7 @@ To verify this answer, (\ref{change_basis}) can be rearranged to return to the o
 Hence, we numerically reconstructed $\vec{x}$ and verified that the change of basis computed the correct $\vec{z}$.
 
 \subsubsection{Output 4}
-A linear transformation $\vec{A} : \mathbb{R}^n \rightarrow \mathbb{R}^m$ given by $\vec{y} = \vec{A}(\vec{x}) = A\vec{x}$ can be expressed in the general coordinate frames, different from the standard bases, $P = \rcvec{\vec{x}_1 & \cdots & \vec{x}_n} \in \mathbb{R}^{n\times n}$ and $Q = \rcvec{\vec{y}_1 & \cdots & \vec{y}_m} \in \mathbb{R}^{m\times m}$, whose columns constitute bases for $\mathbb{R}^n$ and $\mathbb{R}^m$ respectively. Let this transformation between the two non-standard bases be given by,
+A linear transformation $A : \mathbb{R}^n \rightarrow \mathbb{R}^m$ given by $\vec{y} = A(\vec{x}) = A\vec{x}$ can be expressed in the general coordinate frames, different from the standard bases, $P = \rcvec{\vec{x}_1 & \cdots & \vec{x}_n} \in \mathbb{R}^{n\times n}$ and $Q = \rcvec{\vec{y}_1 & \cdots & \vec{y}_m} \in \mathbb{R}^{m\times m}$, whose columns constitute bases for $\mathbb{R}^n$ and $\mathbb{R}^m$ respectively. Let this transformation between the two non-standard bases be given by,
 \[
     \vec{w}=\hat{A}\vec{z},
 \]
@@ -132,19 +128,30 @@ where, $\vec{x}=P\vec{z}$ and $\vec{y} = Q\vec{w}$. Then, we can write:
     \implies \quad \vec{y} &= Q\hat{A}P^{-1}\vec{x} = A\vec{x}
 \end{align*}
 
-Therefore, we have that $\hat{A} = Q^{-1}AP=\texttt{Q\textbackslash (AP)}$ in \textsc{MATLAB} code, which means that vector ${\hat{A}}[:, j]$ is the coordinate of vector $AP[:, j]$ in basis $Q$ where $AP[:, j]$ is the mapping of the $j^{\text{th}}$ basis vector in $P$ into $\mathbb{R}^m$, i.e. $AP$ maps $P$-coordinates into $\mathbb{R}^m$ in the standard basis and $Q^{-1}$ further maps these standard coordinates into the non-standard basis.
+Therefore, we have that $\hat{A} = Q^{-1}AP=\texttt{Q\textbackslash (AP)}$ in \textsc{MATLAB} code, which means that vector ${\hat{A}}[:, j]$ is the coordinate of vector $AP[:, j]$ in basis $Q$ where $AP[:, j]$ is the mapping of the $j^{\text{th}}$ basis vector in $P$ into $\mathbb{R}^m$, i.e. $AP$ maps $P$-coordinates into $\mathbb{R}^m$ in the standard basis and $Q^{-1}$ further maps these standard coordinates into the non-standard basis. For the given matrices and bases, the matrix $\hat{A}$ was found to be:
+
+\[
+\hat{A} = 
+\begin{bmatrix}
+    0.5  &   2  & -1  & -2\\
+    0.5  &   1  &  0  & 0\\
+    0.5  &   0  &  3  & 4\\
+    0.5  &   1  &  1  & 1\\
+    0    &   0  &  2  & 2
+\end{bmatrix}
+\]
 
 \subsubsection{Output 5}
-Given a matrix $A$, to test for its injectivity, we simply need to see if the $\text{dim}(\text{Ker}A) = 0$. If it is nonzero, then the zero vector, $\vec{0}$, and at least one non-zero vector (in the nullspace) will have outputs equal to $\vec{0}$, implying that the linear transformation $A\vec{x}$ is not injective. This is only true if $A$ has full column rank. Similarly, as a test for surjectivity, we need the $\text{rank}(A)$ to equal the dimension of the co-domain, i.e., have full row rank. If $A$ is not a full rank matrix, then it would neither be injective nor surjective, and on the other hand, if $A$ is a full-rank square matrix, then it is a bijective map.
+Given a matrix $A$, to test for its injectivity, we simply need to see if the $\text{dim}(\text{Ker}(A)) = 0$. If it is nonzero, then the zero vector, $\vec{0}$, and at least one non-zero vector (in the nullspace) will have outputs equal to $\vec{0}$, implying that the linear transformation $A\vec{x}$ is not injective. This is only true if $A$ has full column rank. Similarly, as a test for surjectivity, we need the $\text{rank}(A)$ to equal the dimension of the co-domain, i.e., have full row rank. If $A$ is not a full rank matrix, then it would neither be injective nor surjective, and on the other hand, if $A$ is a full-rank square matrix, then it is a bijective map.
 
-The rank($\vec{A}$) was obtained using the \texttt{rank} function, and it was determined to be $3$. With the number of columns in $\vec{A}$ being $4$,the rank-nullity theorem can be applied to determine the nullity($\vec{A}$):
+The rank($A$) was obtained using the \texttt{rank} function, and it was determined to be $3$. With the number of columns in $A$ being $4$,the rank-nullity theorem can be applied to determine the nullity($A$):
 \begin{equation*}
-    \text{nullity}(\vec{A}) = 4 - \text{rank}(\vec{A}) = \texttt{size(A,2) - rank(A)}= 4 - 3 = 1
+    \text{nullity}(A) = 4 - \text{rank}(A) = \texttt{size(A,2) - rank(A)}= 4 - 3 = 1
 \end{equation*}
 
-This can be verified by directly computing the dimension of the nullspace of $\vec{A}$:
+This can be verified by directly computing the dimension of the nullspace of $A$:
 \begin{equation*}
-    \text{nullity}(\vec{A}) = \text{dim(nullspace}(\vec{A})) = \texttt{size(null(A),2)} = 1
+    \text{nullity}(A) = \text{dim(nullspace}(A)) = \texttt{size(null(A),2)} = 1
 \end{equation*}
 
 And by the programmatic implementation of the matrix map characterization criteria detailed above, it was determined that $A$ is neither an injective nor a surjective map.
@@ -152,9 +159,9 @@ And by the programmatic implementation of the matrix map characterization criter
 \subsubsection{Output 6}
 To test for solutions to $A\vec{x} = \vec{b}$, we can compare $\text{rank}(A) = 3$ with $\text{rank}(\rcvec{A & \vec{b}})$, where $\vec{b} \in \mathbb{R}^n$. Here, we are essentially checking if $\vec{b}$ is a linear combination of the column space of $A$. This logic was utilized in output 2 (section 1.1.2).
 
-Note that if $\text{rank}(\rcvec{A & \vec{b}})$ is affected, i.e., if it increases from $\text{rank}(A)$, then there does not exist any $\vec{x}\in \mathbb{R}^n$ that solves the system of equations $\vec{A}\vec{x} = \vec{b}$. If the rank of the augmented matrix is unaffected, then there is at least one solution. If the nullity($\vec{A}$) is $0$, then the solution will be unique. If not, there will be an infinite number of solutions to the system. The following table summarizes output 6 for provided $\vec{b}$.
+Note that if $\text{rank}(\rcvec{A & \vec{b}})$ is affected, i.e., if it increases from $\text{rank}(A)$, then there does not exist any $\vec{x}\in \mathbb{R}^n$ that solves the system of equations $A\vec{x} = \vec{b}$. If the rank of the augmented matrix is unaffected, then there is at least one solution. If the nullity($A$) is $0$, then the solution will be unique. If not, there will be an infinite number of solutions to the system. The table \ref{tab:solns} summarizes output 6 for provided $\vec{b}$.
 
-\begin{table}[h]
+\begin{table}[ht]
     \centering
     \begin{tabular}{|p{0.1\linewidth}|p{0.13\linewidth}|p{0.1\linewidth}|p{0.15\linewidth}|p{0.4\linewidth}|}
         \hline
@@ -163,7 +170,7 @@ Note that if $\text{rank}(\rcvec{A & \vec{b}})$ is affected, i.e., if it increas
         $\rcvec{1\\1\\-2\\-2\\-2}$ & 3 & $\infty$ & $\rcvec{2\\-1\\0\\-1}, \rcvec{2.5\\-1.5\\0.5\\-1.5}$ & \vspace{-1cm}The nullity(A) is 1, so there are an infinite number of solutions. It is easy to generate another solution to the system by taking $x' = x + ky$, where x is the solution determined by using $\texttt{A\textbackslash b2}$, y is any vector in the nullspace, and $k \in \mathbb{R}$ \vspace{0.4cm} \\ \hline
     \end{tabular}
     \caption{Summary of output 6}
-    \label{tab:my_label}
+    \label{tab:solns}
 \end{table}
 
 \section{A-invariance and Representation Theorem}
