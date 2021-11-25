@@ -1,6 +1,5 @@
 % pendulum state evolution ODE
-function xdot = inverted_pendulum(t, x, K, parameters)
-
+function Xdot = inverted_pendulum(t, x, parameters, K)
 
 % extract parameters
 M = parameters.M;
@@ -15,7 +14,7 @@ x3 = x(3);
 x4 = x(4);
 
 % set input
-disp(K)
+K = K{1};
 u = K*x;
 
 % set output: state evolution DE
@@ -25,4 +24,6 @@ x3_dot = x4;
 x4_dot = (- (m*l*sin(x3)*cos(x3)*(x(4))^2) + (m+M)*g*sin(x3) + u*cos(x3) )/ ( l * (M + m*sin(x3)^2));
 
 xdot = [x1_dot; x2_dot; x3_dot; x4_dot];
+Xdot = [xdot; u];
 
+end

@@ -7,7 +7,7 @@ clc;
 close all;
 clear all;
 
-%% parameters setup
+%% system parameters
 
 % set up initial values and DE parameters
 parameters = struct('M', 1.0731, 'm', 0.2300 , 'l', 0.3302, 'g', 9.8);
@@ -36,6 +36,9 @@ xstar = [0; 0; 0; 0];
 symA = jacobian(x_dot,x);
 symB = jacobian(x_dot,u);
 
+% output 1: symbolic forms of A and B
+simplify(symA)
+simplify(symB)
 
 % substitute the symbolic variables with the equilibrium points
 A = subs(symA, {x1, x2, x3, x4, u}, {xstar(1), xstar(2), xstar(3), xstar(4), u});
@@ -48,32 +51,34 @@ numB = double(subs(B, {g, m, M, l}, {parameters.g, parameters.m, parameters.M, p
 
 %% test for controllability
 
-Qc = ctrb(Asub, Bsub)
+Qc = ctrb(numA, numB);
 
-% Rank of Qc tells us if the system is controllable
-disp(rank(Qc))
+% system is controllable if Qc is full rank
+assert(rank(Qc) == min(size(Qc)));
 
 %% generate K1
 
-p = [-1 -2 -3 -4]
-K1 = place(Asub, Bsub, p)
+p = [-1 -2 -3 -4];
+K1 = -1*place(numA, numB, p) % place adopts the convention that the state feedback controller has the form of u = -Kx, but we want it to be u = Kx
 
-%% Simulate at x(-0.5, 0, -pi/4, 0)
-x0 = [-0.5;0;-pi/4; 0];
+%% simulate for x0 = (-0.5, 0, -pi/4, 0)
+
+x0 = [-0.5; 0; -pi/4; 0];
 
 % setup Tspan
-options    = odeset('RelTol',1e-7, 'AbsTol',1e-7);
+options    = odeset('RelTol', 1e-7, 'AbsTol', 1e-7);
 Tspan      = linspace(0,20,2e3);
 
-[t, xf] = ode45(@inverted_pendulum, Tspan, x0, options, K1, parameters);
+[t, X1] = ode45(@inverted_pendulum, Tspan, x0, options, parameters, {K1});
 
-x1 = xf(:,1);
-x2 = xf(:,2);
-x3 = xf(:,3);
-x4 = xf(:,4);
+x1_t = X1(:,1);
+x2_t = X1(:,2);
+x3_t = X1(:,3);
+x4_t = X1(:,4);
+u_t  = X1(:,5);
 
-plot(t, x1)
+figure
+plot(t, x1_t)
 
-%% u over time
-u_num = (K1 * xf')';
-plot(t, u_num)
+figure
+plot(t, u_t)
