@@ -64,3 +64,19 @@ disp(rank(Qc))
 
 p = [-1 -2 -3 -4]
 K1 = place(Asub, Bsub, p)
+
+%% Simulate at x(-0.5, 0, -pi/4, 0)
+x0 = [-0.5;0;-pi/4; 0];
+
+% setup Tspan
+options    = odeset('RelTol',1e-7, 'AbsTol',1e-7);
+Tspan      = linspace(0,20,2e3);
+
+[t, xf] = ode45(@inverted_pendulum, Tspan, x0, options, K1, parameters);
+
+x1 = xf(:,1);
+x2 = xf(:,2);
+x3 = xf(:,3);
+x4 = xf(:,4);
+
+plot(t, x1)
