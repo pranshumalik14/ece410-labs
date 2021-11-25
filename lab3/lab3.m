@@ -80,3 +80,7 @@ x3 = xf(:,3);
 x4 = xf(:,4);
 
 plot(t, x1)
+
+%% u over time
+u_num = (K1 * xf')';
+plot(t, u_num)
