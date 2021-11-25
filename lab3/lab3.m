@@ -34,6 +34,8 @@ x_dot = [x1_dot; x2_dot; x3_dot; x4_dot]
 
 x_star = [0; 0; 0; 0];
 u_star = 0;
+% Actually can't assume u_star is 0
+% Taking the jacobian results in a system indp of u
 
 symA = jacobian(x_dot,x);
 symB = jacobian(x_dot,u);
@@ -48,6 +50,8 @@ B = subs(symB, {x1, x2, x3, x4, u}, {x_star(1), x_star(2), x_star(3), x_star(4),
 Asub = subs(A, {g, m, M, l}, {parameters.g, parameters.m, parameters.M, parameters.l})
 Bsub = subs(B, {g, m, M, l}, {parameters.g, parameters.m, parameters.M, parameters.l})
 
+Asub = cast(Asub, 'double')
+Bsub = cast(Bsub, 'double')
 
 %% test for controllability
 
