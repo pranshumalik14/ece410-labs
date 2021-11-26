@@ -1,4 +1,4 @@
-% pendulum state evolution ODE
+% pendulum state evolution ODE appended with control signal u
 function Xdot = inverted_pendulum(t, x, parameters, K)
 
 % extract parameters
@@ -14,14 +14,13 @@ x3 = x(3);
 x4 = x(4);
 
 % set input
-K = K{1};
-u = K*x;
+u = K*x(1:4);
 
 % set output: state evolution DE
-x1_dot = x2;
-x2_dot = (- (m*l*sin(x3)*(x(4))^2) + (m*g*sin(x3)*cos(x3)) + u)/(M + m*sin(x3)^2);
-x3_dot = x4;
-x4_dot = (- (m*l*sin(x3)*cos(x3)*(x(4))^2) + (m+M)*g*sin(x3) + u*cos(x3) )/ ( l * (M + m*sin(x3)^2));
+x1_dot = x(2);
+x2_dot = (-(m*l*sin(x(3))*(x(4))^2) + (m*g*sin(x(3))*cos(x(3))) + u) / (M + m*sin(x(3))^2);
+x3_dot = x(4);
+x4_dot = (-(m*l*sin(x(3))*cos(x(3))*(x(4))^2) + (m+M)*g*sin(x(3)) + u*cos(x(3))) / (l * (M + m*sin(x(3))^2));
 
 xdot = [x1_dot; x2_dot; x3_dot; x4_dot];
 Xdot = [xdot; u];
