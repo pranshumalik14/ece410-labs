@@ -33,12 +33,9 @@ x_dot = [x1_dot; x2_dot; x3_dot; x4_dot];
 % linearization equilibrium (for all comparisons going forward)
 xstar = [0; 0; 0; 0];
 
-symA = jacobian(x_dot,x);
-symB = jacobian(x_dot,u);
-
 % output 1: symbolic forms of A and B
-simplify(symA)
-simplify(symB)
+symA = simplify(jacobian(x_dot,x))
+symB = simplify(jacobian(x_dot,u))
 
 % substitute the symbolic variables with the equilibrium points
 A = subs(symA, {x1, x2, x3, x4, u}, {xstar(1), xstar(2), xstar(3), xstar(4), u});
@@ -49,7 +46,7 @@ B = subs(symB, {x1, x2, x3, x4, u}, {xstar(1), xstar(2), xstar(3), xstar(4), u})
 numA = double(subs(A, {g, m, M, l}, {parameters.g, parameters.m, parameters.M, parameters.l}));
 numB = double(subs(B, {g, m, M, l}, {parameters.g, parameters.m, parameters.M, parameters.l}));
 
-%% test for controllability
+%% controllability and pole-assignment for stabilization
 
 Qc = ctrb(numA, numB);
 
@@ -116,12 +113,12 @@ plot(t1, u_t1)
 hold on
 plot(t2, u_t2)
 
-%% Linear Quadratic Optimal control
-syms q1 q2
+%% linear quadratic optimal control for stabilization at equilibrium
 
+syms q1 q2
 symQ = [q1 0 0 0; 0 0 0 0; 0 0 q2 0; 0 0 0 0];
 
-%% Impact of changing q1
+% impact of changing q1
 R = 0.5;
 num_q2 = 5;
 
@@ -136,7 +133,7 @@ num_q1_2 = 0.005;
 Q_num_2 = double(subs(symQ, {q1, q2}, {num_q1_2, num_q2}));
 K1_2 = -1*lqr(numA, numB, Q_num_2, R);
 
-%% Impact of changing q2
+% impact of changing q2
 num_q1 = 0.05;
 R = 0.5;
 
@@ -150,7 +147,8 @@ num_q2_2 = 2000;
 Q_num_2 = double(subs(symQ, {q1, q2}, {num_q1_1, num_q2_2}));
 K2_2 = -1*lqr(numA, numB, Q_num_2, R);
 
-%% Impact of changing R
+% impact of changing R
+
 num_q1 = 0.05;
 num_q2 = 5;
 Q_num = double(subs(symQ, {q1, q2}, {num_q1_1, num_q2_2}));
@@ -166,7 +164,7 @@ K3_2 = -1*lqr(numA, numB, Q_num, num_R_1);
 % need a function that takes in K, Tspan, A, B, x0, and outputs generated
 % plots
 
-%% nonlinear comparison of controller performance
+%% nonlinear comparison of lqr controller performance
 
 x0 = [-1; 0; -pi/4; 0]; % new initial state
 
@@ -186,9 +184,10 @@ u_lin = Xlin*(K3_1');
 figure
 plot(t, Xlin(:,1) , t, x_non_lin(:,1))
 
-%% 
-x0_bar = [-200; 0; -pi/4; 0]; 
-Tspan      = linspace(0,100,1e4);
+%%
+
+x0_bar = [-175.7; 0; -pi/4; 0];
+Tspan      = linspace(0,0.5,1e3);
 
 % get nonlinear evolution of X given our control law, u = Kx
 [t, Xref] = ode45(@inverted_pendulum, Tspan, [x0_bar; u0], options, parameters, K3_1);
@@ -196,5 +195,27 @@ Tspan      = linspace(0,100,1e4);
 x_non_lin = Xref(:, 1:4);
 u_non_lin = Xref(:, 5);
 
+[t, Xlin] = ode45(cls, Tspan, x0);
+x_lin = Xlin(:, 1:4);
+u_lin = Xlin*(K3_1');
+
 figure
-plot(t, x_non_lin)
+plot(t, x_non_lin(:,1))
+hold on
+plot(t, x_lin(:,1))
+figure
+plot(t, x_non_lin(:,2))
+hold on
+plot(t, x_lin(:,2))
+figure
+plot(t, x_non_lin(:,3))
+hold on
+plot(t, x_lin(:,3))
+figure
+plot(t, x_non_lin(:,4))
+hold on
+plot(t, x_lin(:,4))
+figure
+plot(t, u_non_lin)
+hold on
+plot(t, u_lin)
