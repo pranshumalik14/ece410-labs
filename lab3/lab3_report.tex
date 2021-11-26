@@ -1,0 +1,29 @@
+\documentclass[10pt]{article}
+\usepackage{../setup}
+\vspace{-8ex}
+\date{}
+
+\graphicspath{ {./figs/} }
+
+\begin{document}
+
+\title{\textbf{\Large{\textsc{ECE410:} Linear Control Systems}} \\ \Large{Lab 3 Report: State Feedback Stabilization of a Cart-Pendulum Robot} \\ \textbf{\small{PRA102}}\vspace{-0.3cm}}
+\author{Pranshu Malik, Varun Sampat \\ \footnotesize{1004138916}, \footnotesize{1003859602}\vspace{-3cm}}
+
+\maketitle
+
+\section{Inverted Cart-Pendulum Model}
+Similar to lab 1, in this lab we consider a pendulum-cart system, except that it is inverted in the sense that the pendulum's is linearized in its standing state. We also introduce weights of the base etc. with the control input, $u$, being the force imparted at the point of pivot, being the cart base, which is free to move along a frictionless rod. We consider the state of the system to be $\vec{x} = \rcvec{x_1 & x_2}^\intercal = \rcvec{\theta & \dot{\theta}}^\intercal$, where $\theta$ is the angle subtended by the pendulum rod against the vertically downwards axis. The pendulum has a mass, $M$, and is subject to gravity, $g$. The system, as a whole, has the following nonlinear dynamics:
+
+\begin{figure}[!h]
+\centering
+\invertedpendcart
+\caption{Invereted Cart-Pendulum system}
+\end{figure}
+
+\begin{equation*}
+    \dot{\vec{x}} = f(\vec{x}, u) = \rcvec{ x_2 \\ \frac{-g \sin(x_1)}{l} \frac{-\cos(x_1)u}{Ml}}
+\end{equation*}
+
+
+\end{document}
