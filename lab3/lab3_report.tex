@@ -15,12 +15,11 @@
 \section{Inverted Cart-Pendulum Model}
 In this lab, we consider a pendulum-cart system, similar to the one seen in lab 1, with the exception that the pendulum inverted; meaning the pendulum is linearized in its upright position. This lab also considers more system parameters such as the mass of the base ($M$). The control input, $u$, is defined as the force imparted at the point of pivot, being the cart base, which is free to move along a friction-less rod. We consider the state of the system to be $\vec{x} = \rcvec{x_1 & x_2 & x_3 & x_4}^\intercal = \rcvec{y & \dot{y} & \theta & \dot{\theta}}^\intercal$, where $\theta$ is the angle subtended by the pendulum rod against the vertically downwards axis and $y$ is the position of the cart on the horizontal axis. 
 
-The pendulum has a mass $m$, of length $l$, and is subject to gravity, $g$. The system, as a whole, can be in \texttt{figure \ref{fig:inverted_pend}}
+The pendulum has a mass $m$, of length $l$, and is subject to gravity, $g$. The system, as a whole, can be in figure \ref{fig:inverted_pend}
 
 \begin{figure}[!h]
 \centering
-% \invertedpendcart
-\includegraphics[0.8\linewidth]{lab3/inverted_cart_pend.png}
+\invertedpendcart
 \caption{Invereted Cart-Pendulum system}
 \label{fig:inverted_pend}
 \end{figure}
@@ -34,12 +33,11 @@ The system is also subject to the following non-linear dynamics:
     \dot{\theta} = \frac{-l\,m\,\cos\left(\theta\right)\,\sin\left(\theta\right)\,{\dot{\theta}}^2+u\,\cos\left(\theta\right)+g\,\sin\left(\theta\right)\,\left(M+m\right)}{l\,\left(m\,{\sin\left(\theta\right)}^2+M\right)}
 \end{equation}
 
-
 \section{Analysing the cart pendulum model}
 \subsection{Symbolic Representation of the linear system}
 
 \begin{equation*}
-    A = \left(\begin{array}{cccc} 0 & 1 & 0 & 0\\ 0 & 0 & \xi & -\frac{2\,l\,m\,x_{4}\,\sin\left(x_{3}\right)}{m\,{\sin\left(x_{3}\right)}^2+M}\\ 0 & 0 & 0 & 1\\ 0 & 0 & \mu & -\frac{2\,m\,x_{4}\,\cos\left(x_{3}\right)\,\sin\left(x_{3}\right)}{m\,{\sin\left(x_{3}\right)}^2+M} \end{array}\right)
+    A = \begin{bmatrix} 0 & 1 & 0 & 0\\ 0 & 0 & \xi & -\frac{2\,l\,m\,x_{4}\,\sin\left(x_{3}\right)}{m\,{\sin\left(x_{3}\right)}^2+M}\\ 0 & 0 & 0 & 1\\ 0 & 0 & \mu & -\frac{2\,m\,x_{4}\,\cos\left(x_{3}\right)\,\sin\left(x_{3}\right)}{m\,{\sin\left(x_{3}\right)}^2+M} \end{bmatrix}
 \end{equation*}
 
 where 
@@ -53,11 +51,11 @@ and
 
 \begin{equation*}
     B_\text{} = 
-    \left(\begin{array}{c} 0\\ \frac{1}{m\,{\sin\left(x_{3}\right)}^2+M}\\ 0\\ \frac{\cos\left(x_{3}\right)}{l\,\left(m\,{\sin\left(x_{3}\right)}^2+M\right)} \end{array}\right)
+    \begin{bmatrix} 0\\ \frac{1}{m\,{\sin\left(x_{3}\right)}^2+M}\\ 0\\ \frac{\cos\left(x_{3}\right)}{l\,\left(m\,{\sin\left(x_{3}\right)}^2+M\right)} \end{bmatrix}
 \end{equation*}
 
 \subsection{Numerical Representation of the linear system}
-The system parameters used in this lab are listed in the \texttt{table \ref{tab:sys_param}}:
+The system parameters used in this lab are listed in the table \ref{tab:sys_param}:
 \begin{table}[hbt!]
     \centering
     \begin{tabular}{c|c}
@@ -77,43 +75,90 @@ Note that the system was linearized at the upright equilibrium point $\vec{x} = 
 The numerical values for $A$ and $B$ can be computed using the equilibrium point, the symbolic representation of the linearized system, and the parameters defined above:
 
 \begin{equation*}
-    A = \left(\begin{array}{cccc} 0 & 1 & 0 & 0\\ 0 & 0 & \frac{g\,m}{M} & 0\\ 0 & 0 & 0 & 1\\ 0 & 0 & \frac{g\,\left(M+m\right)}{M\,l} & 0 \end{array}\right) = \left(\begin{array}{cccc} 0 & 1 & 0 & 0\\ 0 & 0 & 2.1005 & 0\\ 0 & 0 & 0 & 1\\ 0 & 0 & 36.0401 & 0 \end{array}\right)
+    A = \begin{bmatrix} 0 & 1 & 0 & 0\\ 0 & 0 & \frac{g\,m}{M} & 0\\ 0 & 0 & 0 & 1\\ 0 & 0 & \frac{g\,\left(M+m\right)}{M\,l} & 0 \end{bmatrix} = \begin{bmatrix} 0 & 1 & 0 & 0\\ 0 & 0 & 2.1005 & 0\\ 0 & 0 & 0 & 1\\ 0 & 0 & 36.0401 & 0 \end{bmatrix}
 \end{equation*}
 
 \begin{equation*}
-    B = \left(\begin{array}{c} 0\\ \frac{1}{M}\\ 0\\ \frac{1}{M\,l} \end{array}\right) = \left(\begin{array}{c} 0\\ 0.9319\\ 0\\ 2.8222 \end{array}\right)
+    B = \begin{bmatrix} 0\\ \frac{1}{M}\\ 0\\ \frac{1}{M\,l} \end{bmatrix} = \begin{bmatrix} 0\\ 0.9319\\ 0\\ 2.8222 \end{bmatrix}
 \end{equation*}
 
 \section{Controllability and Pole Assignment}
 
-\subsection{Gain vectors $K_1$, $K_2$}
-$K_1$ is defined as the gain vector such that the poles of the closed-loop system are located at p $ =\{-1, -2, -3, -4\}$. $K_1$ and $K_2$ were computed using the \texttt{MATLAB} command, \texttt{place(A, B, p)}:
+\subsection{Gain vectors \texorpdfstring{$K_1$}{K1}, \texorpdfstring{$K_2$}{K2}}
+$K_1$ is defined as the gain vector such that the poles of the closed-loop system are placed at eigenvalues $p =\{-1, -2, -3, -4\}$. $K_2$ is defined as the gain vector such that the poles of the closed-loop system are placed at eigenvalues $p =\{-1, -2, -3, -20\}$.
+
+$K_1$ and $K_2$ were computed using the \texttt{MATLAB} command, \texttt{place(A, B, p)}:
 
 \begin{equation*}
-    K_1 = \rcvec{0.8677 & 1.8078 & -25.4584 & -4.1403}
+    K_1 = \rcvec{0.8678 & 1.8078 & -25.4587 & -4.1403}
 \end{equation*}
 
 \begin{equation*}
-    K_2 = \rcvec{4.3387  &  8.1713 & -60.6206 & -11.9109}
+    K_2 = \rcvec{4.3388  &  8.1715 & -60.6213 & -11.9110}
 \end{equation*}
 
 \subsection{Plots}
-Note: all these plots correspond to the initial condition $\vec{x_0} = \rcvec{ -0.5 & 0 & -\pi/4 & 0}^T$. Physically speaking, this corresponds to the cart $0.5$m to the left of the equilibrium and the pendulum is rotated 45$\deg$ clockwise.  
+Note: all these plots correspond to the initial condition $\vec{x_0} = \rcvec{ -0.5 & 0 & -\pi/4 & 0}^T$. Physically speaking, this corresponds to the cart $0.5$m to the left of the equilibrium and the pendulum is rotated 45$^\circ$ clockwise.  
+
 \subsection{Differences in Transient Response}
-\subsection{}
+For a linear system with system matrix $A$, where $A$ is diagonizable and has all real eigenvalues, the state evolution is governed by the following equation:
+
+\begin{equation} \label{eqn_state_evolution}
+    \vec{x}(t) = \vec{v}_1 e^{\lambda_{1}t} z_{0,1} + \vec{v}_2 e^{\lambda_{2}t} z_{0,2} + ... + \vec{v}_n e^{\lambda_{n}t} z_{0,n}
+\end{equation}
+
+This implies that state responses are linear combinations of the eigenvectors, where the weights for each eigenvector are the exponential terms (each with a decay constant of $\lambda_i$) and some transformed initial condition $\vec{z}_0 = P^{-1}\vec{x}_0$. $P^{-1}$ is a coordinate transformation, mapping $\vec{x}$ to $\vec{z}$, representing $\vec{x}$ as a linear combination of eigenvectors of $A$.
+
+In the pole assignment problem, we define the closed-loop system matrix as $A_\text{cls} = A+BK$. The desired eigenvalues that were placed correspond to the eigenvalues of $A_\text{cls}$. This means that the implications of equation \ref{eqn_state_evolution} are applicable here as well. 
+% Each eigenvalue has an associated eigenvector. Consider some eigenvector ($\vec{v}_j$), with an associated eigenvalue ($\lambda_j$), having a 0 in the $i$th component. The $i$th component of that vector would always be zero, implying the $i$th state of $\vec{x}$, $x_i$, would be unaffected by $\vec{v}_j$. 
+
+Now, consider changing some eigenvalue of $A_\text{cls}$, $\lambda_j$. Changing $\lambda_j$ would change the associated eigenvector and hence represent $\vec{x}(t)$ in a different basis of eigenvectors. Hence, changing an eigenvalue will impact all state evolutions. This can be verified in the generated plots, where the state responses for the two different gains are not the same, meaning that each state is affected by the eigenvectors of $A_\text{cls}$. 
+
+In this case, one $\lambda$ value was increased from $-4$ to $-20$. This implies a higher decay constant in all of the state evolutions. This means each state would either converge at the same rate or a faster rate. This is visually verified in the plots above because the system converges to 0 more quickly when $K_2$ is used for the control signal over $K_1$.
+
+\subsection{Pole assignment problem for individual state rate control}
+This section discusses if it is possible to control the speed of convergence of individual states using pole assignment. 
+
+As discussed in the previous section, for any state $x_i$, its evolution can contain all eigenvectors. While we are able to control the decay rates directly, it is not necessarily true that decay rate for each state individually can be controlled individually. 
+
+Note that the statement above is valid here because the linearized system is controllable, which was verified by checking the rank of the controllability matrix $Q_c$. If the system had an uncontrollable (but asymptotically stable) subsystem, with its associated decoupled states, it would be possible to change change the speed of convergence for a state in the controllable subsystem without impacting the satisfactory speed of convergence of an uncontrollable state. 
+
+Physically speaking, the system has only one control input that impacts all 4 states. Intuitively, it does not seem feasible that one control input can be manipulated such that the speed of convergence for $\theta$ is maintained. Changing the speed of convergence of $y$ will impact the speed of convergence of $\theta$ and hence it would not feasible to speed up the cart convergence to zero.
 
 \section{LQR}
 Optimality does not ensure performance always.
 
-\subsection{Impact of changing $q_1$}
+\subsection{Impact of changing \texorpdfstring{$q_1$}{q1}}
+\subsubsection{Plots}
 For this subsection, $q_2$ and $R$ were fixed at $q_2$ = 5 and $R$ = 0.5. Two sets of gains were computed for $q_1$ = 0.1 and $q_1$ = 0.005.
 
-\subsection{Impact of changing $q_2$}
+\subsection{Impact of changing \texorpdfstring{$q_2$}{q2}}
+
+\subsubsection{Plots}
 For this subsection, $q_1$ and $R$ were fixed at $q_1$ = 0.05 and $R$ = 0.5. Two sets of gains were computed for $q_2$ = 1 and $q_2$ = 2000.
 
-\subsection{Impact of changing $R$}
+\subsection{Impact of changing \texorpdfstring{$R$}{R}}
+
+\subsubsection{Plots}
 For this subsection, $q_1$ and $q_2$ were fixed at $q_1$ = 0.05 and $q_2$ = 5. Two sets of gains were computed for $R$ = 0.005 and $R$ = 10.
 
+\subsection{Analysis}
+The cost function for the given $Q$ and $R$ is given by:
+\begin{equation}
+    J = \int_{0}^{\infty} q_1x_1^2 + q_2x_3^2 + Ru^2 dt
+\end{equation}
+
+Looking at this equation, $q_1, q_2 \text{ and } R$ are used to directly penalize $x_1, x_3 \text{ and } u$ respectively. The larger these values are, the more these signals are penalized. Choosing a large value for $R$ means the system is attempted to be stabilized with less energy (expensive control strategy). On the contrary, choosing a small value for $R$ means there is no penalization on the control signal (cheap control strategy). Similarly, small values for $q_1/q_2$ imply stabilization is attempted to be achieved with the least possible changes in the states, whereas large values for $q_1/q_2$ imply less concern about the changes in the states, i.e. how much the position of the cart/angle of the pendulum change to achieve equilibrium.
+
+This can be verified in all of the graphs above. In fig ##, when $q_1$ is varied, significant differences can be observed only in the $y$ and $\dot{y}$. When $K_1$ is applied (larger $q_1$), $y$ takes on a higher range of values as compared to $K_2$, indicating $K_2$ penalizes $y$ more than $K_1$. Notice changes in $\theta$ and $\dot{\theta}$ are marginally different.
+
+Similarly, when $q_2$ is varied, the graphs for $\theta$ and $\dot{\theta}$ are different. When $q_2$ takes on a higher value, 
+
 \section{Discussion on the impact of LQR on the nonlinear system}
+
+\subsection{Plots for initial condition \texorpdfstring{$(-1, 0, \pi/4, 0)$}{(−1, 0, π/4, 0)}}
+
+\subsection{Behaviour of the nonlinear system versus the linear system}
+Max Deviations from equilibrium become larger for all states. It's more aggressive form of proportional state feedback controller and eventually it breaks into oscillations and continues to diverge, as seen on the plots below.
 
 \end{document}
