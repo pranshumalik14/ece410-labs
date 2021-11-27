@@ -23,12 +23,12 @@ In this lab, we consider a pendulum-cart system, similar to the one seen in lab 
 \end{figure}
 
 The system is subject to the following non-linear dynamics,
-\begin{equation} \label{eqn_y_dot}
-    \dot{y} = \frac{-l\,m\,\sin\left(\theta\right)\,{\dot{\theta}}^2+u+g\,m\,\cos\left(\theta\right)\,\sin\left(\theta\right)}{m\,{\sin\left(\theta\right)}^2+M}
+\begin{equation} \label{eqn_y_dot_dot}
+    \ddot{y} = \frac{-l\,m\,\sin\left(\theta\right)\,{\dot{\theta}}^2+u+g\,m\,\cos\left(\theta\right)\,\sin\left(\theta\right)}{m\,{\sin\left(\theta\right)}^2+M}
 \end{equation}
 
-\begin{equation} \label{eqn_theta_dot}
-    \dot{\theta} = \frac{-l\,m\,\cos\left(\theta\right)\,\sin\left(\theta\right)\,{\dot{\theta}}^2+u\,\cos\left(\theta\right)+g\,\sin\left(\theta\right)\,\left(M+m\right)}{l\,\left(m\,{\sin\left(\theta\right)}^2+M\right)}
+\begin{equation} \label{eqn_theta_dot_dot}
+    \ddot{\theta} = \frac{-l\,m\,\cos\left(\theta\right)\,\sin\left(\theta\right)\,{\dot{\theta}}^2+u\,\cos\left(\theta\right)+g\,\sin\left(\theta\right)\,\left(M+m\right)}{l\,\left(m\,{\sin\left(\theta\right)}^2+M\right)}
 \end{equation}
 
 \section{Analyzing the cart pendulum model}
@@ -142,8 +142,8 @@ For the given $Q$ and $R$ in this lab, the cost function is given by:
 \begin{equation} \label{eqn_lqr}
     J = \int_{0}^{\infty} q_1x_1^2 + q_2x_3^2 + Ru^2 \quad dt
 \end{equation}
-
-Essentially, this method helps in computing $K$ such that the cost function $J$ is minimized. Although, this heuristic cost may be optimized for using a suitable $kl$, it, however, doesn't imply the best performing controller. For instance, an LQR controller will not always result in the best or needed convergence or stabilization crieteria, as seen later in this report. Note the this optimal gain vector $K$ was computed using the \textsc{MATLAB} function \texttt{lqr}.
+ 
+ Although, this heuristic cost may be optimized by using a suitable $K$ in a linear system, it does not imply the best performing controller. For instance, it will not always result in the best, or the needed, convergence or stabilization crieteria, as seen later in this report. Note the this optimal gain vector $K$ was computed using the \textsc{MATLAB} function \texttt{lqr}.
 
 \subsection{Impact of changing \texorpdfstring{$q_1$}{q1}}
 \subsubsection{Plots}
@@ -181,11 +181,11 @@ For this subsection, $q_1$ and $q_2$ were fixed at $q_1$ = 0.05 and $q_2$ = 5. T
 \end{figure}
 
 \subsection{Analysis} 
-Looking at equation \ref{eqn_lqr}, $q_1, q_2 \text{ and } R$ are used to directly penalize $x_1, x_3 \text{ and } u$ respectively. The larger these values are, the more these signals are penalized. Choosing a large value for $R$ means the system is attempted to be stabilized with less energy (expensive control strategy). On the contrary, choosing a small value for $R$ means there is no penalization on the control signal (cheap control strategy). Similarly, small values for $q_1/q_2$ imply stabilization is attempted to be achieved with the least possible changes in the states, whereas large values for $q_1/q_2$ imply less concern about the changes in the states, i.e. how much the position of the cart/angle of the pendulum change to achieve equilibrium.
+Looking at equation \ref{eqn_lqr}, $q_1, q_2 \text{ and } R$ are used to directly penalize $x_1, x_3 \text{ and } u$ respectively. The larger these values are, the more these signals are penalized. Choosing a large value for $R$ means the system is attempted to be stabilized with less energy (expensive control strategy). On the contrary, choosing a small value for $R$ means there is no penalization on the control signal (cheap control strategy). Similarly, small values for $q_1$ or $q_2$ imply stabilization is attempted to be achieved with the least possible changes in the respective states, whereas large values for $q_1$ or $q_2$ imply less concern about the changes in the respective states, i.e. how much the position of the cart or angle of the pendulum change to achieve equilibrium.
 
 This can be verified in all of the graphs above. In figure \ref{fig:q1_k1_k2_state_evolution} when $q_1$ is varied, significant differences can be observed only in the $y$ and $\dot{y}$. When $K_1$ is applied (larger $q_1$), $y$ takes on a higher range of values as compared to $K_2$, indicating $K_2$ penalizes $y$ more than $K_1$. Notice changes in $\theta$ and $\dot{\theta}$ are marginally different.
 
-Similarly, when $q_2$ is varied, in figure \ref{fig:q2_k1_k2_state_evolution}, the plots for $\theta$ and $\dot{\theta}$ are different. When $q_2$ takes on a higher value, $\theta$ is penalized relatively lesser and in fact converges to the equilibrium point more quickly than a lower value of $q_2$. Interestingly, the plots for $y$ and $\dot{y}$ are significantly different as well, and this could be attributed equations \ref{eqn_y_dot} and \ref{eqn_theta_dot}. $\dot{\theta}$ has no dependence on $y$ but $\dot{y}$ has dependence on $\theta$.
+Similarly, when $q_2$ is varied, in figure \ref{fig:q2_k1_k2_state_evolution}, the plots for $\theta$ and $\dot{\theta}$ are different. When $q_2$ takes on a higher value, $\theta$ is penalized relatively lesser and in fact converges to the equilibrium point more quickly than a lower value of $q_2$. Interestingly, the plots for $y$ and $\dot{y}$ are significantly different as well, and this could be attributed equations \ref{eqn_y_dot_dot} and \ref{eqn_theta_dot_dot}. $\ddot{\theta}$ has no direct dependence on $y$ but $\ddot{y}$ has dependence on $\theta$.
 
 Finally, coming to figure \ref{fig:R_k1_k2_state_evolution}, it can be seen that imposing a higher value of $R$, i.e., more penalization for the input control signal ($u_{K_2}$), enforces the control signal $u$ smaller, i.e., it takes a smaller range of values.
 
@@ -194,11 +194,11 @@ Finally, coming to figure \ref{fig:R_k1_k2_state_evolution}, it can be seen that
 So far, the controllers designed have been simulated on the linearized system. An interesting test for the performance of these controllers would be to simulate them on the actual non-linear system and check for convergence to the desired equilibrium point. For this section, the controller designed in section \ref{lqr_r_controller} with $R = 0.005, q_1 = 0.05, q_2 = 0.5$ was used.
 
 \subsection{Plots for initial condition \texorpdfstring{$(-1, 0, \pi/4, 0)$}{(−1, 0, π/4, 0)}}
-The system is first tested with the $\vec{x}_0 = \rcvec{-1 & 0 & \pi/4 & 0}$. The state evolution for this is seen in figure \ref{fig:state_evol_y0}
+The system is first tested with the $\vec{x}_0 = \rcvec{-1 & 0 & \pi/4 & 0}^\intercal$. The state evolution for this is seen in figure \ref{fig:state_evol_y0}
 \begin{figure}[hbt!]
     \centering
     \includegraphics[0.85\textwidth]{lab3/figs/lin_nonlin_state_evolutions.pdf}
-    \caption{Linear and non-linear closed-loop system state evolutions for $\vec{x}_0 = \rcvec{-1 & 0 & \pi/4 & 0}$}
+    \caption{Linear and non-linear closed-loop system state evolutions for $\vec{x}_0 = \rcvec{-1 & 0 & \pi/4 & 0}^\intercal$}
     \label{fig:state_evol_y0}
 \end{figure}
 
