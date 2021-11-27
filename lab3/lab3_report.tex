@@ -191,10 +191,10 @@ Finally, coming to figure \ref{fig:R_k1_k2_state_evolution}, it can be seen that
 
 \section{LQR controller performance on nonlinear systems}
 
-So far, the controllers designed have been simulated on the linearized system. An interesting test for the performance of these controllers would be to simulate them on the actual non-linear system and check for convergence to the desired equilibrium point. For this section, the controller designed in section \ref{lqr_r_controller}: $R = 0.005, q_1 = 0.05, q_2 = 0.5$.
+So far, the controllers designed have been simulated on the linearized system. An interesting test for the performance of these controllers would be to simulate them on the actual non-linear system and check for convergence to the desired equilibrium point. For this section, the controller designed in section \ref{lqr_r_controller} with $R = 0.005, q_1 = 0.05, q_2 = 0.5$ was used.
 
 \subsection{Plots for initial condition \texorpdfstring{$(-1, 0, \pi/4, 0)$}{(−1, 0, π/4, 0)}}
-The system is first tested with the $\vec{x}_0 = \rcvec{-1 & 0 & \pi/4 & 0}$. The state evolution for this is seen in figure \ref{fig:state_evol_y0}:
+The system is first tested with the $\vec{x}_0 = \rcvec{-1 & 0 & \pi/4 & 0}$. The state evolution for this is seen in figure \ref{fig:state_evol_y0}
 \begin{figure}[hbt!]
     \centering
     \includegraphics[0.85\textwidth]{lab3/figs/lin_nonlin_state_evolutions.pdf}
@@ -203,7 +203,7 @@ The system is first tested with the $\vec{x}_0 = \rcvec{-1 & 0 & \pi/4 & 0}$. Th
 \end{figure}
 
 \subsection{Behaviour of the nonlinear system versus the linear system}
-As seen in figure \ref{fig:state_evol_y0}, the lqr controller successfully converges to the equilibrium point for both the linear and non-linear systems. As an observation, it can be seen that the linear model assumes a higher restoration force, which was discussed in lab 1.
+As seen in figure \ref{fig:state_evol_y0}, the lqr controller successfully converges to the equilibrium point for both the linear and non-linear systems. As an observation, it can be seen that the linear model assumes a higher restoration force and hence the state magnitude stays lower compared to the non-linear system, which was discussed in lab 1.
 
 \subsection{Effect of starting farther from equilibrium}
 Now, the position of the start $y$ can be further decreased until the point of no convergence is obtained. The state evolutions for decreasing $y$ is plotted in figure \ref{fig:non_lin_sys_resp_diff_y0}.
@@ -215,7 +215,7 @@ Now, the position of the start $y$ can be further decreased until the point of n
     \label{fig:non_lin_sys_resp_diff_y0}
 \end{figure}
 
-As seen in the figure \ref{fig:non_lin_sys_resp_diff_y0}, the maximum deviations from equilibrium become larger as $y$ is decreased. The lqr controller is a more aggressive form of a proportional state feedback controller and eventually it breaks into oscillations and continues to diverge, as seen on the plots below. This was verified when $y = -11.9$, the lqr controller failed to converge to the equilibrium point (0, 0, 0, 0), as seen in figure \ref{fig:non_lin_sys_resp_unstable_y0}.
+As seen in the figure \ref{fig:non_lin_sys_resp_diff_y0}, the maximum deviations from equilibrium become larger as $y$ is decreased. As the lqr controller functions as a proportional state feedback controller and beyond a certain initial error, it tries with increasing aggression to compensate for it and eventually it breaks into oscillations and continues to diverge as seen in figure  \ref{fig:non_lin_sys_resp_unstable_y0}. This was verified when $y = -11.9$, as the lqr controller failed to converge to the linearization equilibrium point.
 
 \begin{figure}[hbt!]
     \centering
