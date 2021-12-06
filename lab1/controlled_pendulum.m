@@ -18,9 +18,10 @@ x2 = X(2);
 z  = X(3); % = controller internal state
 
 % calculate control input
-u = H*z - L*x1; % ustar + Hz ? L(y??star); ?star = ustar = 0 while linearizing
+u = H*z - L*x1; % ustar + Hz - L(y-thetastar); thetastar = ustar = 0 while linearizing
 
 % set output: state evolution DE
 xdot = [x2; -g/l*sin(x1) - 1/(M*l)*cos(x1)*u];
-zdot = F*z - G*x1;      % zdot = F*z ? G*(y??star); ?star = 0 while linearizing
-Xdot = [xdot; zdot; u]; % augmented controller-system state
+zdot = F*z - G*x1;         % zdot = F*z ? G*(y-thetastar); thetastar = 0 while linearizing
+udot = H*zdot - L*x2;      % udot = d/dt(u)
+Xdot = [xdot; zdot; udot]; % augmented controller-system state
