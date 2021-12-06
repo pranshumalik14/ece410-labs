@@ -1,5 +1,5 @@
 % returns pendulum state evolution ODE appended with control signal u
-function ZXdot = nonlin_cls_observer_sep_response(t, ZX, parameters, ssmatrices)
+function ZXdot = nonlin_cls_noisy_observer_feedback_response(t, ZX, parameters, ssmatrices, N)
 
 % extract parameters
 M = parameters.M;
@@ -18,8 +18,8 @@ L = ssmatrices{5};
 Z = ZX(1:4);
 X = ZX(5:8);
 
-% set input (u = Kx)
-u  = K*Z;
+% set input (u = Kx_hat) (feedback incorporated)
+u  = K*X;
 
 % set output: state evolution DE
 z1_dot = Z(2);
@@ -28,8 +28,8 @@ z3_dot = Z(4);
 z4_dot = (-(m*l*sin(Z(3))*cos(Z(3))*(Z(4))^2) + (m+M)*g*sin(Z(3)) + u*cos(Z(3))) / (l * (M + m*sin(Z(3))^2));
 
 Zdot = [z1_dot; z2_dot; z3_dot; z4_dot];
-Y    = C*Z;
-Xdot = (A + L*C)*X + B*K*Z - L*Y;
+Y    = C*Z + N(t);
+Xdot = (A + L*C + B*K)*X - L*Y;
 
 ZXdot = [Zdot; Xdot]; % augmented controller-observer-system state
 
