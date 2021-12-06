@@ -94,142 +94,112 @@ X1_nlin_t = ZX1_nlin(:, 5:8);
 Z2_nlin_t = ZX2_nlin(:, 1:4);
 X2_nlin_t = ZX2_nlin(:, 5:8);
 
-%% plot results
-fig_ZX_lin = figure('Name', 'State and Control Evolution for <> and <>', 'NumberTitle', 'off');
-
+% plot results
+fig_ZX_lin = figure('Name', 'Linear e <...>', 'NumberTitle', 'off');
 figure(fig_ZX_lin);
 subplot(4,1,1);
-plot(t_lin, Z1_lin_t(:, 1))
+plot(t_lin, X1_lin_t(:, 1)-Z1_lin_t(:, 1))
 hold on;
-plot(t_lin, X1_lin_t(:, 1))
-ylabel('$y$ [m]', 'Interpreter', 'latex');
-set(legend('$y_{K_1}$', '$y_{K_2}$'), 'Interpreter', 'latex');
+plot(t_lin, X2_lin_t(:, 1)-Z2_lin_t(:, 1))
+ylabel('$\tilde{y}$ [m]', 'Interpreter', 'latex');
+set(legend('$\tilde{y}_{L_1}$', '$\tilde{y}_{L_2}$'), 'Interpreter', 'latex');
 subplot(4,1,2);
-plot(t_lin, Z1_lin_t(:, 2))
+plot(t_lin, X1_lin_t(:, 2)-Z1_lin_t(:, 2))
 hold on;
-plot(t_lin, X1_lin_t(:, 2))
-ylabel('$\dot{y}$ [m/s]', 'Interpreter', 'latex');
-set(legend('$\dot{y}_{K_1}$', '$\dot{y}_{K_2}$'), 'Interpreter', 'latex');
+plot(t_lin, X2_lin_t(:, 2)-Z2_lin_t(:, 2))
+ylabel('$\dot{\tilde{y}}$ [m/s]', 'Interpreter', 'latex');
+set(legend('$\dot{\tilde{y}}_{L_1}$', '$\dot{\tilde{y}}_{L_2}$'), 'Interpreter', 'latex');
 subplot(4,1,3);
-plot(t_lin, Z1_lin_t(:, 3))
+plot(t_lin, X1_lin_t(:, 3)-Z1_lin_t(:, 3))
 hold on;
-plot(t_lin, X1_lin_t(:, 3))
-ylabel('$\theta$ [rad]', 'Interpreter', 'latex');
-set(legend('$\theta_{K_1}$', '$\theta_{K_2}$'), 'Interpreter', 'latex');
+plot(t_lin, X2_lin_t(:, 3)-Z2_lin_t(:, 3))
+ylabel('$\tilde{\theta}$ [rad]', 'Interpreter', 'latex');
+set(legend('$\tilde{\theta}_{L_1}$', '$\tilde{\theta}_{L_2}$'), 'Interpreter', 'latex');
 subplot(4,1,4);
-plot(t_lin, Z1_lin_t(:, 4))
+plot(t_lin, X1_lin_t(:, 4)-Z1_lin_t(:, 4))
 hold on;
-plot(t_lin, X1_lin_t(:, 4))
-ylabel('$\dot{\theta}$ [rad/s]', 'Interpreter', 'latex');
-set(legend('$\dot{\theta}_{K_1}$', '$\dot{\theta}_{K_2}$'), 'Interpreter', 'latex');
+plot(t_lin, X2_lin_t(:, 4)-Z2_lin_t(:, 4))
+ylabel('$\dot{\tilde{\theta}}$ [rad/s]', 'Interpreter', 'latex');
+set(legend('$\dot{\tilde{\theta}}_{L_1}$', '$\dot{\tilde{\theta}}_{L_2}$'), 'Interpreter', 'latex');
 
-fig_ZX_nlin = figure('Name', 'State and Control Evolution for <> and <>', 'NumberTitle', 'off');
+% todo: follow above and just change signals to nonlin
+% fig_ZX_nlin = figure('Name', 'State and Control Evolution for <> and <>', 'NumberTitle', 'off');
+% figure(fig_ZX_nlin);
+% subplot(4,1,1);
+% plot(t_nlin, Z1_nlin_t(:, 1))
+% hold on;
+% plot(t_nlin, X1_nlin_t(:, 1))
+% ylabel('$y$ [m]', 'Interpreter', 'latex');
+% set(legend('$y_{K_1}$', '$y_{K_2}$'), 'Interpreter', 'latex');
+% subplot(4,1,2);
+% plot(t_nlin, Z1_nlin_t(:, 2))
+% hold on;
+% plot(t_nlin, X1_nlin_t(:, 2))
+% ylabel('$\dot{y}$ [m/s]', 'Interpreter', 'latex');
+% set(legend('$\dot{y}_{K_1}$', '$\dot{y}_{K_2}$'), 'Interpreter', 'latex');
+% subplot(4,1,3);
+% plot(t_nlin, Z1_nlin_t(:, 3))
+% hold on;
+% plot(t_nlin, X1_nlin_t(:, 3))
+% ylabel('$\theta$ [rad]', 'Interpreter', 'latex');
+% set(legend('$\theta_{K_1}$', '$\theta_{K_2}$'), 'Interpreter', 'latex');
+% subplot(4,1,4);
+% plot(t_nlin, Z1_nlin_t(:, 4))
+% hold on;
+% plot(t_nlin, X1_nlin_t(:, 4))
+% ylabel('$\dot{\theta}$ [rad/s]', 'Interpreter', 'latex');
+% set(legend('$\dot{\theta}_{K_1}$', '$\dot{\theta}_{K_2}$'), 'Interpreter', 'latex');
 
-figure(fig_ZX_nlin);
-subplot(4,1,1);
-plot(t_nlin, Z1_nlin_t(:, 1))
-hold on;
-plot(t_nlin, X1_nlin_t(:, 1))
-ylabel('$y$ [m]', 'Interpreter', 'latex');
-set(legend('$y_{K_1}$', '$y_{K_2}$'), 'Interpreter', 'latex');
-subplot(4,1,2);
-plot(t_nlin, Z1_nlin_t(:, 2))
-hold on;
-plot(t_nlin, X1_nlin_t(:, 2))
-ylabel('$\dot{y}$ [m/s]', 'Interpreter', 'latex');
-set(legend('$\dot{y}_{K_1}$', '$\dot{y}_{K_2}$'), 'Interpreter', 'latex');
-subplot(4,1,3);
-plot(t_nlin, Z1_nlin_t(:, 3))
-hold on;
-plot(t_nlin, X1_nlin_t(:, 3))
-ylabel('$\theta$ [rad]', 'Interpreter', 'latex');
-set(legend('$\theta_{K_1}$', '$\theta_{K_2}$'), 'Interpreter', 'latex');
-subplot(4,1,4);
-plot(t_nlin, Z1_nlin_t(:, 4))
-hold on;
-plot(t_nlin, X1_nlin_t(:, 4))
-ylabel('$\dot{\theta}$ [rad/s]', 'Interpreter', 'latex');
-set(legend('$\dot{\theta}_{K_1}$', '$\dot{\theta}_{K_2}$'), 'Interpreter', 'latex');
+%% state estimation with measurement noise
 
-%% nonlinear comparison of lqr controller performance
+% create gaussian white noise process, W(t), with mean 'mu' and covariance 'covar'
+mu = [0; 0]; covar = [0.005 0; 0 0.001];
+L  = chol(covar, 'lower'); % transformation matrix to get covariance of covar from std normal
+Ws = L*randn(2, 1000);     % samples of the WGN
+W  = @(t) interp1(Tspan, Ws', t); % interpolate W(t) between samples for t in [0, 10] seconds
 
-x0 = [-1; 0; pi/4; 0]; % new initial state
+% get evolutions for cls (linearized) system state, Z(t), and noisy observer 1 state, XN1(t)
+[~, ZXN1_lin] = ode45(@lin_cls_noisy_observer_sep_response, Tspan, [Z0; X0], options, {numA, numB, numC, K, L1}, W);
+XN1_lin_t = ZXN1_lin(:, 5:8);
 
-% get nonlinear evolution of X given our control law, u = Kx
-[t_nl, Xu_nl] = ode45(@inverted_pendulum, Tspan, [x0; K_R_1*x0], options, parameters, K_R_1);
-X_nl = Xu_nl(:, 1:4);
-u_nl = Xu_nl(:, 5);
-
-% get linearized cls conntrolled state time response for K_R_1
-A_cls = numA + numB*K_R_1;
-cls   = @(t, x) A_cls*x;
-
-[t_l, Xu_l] = linearized_cls_response(cls, K_R_1, Tspan, x0);
-X_l = Xu_l(:, 1:4);
-u_l = Xu_l(:, 5);
-
-% plot state and control evolution over time for both linear and non-linear closed loop systems
-fig_X_nl_l_comp = figure('Name', 'State and Control Evolution Non-linear Comparison', 'NumberTitle', 'off');
-
-figure(fig_X_nl_l_comp);
-subplot(5,1,1);
-plot(t_l, X_l(:, 1))
-hold on;
-plot(t_nl, X_nl(:, 1))
-ylabel('$y$ [m]', 'Interpreter', 'latex');
-set(legend('$y_{l}$', '$y_{nl}$'), 'Interpreter', 'latex');
-subplot(5,1,2);
-plot(t_l, X_l(:, 2))
-hold on;
-plot(t_nl, X_nl(:, 2))
-ylabel('$\dot{y}$ [m/s]', 'Interpreter', 'latex');
-set(legend('$\dot{y}_{l}$', '$\dot{y}_{nl}$'), 'Interpreter', 'latex');
-subplot(5,1,3);
-plot(t_l, X_l(:, 3))
-hold on;
-plot(t_nl, X_nl(:, 3))
-ylabel('$\theta$ [rad]', 'Interpreter', 'latex');
-set(legend('$\theta_{l}$', '$\theta_{nl}$'), 'Interpreter', 'latex');
-subplot(5,1,4);
-plot(t_l, X_l(:, 4))
-hold on;
-plot(t_nl, X_nl(:, 4))
-ylabel('$\dot{\theta}$ [rad/s]', 'Interpreter', 'latex');
-set(legend('$\dot{\theta}_{l}$', '$\dot{\theta}_{nl}$'), 'Interpreter', 'latex');
-subplot(5,1,5);
-plot(t_l, u_l)
-hold on;
-plot(t_nl, u_nl)
-xlabel('Time [s]', 'Interpreter', 'latex');
-ylabel('$u$ [N]', 'Interpreter', 'latex');
-set(legend('$u_{l}$', '$u_{nl}$'), 'Interpreter', 'latex');
-
-%% failure in stabilization of nonlinear system by above lqr controller
-
-x0_unstab = [-11.9; 0; pi/4; 0]; % unstable initial condition (near 12)
-Tspan     = linspace(0, 4.5, 1e3);
-[t_unstab, X_unstab] = ode45(@inverted_pendulum, Tspan, [x0_unstab; K_R_1*x0_unstab], options, parameters, K_R_1);
+% get evolutions for cls (linearized) system state, Z(t), and noisy observer 2 state, XN2(t)
+[~, ZXN2_lin] = ode45(@lin_cls_noisy_observer_sep_response, Tspan, [Z0; X0], options, {numA, numB, numC, K, L2}, W);
+XN2_lin_t = ZXN2_lin(:, 5:8);
 
 % plot results
-fig_X_unstab = figure('Name', 'State and Control Evolution For Unstable Initial Condition', 'NumberTitle', 'off');
+fig_ZXN_lin = figure('Name', 'Linear noise e <...>', 'NumberTitle', 'off');
+figure(fig_ZXN_lin);
+subplot(4,1,1);
+plot(t_lin, XN1_lin_t(:, 1)-Z1_lin_t(:, 1))
+hold on;
+plot(t_lin, XN2_lin_t(:, 1)-Z2_lin_t(:, 1))
+ylabel('$\tilde{y}$ [m]', 'Interpreter', 'latex');
+set(legend('$\tilde{y}_{L_1}$', '$\tilde{y}_{L_2}$'), 'Interpreter', 'latex');
+subplot(4,1,2);
+plot(t_lin, XN1_lin_t(:, 2)-Z1_lin_t(:, 2))
+hold on;
+plot(t_lin, XN2_lin_t(:, 2)-Z2_lin_t(:, 2))
+ylabel('$\dot{\tilde{y}}$ [m/s]', 'Interpreter', 'latex');
+set(legend('$\dot{\tilde{y}}_{L_1}$', '$\dot{\tilde{y}}_{L_2}$'), 'Interpreter', 'latex');
+subplot(4,1,3);
+plot(t_lin, XN1_lin_t(:, 3)-Z1_lin_t(:, 3))
+hold on;
+plot(t_lin, XN2_lin_t(:, 3)-Z2_lin_t(:, 3))
+ylabel('$\tilde{\theta}$ [rad]', 'Interpreter', 'latex');
+set(legend('$\tilde{\theta}_{L_1}$', '$\tilde{\theta}_{L_2}$'), 'Interpreter', 'latex');
+subplot(4,1,4);
+plot(t_lin, XN1_lin_t(:, 4)-Z1_lin_t(:, 4))
+hold on;
+plot(t_lin, XN2_lin_t(:, 4)-Z2_lin_t(:, 4))
+ylabel('$\dot{\tilde{\theta}}$ [rad/s]', 'Interpreter', 'latex');
+set(legend('$\dot{\tilde{\theta}}_{L_1}$', '$\dot{\tilde{\theta}}_{L_2}$'), 'Interpreter', 'latex');
 
-figure(fig_X_unstab);
-subplot(5,1,1);
-plot(t_unstab, X_unstab(:, 1))
-ylabel('$y$ [m]', 'Interpreter', 'latex');
-subplot(5,1,2);
-plot(t_unstab, X_unstab(:, 2))
-ylabel('$\dot{y}$ [m/s]', 'Interpreter', 'latex');
-subplot(5,1,3);
-plot(t_unstab, X_unstab(:, 3))
-ylabel('$\theta$ [rad]', 'Interpreter', 'latex');
-subplot(5,1,4);
-plot(t_unstab, X_unstab(:, 4))
-ylabel('$\dot{\theta}$ [rad/s]', 'Interpreter', 'latex');
-subplot(5,1,5);
-plot(t_unstab, X_unstab(:, 5))
-xlabel('Time [s]', 'Interpreter', 'latex');
-ylabel('$u$ [N]', 'Interpreter', 'latex');
+% calculate mean squared error (MSE) over last half of Tspan
+Xtilde1 = XN1_lin_t-ZXN1_lin(:, 1:4);
+Xtilde2 = XN2_lin_t-ZXN2_lin(:, 1:4);
+n    = ceil(length(Tspan)/2);
+mse1 = 1/n*sum(Xtilde1(n+1:end, :).^2);
+mse2 = 1/n*sum(Xtilde2(n+1:end, :).^2);
 
 %% autoexport figures to (pdf) files
 %  note: uncomment to save again
