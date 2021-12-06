@@ -13,7 +13,7 @@ Z = ZX(1:4);
 X = ZX(5:8);
 
 Zdot = (A + B*K)*Z;
-Y    = C*Z + N(t)'; % added noise
+Y    = C*Z + N(t); % added noise
 Xdot = (A + L*C)*X + B*K*Z - L*Y;
 
 ZXdot = [Zdot; Xdot]; % augmented controller-observer-system state

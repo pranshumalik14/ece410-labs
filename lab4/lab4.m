@@ -155,8 +155,8 @@ set(legend('$\dot{\tilde{\theta}}_{L_1}$', '$\dot{\tilde{\theta}}_{L_2}$'), 'Int
 % create gaussian white noise process, W(t), with mean 'mu' and covariance 'covar'
 mu = [0; 0]; covar = [0.005 0; 0 0.001];
 L  = chol(covar, 'lower'); % transformation matrix to get covariance of covar from std normal
-Ws = L*randn(2, 1000);     % samples of the WGN
-W  = @(t) interp1(Tspan, Ws', t); % interpolate W(t) between samples for t in [0, 10] seconds
+Ws = (L*randn(2, 1000))';  % samples of the WGN
+W  = @(t) interp1(Tspan, Ws, t)'; % interpolate W(t) between samples for t in [0, 10] seconds
 
 % get evolutions for cls (linearized) system state, Z(t), and noisy observer 1 state, XN1(t)
 [~, ZXN1_lin] = ode45(@lin_cls_noisy_observer_sep_response, Tspan, [Z0; X0], options, {numA, numB, numC, K, L1}, W);
