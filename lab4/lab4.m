@@ -117,7 +117,8 @@ hold on;
 plot(t_lin, X2_lin_t(:, 2)-Z2_lin_t(:, 2))
 xlabel('Time $t$ [s]', 'Interpreter','latex');
 ylabel('$\dot{\tilde{z}}$ [m/s]', 'Interpreter', 'latex');
-set(legend('$\dot{\tilde{z}}_{L_1}$', '$\dot{\tilde{z}}_{L_2}$'), 'Interpreter', 'latex');
+set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
+% set(legend('$\dot{\tilde{z}}_{L_1}$', '$\dot{\tilde{z}}_{L_2}$'), 'Interpreter', 'latex');
 
 % Plot tilde(theta)
 subplot(4,1,3);
@@ -126,7 +127,8 @@ hold on;
 plot(t_lin, X2_lin_t(:, 3)-Z2_lin_t(:, 3))
 xlabel('Time $t$ [s]', 'Interpreter','latex');
 ylabel('$\tilde{\theta}$ [rad]', 'Interpreter', 'latex');
-set(legend('$\tilde{\theta}_{L_1}$', '$\tilde{\theta}_{L_2}$'), 'Interpreter', 'latex');
+set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
+% set(legend('$\tilde{\theta}_{L_1}$', '$\tilde{\theta}_{L_2}$'), 'Interpreter', 'latex');
 
 % Plot tilde(thetadot)
 subplot(4,1,4);
@@ -135,7 +137,8 @@ hold on;
 plot(t_lin, X2_lin_t(:, 4)-Z2_lin_t(:, 4))
 xlabel('Time $t$ [s]', 'Interpreter','latex');
 ylabel('$\dot{\tilde{\theta}}$ [rad/s]', 'Interpreter', 'latex');
-set(legend('$\dot{\tilde{\theta}}_{L_1}$', '$\dot{\tilde{\theta}}_{L_2}$'), 'Interpreter', 'latex');
+set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
+% set(legend('$\dot{\tilde{\theta}}_{L_1}$', '$\dot{\tilde{\theta}}_{L_2}$'), 'Interpreter', 'latex');
 
 %% Plot results (non-linear system response) 
 % todo: follow above and just change signals to nonlin
@@ -206,8 +209,8 @@ plot(t_lin, XN1_lin_t(:, 1) - ZN1_lin_t(:, 1)) % ######################### PRANS
 hold on;
 plot(t_lin, XN2_lin_t(:, 1)-Z2_lin_t(:, 1))
 ylabel('$\tilde{y}$ [m]', 'Interpreter', 'latex');
-set(legend('$\tilde{y}_{L_1}$', '$\tilde{y}_{L_2}$'), 'Interpreter', 'latex');
-% set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
+% set(legend('$\tilde{y}_{L_1}$', '$\tilde{y}_{L_2}$'), 'Interpreter', 'latex');
+set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
 
 % plot tilde(zdot)
 subplot(4,1,2);
@@ -215,8 +218,8 @@ plot(t_lin, XN1_lin_t(:, 2)-Z1_lin_t(:, 2))
 hold on;
 plot(t_lin, XN2_lin_t(:, 2)-Z2_lin_t(:, 2))
 ylabel('$\dot{\tilde{y}}$ [m/s]', 'Interpreter', 'latex');
-set(legend('$\dot{\tilde{y}}_{L_1}$', '$\dot{\tilde{y}}_{L_2}$'), 'Interpreter', 'latex');
-% set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
+% set(legend('$\dot{\tilde{y}}_{L_1}$', '$\dot{\tilde{y}}_{L_2}$'), 'Interpreter', 'latex');
+set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
 
 % plot tilde(theta)
 subplot(4,1,3);
@@ -224,8 +227,8 @@ plot(t_lin, XN1_lin_t(:, 3)-Z1_lin_t(:, 3))
 hold on;
 plot(t_lin, XN2_lin_t(:, 3)-Z2_lin_t(:, 3))
 ylabel('$\tilde{\theta}$ [rad]', 'Interpreter', 'latex');
-set(legend('$\tilde{\theta}_{L_1}$', '$\tilde{\theta}_{L_2}$'), 'Interpreter', 'latex');
-% set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
+% set(legend('$\tilde{\theta}_{L_1}$', '$\tilde{\theta}_{L_2}$'), 'Interpreter', 'latex');
+set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
 
 % plot tilde(theta dot)
 subplot(4,1,4);
@@ -233,8 +236,8 @@ plot(t_lin, XN1_lin_t(:, 4)-Z1_lin_t(:, 4))
 hold on;
 plot(t_lin, XN2_lin_t(:, 4)-Z2_lin_t(:, 4))
 ylabel('$\dot{\tilde{\theta}}$ [rad/s]', 'Interpreter', 'latex');
-set(legend('$\dot{\tilde{\theta}}_{L_1}$', '$\dot{\tilde{\theta}}_{L_2}$'), 'Interpreter', 'latex');
-% set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
+% set(legend('$\dot{\tilde{\theta}}_{L_1}$', '$\dot{\tilde{\theta}}_{L_2}$'), 'Interpreter', 'latex');
+set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
 
 %% calculate mean squared error (MSE) over last half of Tspan
 Xtilde1 = XN1_lin_t-ZXN1_lin(:, 1:4);
@@ -400,10 +403,9 @@ set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
 %% autoexport figures to (pdf) files
 %  note: uncomment to save again
 
-% savefig(fig_X_pp, './figs/pole_place_K1_K2_state_evolutions')
-% savefig(fig_X_q1, './figs/q1_K1_K2_state_evolutions')
-% savefig(fig_X_q2, './figs/q2_K1_K2_state_evolutions')
-% savefig(fig_X_R, './figs/R_K1_K2_state_evolutions')
-% savefig(fig_X_nl_l_comp, './figs/lin_nonlin_state_evolutions')
-% savefig(fig_X_nl_shift, './figs/nonlin_shiftpos_state_evolutions')
-% savefig(fig_X_unstab, './figs/nonlin_unstable_state_evolution')
+% savefig(fig_ZX_lin, './figs/lin_noiseless_state_est_error')
+% savefig(fig_ZX_nlin, './figs/nlin_noiseless_state_est_error')
+% savefig(fig_ZXN_lin, './figs/lin_noisy_state_est_error')
+% savefig(fig_ZX_lin_feed, './figs/lin_noiseless_state_est_error_feedback')
+% savefig(fig_ZX_nlin_feed, './figs/nlin_noiseless_state_est_error_feedback')
+% savefig(fig_ZX_nlin_noise_feed, './figs/nlin_noisy_state_est_error_feedback')
