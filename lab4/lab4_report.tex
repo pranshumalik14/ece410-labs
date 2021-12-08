@@ -4,7 +4,7 @@
 \date{}
 
 \graphicspath{ {./figs/} }
-\newcommand{\figscalingfactor}{0.85}
+\newcommand{\shrinkimage}[1]{\includegraphics[width=0.95\textwidth,height=0.8\textheight,keepaspectratio]{#1}}
 
 \begin{document}
 
@@ -14,6 +14,7 @@
 \maketitle
 
 \section{Noiseless State Estimation}
+\subsection{Observer Gains \texorpdfstring{$L_1$}{L1} and \texorpdfstring{$L_2$}{L2}}
 
 \begin{equation*}
     L_1 = \begin{bmatrix}
@@ -25,7 +26,7 @@
 \end{equation*}
 
 \begin{equation*}
-    L_2 = 10^{3} \times \begin{bmatrix}
+    L_2 = 10^{3} \begin{bmatrix}
     -0.0829  & -0.0011 \\
     -1.7161  & -0.0464 \\ 
     -0.0009  & -0.0831 \\ 
@@ -33,58 +34,72 @@
     \end{bmatrix}
 \end{equation*}
 
-\begin{figure}
+\subsection{Plots for State Estimation Error Evolution}
+\begin{figure}[b]
     \centering
-    \includegraphics[\figscalingfactor\textwidth]{lab4/figs/lin_noiseless_state_est_error.pdf}
+    \shrinkimage{lab4/figs/lin_noiseless_state_est_error.pdf}
     \caption{Linear Noiseless State Estimation Error}
     \label{fig:lin_noiseless_state_est_error}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[b]
     \centering
-    \includegraphics[\figscalingfactor\textwidth]{lab4/figs/nlin_noiseless_state_est_error.pdf}
+    \shrinkimage{lab4/figs/nlin_noiseless_state_est_error.pdf}
     \caption{Nonlinear Noiseless State Estimation Error}
     \label{fig:nlin_noiseless_state_est_error}
 \end{figure}
 
+\subsection{Evaluation}
+
 \section{State estimation with measurement noise}
 
-\begin{figure}
+\subsection{Plot}
+\begin{figure}[b]
     \centering
-    \includegraphics[\figscalingfactor\textwidth]{lab4/figs/lin_noisy_state_est_error.pdf}
+    \shrinkimage{lin_noisy_state_est_error.pdf}
     \caption{Linear Noisy State Estimation Error}
     \label{fig:lin_noisy_state_est_error}
 \end{figure}
 
+\subsection{Comment on the difference between \texorpdfstring{$L_1$}{L1} and \texorpdfstring{$L_2$}{L2}}
+
+\subsection{Compare and contrast the MSEs associated with \texorpdfstring{$L_1$}{L1} and \texorpdfstring{$L_2$}{L2}}
+
 \section{Noiseless output feedback control} 
 
-\begin{figure}
+\subsection{Plots}
+\begin{figure}[b]
     \centering
-    \includegraphics[\figscalingfactor\textwidth]{lab4/figs/lin_noiseless_state_est_error_feedback.pdf}
+    \shrinkimage{lab4/figs/lin_noiseless_state_est_error_feedback.pdf}
     \caption{Linear System State Evolution with feedback control}
     \label{fig:lin_noiseless_state_est_error_feedback}
 \end{figure}
 
 \textcolor{red}{be sure to define what K is}
 
-
-
-
-\begin{figure}
+\begin{figure}[b]
     \centering
-    \includegraphics[\figscalingfactor\textwidth]{lab4/figs/nlin_noiseless_state_est_error_feedback.pdf}
+    \shrinkimage{lab4/figs/nlin_noiseless_state_est_error_feedback.pdf}
     \caption{Nonlinear System State Evolution with feedback control}
     \label{fig:nlin_noiseless_state_est_error_feedback}
 \end{figure}
 
+\subsection{Comment on the behaviour of the linearized system}
+\subsection{Comment on the behaviour of the nonlinear system}
 
 \section{Output feedback control with measurement noise}
 
-\begin{figure}
+\subsection{Plot}
+\begin{figure}[b]
     \centering
-    \includegraphics[\figscalingfactor\textwidth]{lab4/figs/nlin_noisy_state_est_error_feedback.pdf}
+    \shrinkimage{lab4/figs/nlin_noisy_state_est_error_feedback.pdf}
     \caption{Noisy Nonlinear System State Evolution with feedback control}
     \label{fig:nlin_noisy_state_est_error_feedback}
 \end{figure}
+
+\subsection{Compare with output 3}
+\subsection{Observer speed (gains \texorpdfstring{$L_1$}{L1} vs \texorpdfstring{$L_2$}{L2}) impact the performance}
+
+\subsection{Further Observations}
 
 \end{document}
