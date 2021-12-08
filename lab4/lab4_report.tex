@@ -4,7 +4,7 @@
 \date{}
 
 \graphicspath{ {./figs/} }
-\newcommand{\shrinkimage}[1]{\includegraphics[width=0.95\textwidth,height=0.8\textheight,keepaspectratio]{#1}}
+\newcommand{\shrinkimage}[1]{\includegraphics[width=0.85\textwidth,height=0.8\textheight,keepaspectratio]{#1}}
 
 \begin{document}
 
@@ -13,8 +13,22 @@
 
 \maketitle
 
-\section{Noiseless State Estimation}
-\subsection{Observer Gains \texorpdfstring{$L_1$}{L1} and \texorpdfstring{$L_2$}{L2}}
+\section{Introduction}
+This lab builds on Lab 3 where we defined the system and state feedback controllers. The states are <>, and we will be using observers to estimate the state and then control the system.
+
+\section{Noiseless state estimation}
+
+We designed observers with eigenvalues for the closed-loop observer subsystem
+\begin{align*}
+    \dot{\hat{\vec{x}}} &= A\hat{\vec{x}}\\
+    \vec{y} &= C\hat{\vec{x}} + Du
+\end{align*}
+
+$L_1$ was designed to assign the closed-loop spectrum $\sigma(A+L_1C)$ to the set $\{\}$. Similarly, $L_2$ to be a relatively aggressive observer with $\sigma(A+L_2C)$ assigned to $\{\}$.
+
+In terms of error e = xhat - x, we can define the system as,
+
+\subsection{Observer gains \texorpdfstring{$L_1$}{L1} and \texorpdfstring{$L_2$}{L2}}
 
 \begin{equation*}
     L_1 = \begin{bmatrix}
@@ -34,71 +48,83 @@
     \end{bmatrix}
 \end{equation*}
 
-\subsection{Plots for State Estimation Error Evolution}
-\begin{figure}[b]
+\subsection{Plots for state estimation error evolution}
+\begin{figure}[h!]
     \centering
     \shrinkimage{lab4/figs/lin_noiseless_state_est_error.pdf}
-    \caption{Linear Noiseless State Estimation Error}
+    \caption{Linear System State Estimation Error Evolution}
     \label{fig:lin_noiseless_state_est_error}
 \end{figure}
 
-\begin{figure}[b]
+\begin{figure}[h!]
     \centering
     \shrinkimage{lab4/figs/nlin_noiseless_state_est_error.pdf}
-    \caption{Nonlinear Noiseless State Estimation Error}
+    \caption{Nonlinear System State Estimation Error Evolution}
     \label{fig:nlin_noiseless_state_est_error}
 \end{figure}
 
-\subsection{Evaluation}
+\subsection{Evaluation of Results}
+\begin{itemize}
+\item pos and (hence) velocity tracking very similar in both lin and nonlin, and for both L1 and L2.
+\item state estimate undershoot for theta and ang vel lower with L1 in non-linear, probably because of pendulum rate matching that of convergence of error at that time
+\item L2 being the more aggressive observer (stronger corrective term in eqn 1) tries to quickly match the outputs quickly giving rise to higher derivatives of the states (linvel and angvel) and thus much sharper shoots than seen in L1.
+\item In both cases, L2 error converges to 0 more quickly.
+\end{itemize}
 
 \section{State estimation with measurement noise}
 
-\subsection{Plot}
-\begin{figure}[b]
+\subsection{Plots}
+\begin{figure}[h!]
     \centering
     \shrinkimage{lin_noisy_state_est_error.pdf}
-    \caption{Linear Noisy State Estimation Error}
+    \caption{Linear System State Estimation Error Evolution with Noise}
     \label{fig:lin_noisy_state_est_error}
 \end{figure}
 
 \subsection{Comment on the difference between \texorpdfstring{$L_1$}{L1} and \texorpdfstring{$L_2$}{L2}}
+L2 is more aggressive, so sharoer corrections to sharp changes due to uncorredatedness of white noise. THus we see worsened convergence statistics due to increased sesnitiveity to changes in output.
 
 \subsection{Compare and contrast the MSEs associated with \texorpdfstring{$L_1$}{L1} and \texorpdfstring{$L_2$}{L2}}
+mse2 higher as expected. Also states as derivetives have higher mse signce derivatives let noise pass through more or amplifies it. Derivatives have high-pass charactersitics.
+Note, that as the poles(zeros??) of A+LC are shifted more to the left, we are able to observe more spectrum, but then after poles it shoots up, thereby passing more in that band to infty. We see noise being allowed to pass trhough and aggravate the abrubt changes in estimation of internal states.
 
 \section{Noiseless output feedback control} 
 
 \subsection{Plots}
-\begin{figure}[b]
+\begin{figure}[h]
     \centering
     \shrinkimage{lab4/figs/lin_noiseless_state_est_error_feedback.pdf}
-    \caption{Linear System State Evolution with feedback control}
+    \caption{Linear System State Evolution with Output Feedback Control}
     \label{fig:lin_noiseless_state_est_error_feedback}
 \end{figure}
 
-\textcolor{red}{be sure to define what K is}
+\textcolor{red}{be sure to define what K is in the plots. Isn't K state output going to be different for both L1 and L2??? What is required here, check again for comparisons.}
 
-\begin{figure}[b]
+\begin{figure}[h]
     \centering
     \shrinkimage{lab4/figs/nlin_noiseless_state_est_error_feedback.pdf}
-    \caption{Nonlinear System State Evolution with feedback control}
+    \caption{Nonlinear System State Evolution with Output Feedback Control}
     \label{fig:nlin_noiseless_state_est_error_feedback}
 \end{figure}
 
-\subsection{Comment on the behaviour of the linearized system}
-\subsection{Comment on the behaviour of the nonlinear system}
-
+\subsection{Behaviour of the linearized system}
+How is behavir different than state feedback? (need to check lab3 outputs). Yes, L2 stets converge to true faster as expected.
+\subsection{Behaviour of the nonlinear system}
+Same, L2 able to correct for nonlinearities faster. L1 has more oscillatory behvoor as its error redcudes to 0, therefore needs more of a warm start for better performance.
 \section{Output feedback control with measurement noise}
 
 \subsection{Plot}
-\begin{figure}[b]
+\begin{figure}[h]
     \centering
     \shrinkimage{lab4/figs/nlin_noisy_state_est_error_feedback.pdf}
-    \caption{Noisy Nonlinear System State Evolution with feedback control}
+    \caption{Nonlinear System State Evolution with Output Feedback Control and Noise}
     \label{fig:nlin_noisy_state_est_error_feedback}
 \end{figure}
 
 \subsection{Compare with output 3}
-\subsection{Observer speed (gains \texorpdfstring{$L_1$}{L1} vs \texorpdfstring{$L_2$}{L2}) impact the performance}
+as expectied , more sensitive L2, poor convergedbce.. as non necessary quick corrections to alredy noisy states. Being driven around by noise, and tryingt to track noise, thus poor convergence to equilibrium (does it actuaklly converge?? prolly yes, but plots only show state estimates). The controller will be having a rough time trying to follow the change based on state estimates. Not good in practice.  To correct for this, can pass controller output through low pass filt. UIsualy done in industry,
+
+\subsection{Impact of observer speed on performance (gains \texorpdfstring{$L_1$}{L1} and \texorpdfstring{$L_2$}{L2}) }
 
 \subsection{Further Observations}
 
