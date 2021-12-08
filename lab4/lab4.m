@@ -101,30 +101,30 @@ fig_ZX_lin = figure('Name', 'Linear System State Estimation Error Evolution', 'N
 figure(fig_ZX_lin);
 % plot tilde(z)
 subplot(4,1,1);
-plot(t_lin, X1_lin_t(:, 1)-Z1_lin_t(:, 1))
+plot(t_lin, Z1_lin_t(:, 1)-X1_lin_t(:, 1))
 hold on;
-plot(t_lin, X2_lin_t(:, 1)-Z2_lin_t(:, 1))
+plot(t_lin, Z2_lin_t(:, 1)-X2_lin_t(:, 1))
 ylabel('$\tilde{z}$ [m]', 'Interpreter', 'latex');
 set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
 % plot tilde(zdot)
 subplot(4,1,2);
-plot(t_lin, X1_lin_t(:, 2)-Z1_lin_t(:, 2))
+plot(t_lin, Z1_lin_t(:, 2)-X1_lin_t(:, 2))
 hold on;
-plot(t_lin, X2_lin_t(:, 2)-Z2_lin_t(:, 2))
+plot(t_lin, Z2_lin_t(:, 2)-X2_lin_t(:, 2))
 ylabel('$\dot{\tilde{z}}$ [m/s]', 'Interpreter', 'latex');
 set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
 % plot tilde(theta)
 subplot(4,1,3);
-plot(t_lin, X1_lin_t(:, 3)-Z1_lin_t(:, 3))
+plot(t_lin, Z1_lin_t(:, 3)-X1_lin_t(:, 3))
 hold on;
-plot(t_lin, X2_lin_t(:, 3)-Z2_lin_t(:, 3))
+plot(t_lin, Z2_lin_t(:, 3)-X2_lin_t(:, 3))
 ylabel('$\tilde{\theta}$ [rad]', 'Interpreter', 'latex');
 set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
 % plot tilde(thetadot)
 subplot(4,1,4);
-plot(t_lin, X1_lin_t(:, 4)-Z1_lin_t(:, 4))
+plot(t_lin, Z1_lin_t(:, 4)-X1_lin_t(:, 4))
 hold on;
-plot(t_lin, X2_lin_t(:, 4)-Z2_lin_t(:, 4))
+plot(t_lin, Z2_lin_t(:, 4)-X2_lin_t(:, 4))
 xlabel('Time $t$ [s]', 'Interpreter','latex');
 ylabel('$\dot{\tilde{\theta}}$ [rad/s]', 'Interpreter', 'latex');
 set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
@@ -135,30 +135,30 @@ fig_ZX_nlin = figure('Name', 'Nonlinear System State Estimation Error Evolution'
 figure(fig_ZX_nlin);
 % plot tilde(z)
 subplot(4,1,1);
-plot(t_nlin, X1_nlin_t(:, 1)-Z1_nlin_t(:, 1))
+plot(t_nlin, Z1_nlin_t(:, 1)-X1_nlin_t(:, 1))
 hold on;
-plot(t_nlin, X2_nlin_t(:, 1)-Z2_nlin_t(:, 1))
+plot(t_nlin, Z2_nlin_t(:, 1)-X2_nlin_t(:, 1))
 ylabel('$\tilde{z}$ [m]', 'Interpreter', 'latex');
 set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
 % plot tilde(zdot)
 subplot(4,1,2);
-plot(t_nlin, X1_nlin_t(:, 2)-Z1_nlin_t(:, 2))
+plot(t_nlin, Z1_nlin_t(:, 2)-X1_nlin_t(:, 2))
 hold on;
-plot(t_nlin, X2_nlin_t(:, 2)-Z2_nlin_t(:, 2))
+plot(t_nlin, Z2_nlin_t(:, 2)-X2_nlin_t(:, 2))
 ylabel('$\dot{\tilde{z}}$ [m/s]', 'Interpreter', 'latex');
 set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
 % plot tilde(theta)
 subplot(4,1,3);
-plot(t_nlin, X1_nlin_t(:, 3)-Z1_nlin_t(:, 3))
+plot(t_nlin, Z1_nlin_t(:, 3)-X1_nlin_t(:, 3))
 hold on;
-plot(t_nlin, X2_nlin_t(:, 3)-Z2_nlin_t(:, 3))
+plot(t_nlin, Z2_nlin_t(:, 3)-X2_nlin_t(:, 3))
 ylabel('$\tilde{\theta}$ [rad]', 'Interpreter', 'latex');
 set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
 % plot tilde(thetadot)
 subplot(4,1,4);
-plot(t_nlin, X1_nlin_t(:, 4)-Z1_nlin_t(:, 4))
+plot(t_nlin, Z1_nlin_t(:, 4)-X1_nlin_t(:, 4))
 hold on;
-plot(t_nlin, X2_nlin_t(:, 4)-Z2_nlin_t(:, 4))
+plot(t_nlin, Z2_nlin_t(:, 4)-X2_nlin_t(:, 4))
 xlabel('Time $t$ [s]', 'Interpreter','latex');
 ylabel('$\dot{\tilde{\theta}}$ [rad/s]', 'Interpreter', 'latex');
 set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
@@ -178,6 +178,7 @@ ZN1_lin_t = ZXN1_lin(:, 1:4);
 
 % get evolutions for cls (linearized) system state, Z(t), and noisy observer 2 state, XN2(t)
 [~, ZXN2_lin] = ode45(@lin_cls_noisy_observer_sep_response, Tspan, [Z0; X0], options, {numA, numB, numC, K, L2}, W);
+ZN2_lin_t = ZXN2_lin(:, 1:4);
 XN2_lin_t = ZXN2_lin(:, 5:8);
 
 % plot results (linearized system response with noise)
@@ -185,37 +186,37 @@ fig_ZXN_lin = figure('Name', 'Linear System State Estimation Error Evolution wit
 figure(fig_ZXN_lin);
 % plot tilde(z)
 subplot(4,1,1);
-plot(t_lin, XN1_lin_t(:, 1)-ZN1_lin_t(:, 1))
+plot(t_lin, ZN1_lin_t(:, 1)-XN1_lin_t(:, 1))
 hold on;
-plot(t_lin, XN2_lin_t(:, 1)-Z2_lin_t(:, 1))
+plot(t_lin, ZN2_lin_t(:, 1)-XN2_lin_t(:, 1))
 ylabel('$\tilde{z}$ [m]', 'Interpreter', 'latex');
 set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
 % plot tilde(zdot)
 subplot(4,1,2);
-plot(t_lin, XN1_lin_t(:, 2)-Z1_lin_t(:, 2))
+plot(t_lin, ZN1_lin_t(:, 2)-XN1_lin_t(:, 2))
 hold on;
-plot(t_lin, XN2_lin_t(:, 2)-Z2_lin_t(:, 2))
+plot(t_lin, ZN2_lin_t(:, 2)-XN2_lin_t(:, 2))
 ylabel('$\dot{\tilde{z}}$ [m/s]', 'Interpreter', 'latex');
 set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
 % plot tilde(theta)
 subplot(4,1,3);
-plot(t_lin, XN1_lin_t(:, 3)-Z1_lin_t(:, 3))
+plot(t_lin, ZN1_lin_t(:, 3)-XN1_lin_t(:, 3))
 hold on;
-plot(t_lin, XN2_lin_t(:, 3)-Z2_lin_t(:, 3))
+plot(t_lin, ZN2_lin_t(:, 3)-XN2_lin_t(:, 3))
 ylabel('$\tilde{\theta}$ [rad]', 'Interpreter', 'latex');
 set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
 % plot tilde(theta dot)
 subplot(4,1,4);
-plot(t_lin, XN1_lin_t(:, 4)-Z1_lin_t(:, 4))
+plot(t_lin, ZN1_lin_t(:, 4)-XN1_lin_t(:, 4))
 hold on;
-plot(t_lin, XN2_lin_t(:, 4)-Z2_lin_t(:, 4))
+plot(t_lin, ZN2_lin_t(:, 4)-XN2_lin_t(:, 4))
 ylabel('$\dot{\tilde{\theta}}$ [rad/s]', 'Interpreter', 'latex');
 set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
 xlabel('Time $t$ [s]', 'Interpreter','latex');
 
 % calculate mean squared error (MSE) over last half of Tspan
-Xtilde1 = XN1_lin_t-ZXN1_lin(:, 1:4);
-Xtilde2 = XN2_lin_t-ZXN2_lin(:, 1:4);
+Xtilde1 = XN1_lin_t - ZN1_lin_t;
+Xtilde2 = XN2_lin_t - ZN2_lin_t;
 n    = ceil(length(Tspan)/2);
 mse1 = 1/n*sum(Xtilde1(n+1:end, :).^2);
 mse2 = 1/n*sum(Xtilde2(n+1:end, :).^2);
