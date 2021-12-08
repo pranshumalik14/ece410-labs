@@ -4,6 +4,7 @@
 \date{}
 
 \graphicspath{ {./figs/} }
+\newcommand{\figscalingfactor}{0.85}
 
 \begin{document}
 
@@ -32,9 +33,54 @@
     \end{bmatrix}
 \end{equation*}
 
+\begin{figure}
+    \centering
+    \includegraphics[\figscalingfactor\textwidth]{lab4/figs/lin_noiseless_state_est_error.pdf}
+    \caption{Linear Noiseless State Estimation Error}
+    \label{fig:lin_noiseless_state_est_error}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[\figscalingfactor\textwidth]{lab4/figs/nlin_noiseless_state_est_error.pdf}
+    \caption{Nonlinear Noiseless State Estimation Error}
+    \label{fig:nlin_noiseless_state_est_error}
+\end{figure}
+
 \section{State estimation with measurement noise}
-\section{Noiseless output feedback control}
+
+\begin{figure}
+    \centering
+    \includegraphics[\figscalingfactor\textwidth]{lab4/figs/lin_noisy_state_est_error.pdf}
+    \caption{Linear Noisy State Estimation Error}
+    \label{fig:lin_noisy_state_est_error}
+\end{figure}
+
+\section{Noiseless output feedback control} 
+
+\begin{figure}
+    \centering
+    \includegraphics[\figscalingfactor\textwidth]{lab4/figs/lin_noiseless_state_est_error_feedback.pdf}
+    \caption{Linear System State Evolution with feedback control}
+    \label{fig:lin_noiseless_state_est_error_feedback}
+\end{figure}
+
+
+\begin{figure}
+    \centering
+    \includegraphics[\figscalingfactor\textwidth]{lab4/figs/nlin_noiseless_state_est_error_feedback.pdf}
+    \caption{Nonlinear System State Evolution with feedback control}
+    \label{fig:nlin_noiseless_state_est_error_feedback}
+\end{figure}
+
+
 \section{Output feedback control with measurement noise}
 
+\begin{figure}
+    \centering
+    \includegraphics[\figscalingfactor\textwidth]{lab4/figs/nlin_noisy_state_est_error_feedback.pdf}
+    \caption{Noisy Nonlinear System State Evolution with feedback control}
+    \label{fig:nlin_noisy_state_est_error_feedback}
+\end{figure}
 
 \end{document}
