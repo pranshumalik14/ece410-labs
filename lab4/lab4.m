@@ -208,7 +208,7 @@ subplot(4,1,1);
 plot(t_lin, XN1_lin_t(:, 1) - ZN1_lin_t(:, 1)) % ######################### PRANSHU ######################## why was this not used??
 hold on;
 plot(t_lin, XN2_lin_t(:, 1)-Z2_lin_t(:, 1))
-ylabel('$\tilde{y}$ [m]', 'Interpreter', 'latex');
+ylabel('$\tilde{z}$ [m]', 'Interpreter', 'latex');
 % set(legend('$\tilde{y}_{L_1}$', '$\tilde{y}_{L_2}$'), 'Interpreter', 'latex');
 set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
 
@@ -217,7 +217,7 @@ subplot(4,1,2);
 plot(t_lin, XN1_lin_t(:, 2)-Z1_lin_t(:, 2))
 hold on;
 plot(t_lin, XN2_lin_t(:, 2)-Z2_lin_t(:, 2))
-ylabel('$\dot{\tilde{y}}$ [m/s]', 'Interpreter', 'latex');
+ylabel('$\dot{\tilde{z}}$ [m/s]', 'Interpreter', 'latex');
 % set(legend('$\dot{\tilde{y}}_{L_1}$', '$\dot{\tilde{y}}_{L_2}$'), 'Interpreter', 'latex');
 set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
 
@@ -421,9 +421,9 @@ set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
 %% autoexport figures to (pdf) files
 %  note: uncomment to save again
 
-% savefig(fig_ZX_lin, './figs/lin_noiseless_state_est_error')
-% savefig(fig_ZX_nlin, './figs/nlin_noiseless_state_est_error')
-% savefig(fig_ZXN_lin, './figs/lin_noisy_state_est_error')
-% savefig(fig_ZX_lin_feed, './figs/lin_noiseless_state_est_error_feedback')
-% savefig(fig_ZX_nlin_feed, './figs/nlin_noiseless_state_est_error_feedback')
-% savefig(fig_ZX_nlin_noise_feed, './figs/nlin_noisy_state_est_error_feedback')
+savefig(fig_ZX_lin, './figs/lin_noiseless_state_est_error')
+savefig(fig_ZX_nlin, './figs/nlin_noiseless_state_est_error')
+savefig(fig_ZXN_lin, './figs/lin_noisy_state_est_error')
+savefig(fig_ZX_lin_feed, './figs/lin_noiseless_state_est_error_feedback')
+savefig(fig_ZX_nlin_feed, './figs/nlin_noiseless_state_est_error_feedback')
+savefig(fig_ZX_nlin_noise_feed, './figs/nlin_noisy_state_est_error_feedback')
