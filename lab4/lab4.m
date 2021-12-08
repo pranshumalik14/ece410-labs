@@ -332,35 +332,35 @@ XN1_nlin_feed_t = ZXN1_nlin(:, 5:8);
 ZN1_nlin_feed_t = ZXN1_nlin(:, 1:4);
 
 % get evolutions for output feedback cls (nonlinear) system state, Z(t), and noisy observer 2 state, XN2(t)
-[~, ZXN2_nlin] = ode45(@nonlin_cls_noisy_observer_feedback_response, Tspan, [Z0; X0], options, parameters, {numA, numB, numC, K, L2}, W);
+[~, ZXN2_nlin]  = ode45(@nonlin_cls_noisy_observer_feedback_response, Tspan, [Z0; X0], options, parameters, {numA, numB, numC, K, L2}, W);
 XN2_nlin_feed_t = ZXN2_nlin(:, 5:8);
-ZN2_nlin_t = ZXN2_nlin(:, 1:4);
+ZN2_nlin_t      = ZXN2_nlin(:, 1:4);
 
 % plot results (nonlinear system with noise)
 fig_ZX_nlin_noise_feed = figure('Name', 'Nonlinear System State Evolution with Output Feedback Control and Noise', 'NumberTitle', 'off');
 figure(fig_ZX_nlin_noise_feed);
-% plot tilde(z)
+% plot (z)
 subplot(4,1,1);
 plot(t_nlin_noise_feed, XN1_nlin_feed_t(:, 1))
 hold on;
 plot(t_nlin_noise_feed, XN2_nlin_feed_t(:, 1))
 ylabel('$z$ [m]', 'Interpreter', 'latex');
 set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
-% plot tilde(zdot)
+% plot (zdot)
 subplot(4,1,2);
 plot(t_nlin_noise_feed, XN1_nlin_feed_t(:, 2))
 hold on;
 plot(t_nlin_noise_feed, XN2_nlin_feed_t(:, 2))
 ylabel('$\dot{z}$ [m/s]', 'Interpreter', 'latex');
 set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
-% plot tilde(theta)
+% plot (theta)
 subplot(4,1,3);
 plot(t_nlin_feed, XN1_nlin_feed_t(:, 3))
 hold on;
 plot(t_nlin_feed, XN2_nlin_feed_t(:, 3))
 ylabel('$\theta$ [rad]', 'Interpreter', 'latex');
 set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
-% plot tilde(thetadot)
+% plot (thetadot)
 subplot(4,1,4);
 plot(t_nlin_noise_feed, XN1_nlin_feed_t(:, 4))
 hold on;
