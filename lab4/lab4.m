@@ -96,35 +96,36 @@ X1_nlin_t = ZX1_nlin(:, 5:8);
 Z2_nlin_t = ZX2_nlin(:, 1:4);
 X2_nlin_t = ZX2_nlin(:, 5:8);
 
+% tilda(x) = x-hat - x 
 % plot results (linearized system response)
 fig_ZX_lin = figure('Name', 'Linear System State Estimation Error Evolution', 'NumberTitle', 'off');
 figure(fig_ZX_lin);
 % plot tilde(z)
 subplot(4,1,1);
-plot(t_lin, Z1_lin_t(:, 1)-X1_lin_t(:, 1))
+plot(t_lin, X1_lin_t(:, 1)-Z1_lin_t(:, 1))
 hold on;
-plot(t_lin, Z2_lin_t(:, 1)-X2_lin_t(:, 1))
+plot(t_lin, X2_lin_t(:, 1)-Z2_lin_t(:, 1))
 ylabel('$\tilde{z}$ [m]', 'Interpreter', 'latex');
 set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
 % plot tilde(zdot)
 subplot(4,1,2);
-plot(t_lin, Z1_lin_t(:, 2)-X1_lin_t(:, 2))
+plot(t_lin, X1_lin_t(:, 2)-Z1_lin_t(:, 2))
 hold on;
-plot(t_lin, Z2_lin_t(:, 2)-X2_lin_t(:, 2))
+plot(t_lin, X2_lin_t(:, 2)-Z2_lin_t(:, 2))
 ylabel('$\dot{\tilde{z}}$ [m/s]', 'Interpreter', 'latex');
 set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
 % plot tilde(theta)
 subplot(4,1,3);
-plot(t_lin, Z1_lin_t(:, 3)-X1_lin_t(:, 3))
+plot(t_lin, X1_lin_t(:, 3)-Z1_lin_t(:, 3))
 hold on;
-plot(t_lin, Z2_lin_t(:, 3)-X2_lin_t(:, 3))
+plot(t_lin, X2_lin_t(:, 3)-Z2_lin_t(:, 3))
 ylabel('$\tilde{\theta}$ [rad]', 'Interpreter', 'latex');
 set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
 % plot tilde(thetadot)
 subplot(4,1,4);
-plot(t_lin, Z1_lin_t(:, 4)-X1_lin_t(:, 4))
+plot(t_lin, X1_lin_t(:, 4)-Z1_lin_t(:, 4))
 hold on;
-plot(t_lin, Z2_lin_t(:, 4)-X2_lin_t(:, 4))
+plot(t_lin, X2_lin_t(:, 4)-Z2_lin_t(:, 4))
 xlabel('Time $t$ [s]', 'Interpreter','latex');
 ylabel('$\dot{\tilde{\theta}}$ [rad/s]', 'Interpreter', 'latex');
 set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
@@ -135,30 +136,30 @@ fig_ZX_nlin = figure('Name', 'Nonlinear System State Estimation Error Evolution'
 figure(fig_ZX_nlin);
 % plot tilde(z)
 subplot(4,1,1);
-plot(t_nlin, Z1_nlin_t(:, 1)-X1_nlin_t(:, 1))
+plot(t_nlin, X1_nlin_t(:, 1)-Z1_nlin_t(:, 1))
 hold on;
-plot(t_nlin, Z2_nlin_t(:, 1)-X2_nlin_t(:, 1))
+plot(t_nlin, X2_nlin_t(:, 1)-Z2_nlin_t(:, 1))
 ylabel('$\tilde{z}$ [m]', 'Interpreter', 'latex');
 set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
 % plot tilde(zdot)
 subplot(4,1,2);
-plot(t_nlin, Z1_nlin_t(:, 2)-X1_nlin_t(:, 2))
+plot(t_nlin, X1_nlin_t(:, 2)-Z1_nlin_t(:, 2))
 hold on;
-plot(t_nlin, Z2_nlin_t(:, 2)-X2_nlin_t(:, 2))
+plot(t_nlin, X2_nlin_t(:, 2)-Z2_nlin_t(:, 2))
 ylabel('$\dot{\tilde{z}}$ [m/s]', 'Interpreter', 'latex');
 set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
 % plot tilde(theta)
 subplot(4,1,3);
-plot(t_nlin, Z1_nlin_t(:, 3)-X1_nlin_t(:, 3))
+plot(t_nlin, X1_nlin_t(:, 3)-Z1_nlin_t(:, 3))
 hold on;
-plot(t_nlin, Z2_nlin_t(:, 3)-X2_nlin_t(:, 3))
+plot(t_nlin, X2_nlin_t(:, 3)-Z2_nlin_t(:, 3))
 ylabel('$\tilde{\theta}$ [rad]', 'Interpreter', 'latex');
 set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
 % plot tilde(thetadot)
 subplot(4,1,4);
-plot(t_nlin, Z1_nlin_t(:, 4)-X1_nlin_t(:, 4))
+plot(t_nlin, X1_nlin_t(:, 4)-Z1_nlin_t(:, 4))
 hold on;
-plot(t_nlin, Z2_nlin_t(:, 4)-X2_nlin_t(:, 4))
+plot(t_nlin, X2_nlin_t(:, 4)-Z2_nlin_t(:, 4))
 xlabel('Time $t$ [s]', 'Interpreter','latex');
 ylabel('$\dot{\tilde{\theta}}$ [rad/s]', 'Interpreter', 'latex');
 set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
@@ -181,6 +182,7 @@ ZN1_lin_t = ZXN1_lin(:, 1:4);
 ZN2_lin_t = ZXN2_lin(:, 1:4);
 XN2_lin_t = ZXN2_lin(:, 5:8);
 
+% x_hat = x - x_hat
 % plot results (linearized system response with noise)
 fig_ZXN_lin = figure('Name', 'Linear System State Estimation Error Evolution with Noise', 'NumberTitle', 'off');
 figure(fig_ZXN_lin);
@@ -373,9 +375,9 @@ set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
 %% autoexport figures to (pdf) files
 %  note: uncomment to save again
 
-% savefig(fig_ZX_lin, './figs/lin_noiseless_state_est_error')
-% savefig(fig_ZX_nlin, './figs/nlin_noiseless_state_est_error')
-% savefig(fig_ZXN_lin, './figs/lin_noisy_state_est_error')
-% savefig(fig_ZX_lin_feed, './figs/lin_noiseless_state_est_error_feedback')
-% savefig(fig_ZX_nlin_feed, './figs/nlin_noiseless_state_est_error_feedback')
-% savefig(fig_ZX_nlin_noise_feed, './figs/nlin_noisy_state_est_error_feedback')
+savefig(fig_ZX_lin, './figs/lin_noiseless_state_est_error')
+savefig(fig_ZX_nlin, './figs/nlin_noiseless_state_est_error')
+savefig(fig_ZXN_lin, './figs/lin_noisy_state_est_error')
+savefig(fig_ZX_lin_feed, './figs/lin_noiseless_state_est_error_feedback')
+savefig(fig_ZX_nlin_feed, './figs/nlin_noiseless_state_est_error_feedback')
+savefig(fig_ZX_nlin_noise_feed, './figs/nlin_noisy_state_est_error_feedback')
