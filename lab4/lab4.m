@@ -245,7 +245,7 @@ X2_nlin_feed_t = ZX2_nlin_feed(:, 5:8);
 % plot results (linear system)
 fig_ZX_lin_feed = figure('Name', 'Linear System State Evolution with Output Feedback Control', 'NumberTitle', 'off');
 figure(fig_ZX_lin_feed);
-% plot tilde(z)
+% plot (z)
 subplot(4,1,1);
 plot(t_lin, Z1_lin_t(:,1)) % same as Z2_lin_t
 hold on;
@@ -254,7 +254,7 @@ hold on;
 plot(t_lin_feed, X2_lin_feed_t(:, 1))
 ylabel('$z$ [m]', 'Interpreter', 'latex');
 set(legend('$K$', '$L_1$', '$L_2$'), 'Interpreter', 'latex');
-% plot tilde(zdot)
+% plot (zdot)
 subplot(4,1,2);
 plot(t_lin, Z1_lin_t(:, 2))
 hold on;
@@ -263,7 +263,7 @@ hold on;
 plot(t_lin_feed, X2_lin_feed_t(:, 2))
 ylabel('$\dot{z}$ [m/s]', 'Interpreter', 'latex');
 set(legend('$K$', '$L_1$', '$L_2$'), 'Interpreter', 'latex');
-% plot tilde(theta)
+% plot (theta)
 subplot(4,1,3);
 plot(t_lin, Z1_lin_t(:, 3))
 hold on;
@@ -272,7 +272,7 @@ hold on;
 plot(t_lin_feed, X2_lin_feed_t(:, 3))
 ylabel('$\theta$ [rad]', 'Interpreter', 'latex');
 set(legend('$K$', '$L_1$', '$L_2$'), 'Interpreter', 'latex');
-% plot tilde(thetadot)
+% plot (thetadot)
 subplot(4,1,4);
 plot(t_lin, Z1_lin_t(:, 4))
 hold on;
@@ -290,36 +290,36 @@ figure(fig_ZX_nlin_feed);
 subplot(4,1,1);
 plot(t_nlin, Z1_nlin_t(:,1))
 hold on;
-plot(t_nlin_feed, X1_nlin_feed_t(:, 1))
+plot(t_nlin_feed, Z1_nlin_feed_t(:, 1))
 hold on;
-plot(t_nlin_feed, X2_nlin_feed_t(:, 1))
+plot(t_nlin_feed, Z2_nlin_feed_t(:, 1))
 ylabel('$z$ [m]', 'Interpreter', 'latex');
 set(legend('$K$', '$L_1$', '$L_2$'), 'Interpreter', 'latex');
 % plot (zdot)
 subplot(4,1,2);
 plot(t_nlin, Z1_nlin_t(:,2))
 hold on;
-plot(t_nlin_feed, X1_nlin_feed_t(:, 2))
+plot(t_nlin_feed, Z1_nlin_feed_t(:, 2))
 hold on;
-plot(t_nlin_feed, X2_nlin_feed_t(:, 2))
+plot(t_nlin_feed, Z2_nlin_feed_t(:, 2))
 ylabel('$\dot{z}$ [m/s]', 'Interpreter', 'latex');
 set(legend('$K$', '$L_1$', '$L_2$'), 'Interpreter', 'latex');
 % plot (theta)
 subplot(4,1,3);
 plot(t_nlin, Z1_nlin_t(:,3))
 hold on;
-plot(t_nlin_feed, X1_nlin_feed_t(:, 3))
+plot(t_nlin_feed, Z1_nlin_feed_t(:, 3))
 hold on;
-plot(t_nlin_feed, X2_nlin_feed_t(:, 3))
+plot(t_nlin_feed, Z2_nlin_feed_t(:, 3))
 ylabel('$\theta$ [rad]', 'Interpreter', 'latex');
 set(legend('$K$', '$L_1$', '$L_2$'), 'Interpreter', 'latex');
 % plot (thetadot)
 subplot(4,1,4);
 plot(t_nlin, Z1_nlin_t(:,4))
 hold on;
-plot(t_nlin_feed, X1_nlin_feed_t(:, 4))
+plot(t_nlin_feed, Z1_nlin_feed_t(:, 4))
 hold on;
-plot(t_nlin_feed, X2_nlin_feed_t(:, 4))
+plot(t_nlin_feed, Z2_nlin_feed_t(:, 4))
 xlabel('Time $t$ [s]', 'Interpreter','latex');
 ylabel('$\dot{\theta}$ [rad/s]', 'Interpreter', 'latex');
 set(legend('$K$', '$L_1$', '$L_2$'), 'Interpreter', 'latex');
@@ -334,37 +334,37 @@ ZN1_nlin_feed_t = ZXN1_nlin(:, 1:4);
 % get evolutions for output feedback cls (nonlinear) system state, Z(t), and noisy observer 2 state, XN2(t)
 [~, ZXN2_nlin]  = ode45(@nonlin_cls_noisy_observer_feedback_response, Tspan, [Z0; X0], options, parameters, {numA, numB, numC, K, L2}, W);
 XN2_nlin_feed_t = ZXN2_nlin(:, 5:8);
-ZN2_nlin_t      = ZXN2_nlin(:, 1:4);
+ZN2_nlin_feed_t = ZXN2_nlin(:, 1:4);
 
 % plot results (nonlinear system with noise)
 fig_ZX_nlin_noise_feed = figure('Name', 'Nonlinear System State Evolution with Output Feedback Control and Noise', 'NumberTitle', 'off');
 figure(fig_ZX_nlin_noise_feed);
 % plot (z)
 subplot(4,1,1);
-plot(t_nlin_noise_feed, XN1_nlin_feed_t(:, 1))
+plot(t_nlin_noise_feed, ZN1_nlin_feed_t(:, 1))
 hold on;
-plot(t_nlin_noise_feed, XN2_nlin_feed_t(:, 1))
+plot(t_nlin_noise_feed, ZN2_nlin_feed_t(:, 1))
 ylabel('$z$ [m]', 'Interpreter', 'latex');
 set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
 % plot (zdot)
 subplot(4,1,2);
-plot(t_nlin_noise_feed, XN1_nlin_feed_t(:, 2))
+plot(t_nlin_noise_feed, ZN1_nlin_feed_t(:, 2))
 hold on;
-plot(t_nlin_noise_feed, XN2_nlin_feed_t(:, 2))
+plot(t_nlin_noise_feed, ZN2_nlin_feed_t(:, 2))
 ylabel('$\dot{z}$ [m/s]', 'Interpreter', 'latex');
 set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
 % plot (theta)
 subplot(4,1,3);
-plot(t_nlin_feed, XN1_nlin_feed_t(:, 3))
+plot(t_nlin_feed, ZN1_nlin_feed_t(:, 3))
 hold on;
-plot(t_nlin_feed, XN2_nlin_feed_t(:, 3))
+plot(t_nlin_feed, ZN2_nlin_feed_t(:, 3))
 ylabel('$\theta$ [rad]', 'Interpreter', 'latex');
 set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
 % plot (thetadot)
 subplot(4,1,4);
-plot(t_nlin_noise_feed, XN1_nlin_feed_t(:, 4))
+plot(t_nlin_noise_feed, ZN1_nlin_feed_t(:, 4))
 hold on;
-plot(t_nlin_noise_feed, XN2_nlin_feed_t(:, 4))
+plot(t_nlin_noise_feed, ZN2_nlin_feed_t(:, 4))
 xlabel('Time $t$ [s]', 'Interpreter','latex');
 ylabel('$\dot{\theta}$ [rad/s]', 'Interpreter', 'latex');
 set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
