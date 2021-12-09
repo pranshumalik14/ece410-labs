@@ -375,9 +375,9 @@ set(legend('$L_1$', '$L_2$'), 'Interpreter', 'latex');
 %% autoexport figures to (pdf) files
 %  note: uncomment to save again
 
-savefig(fig_ZX_lin, './figs/lin_noiseless_state_est_error')
-savefig(fig_ZX_nlin, './figs/nlin_noiseless_state_est_error')
-savefig(fig_ZXN_lin, './figs/lin_noisy_state_est_error')
-savefig(fig_ZX_lin_feed, './figs/lin_noiseless_state_est_error_feedback')
-savefig(fig_ZX_nlin_feed, './figs/nlin_noiseless_state_est_error_feedback')
-savefig(fig_ZX_nlin_noise_feed, './figs/nlin_noisy_state_est_error_feedback')
+% savefig(fig_ZX_lin, './figs/lin_noiseless_state_est_error')
+% savefig(fig_ZX_nlin, './figs/nlin_noiseless_state_est_error')
+% savefig(fig_ZXN_lin, './figs/lin_noisy_state_est_error')
+% savefig(fig_ZX_lin_feed, './figs/lin_noiseless_state_est_error_feedback')
+% savefig(fig_ZX_nlin_feed, './figs/nlin_noiseless_state_est_error_feedback')
+% savefig(fig_ZX_nlin_noise_feed, './figs/nlin_noisy_state_est_error_feedback')
